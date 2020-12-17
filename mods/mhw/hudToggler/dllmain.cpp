@@ -15,7 +15,7 @@
 
 #pragma comment (lib, "dinput8.lib")
 #pragma comment (lib, "dxguid.lib")
-//5073E70
+
 using loader::LOG;
 using loader::DEBUG;
 using loader::ERR;
@@ -25,7 +25,10 @@ using std::vector;
 typedef HRESULT(__fastcall* CreateDevice)(REFGUID, LPDIRECTINPUTDEVICE*, LPUNKNOWN);
 CreateDevice fnCreateDevice = nullptr;
 
-LPDIRECTINPUTDEVICE8 gamepad = nullptr;
+IDirectInput8* device = nullptr;
+vector<LPDIRECTINPUTDEVICE8> gamepads;
+unsigned char gInput[32];
+
 LPDIRECTINPUTDEVICE8 kb = nullptr;
 LPDIRECTINPUTDEVICE8 mouse = nullptr;
 std::future<void> ctrlThread;
@@ -38,7 +41,6 @@ vector<intptr_t> subtitle_setting{ 0x5073E70, 0x10A };
 vector<intptr_t> subtitle_show{ 0x5224B80, 0x13e20, 0x332c };
 vector<intptr_t> hud_settings{ 0x5073E70, 0xa8, 0x151F8C };
 
-//long long xor_settings = 0x0101000100000100;
 long long xor_settings = 0x0001000001000101;
 
 void setHandle() {
@@ -101,8 +103,8 @@ void toggleHUD() {
 
 enum BTN_ACTION { PRESSED, RELEASED, LONG_PRESS, LONG_RELEASE };
 
-BTN_ACTION btnPressed(int btn, bool& pressed, DIJOYSTATE& state) {
-    if ((int)state.rgbButtons[btn] == 0x80) {
+BTN_ACTION btnPressed(int btn, bool& pressed, unsigned char input[32]) {
+    if ((int)input[btn] == 0x80) {
         if (!pressed) {
             pressed = true;
             return BTN_ACTION::PRESSED;
@@ -122,12 +124,53 @@ BTN_ACTION btnPressed(int btn, bool& pressed, DIJOYSTATE& state) {
     }
 }
 
-bool btnHeld(int btn, DIJOYSTATE& state) {
-    return (int)state.rgbButtons[btn] == 0x80;
+BOOL enumerateGameControllers(LPCDIDEVICEINSTANCE devInst, LPVOID devPtr)
+{
+    LPDIRECTINPUTDEVICE8 gamepad = nullptr;
+    if (FAILED(device->CreateDevice(devInst->guidInstance, &gamepad, NULL)))
+    {
+        LOG(ERR) << "Failed to get device " << devInst->tszProductName << " - " << devInst->tszInstanceName;
+    }
+    else
+    {
+        gamepads.push_back(gamepad);
+        //gamepad->SetCooperativeLevel(hGameWindow, DISCL_BACKGROUND | DISCL_EXCLUSIVE);
+        gamepad->SetDataFormat(&c_dfDIJoystick);
+
+        LOG(DEBUG) << "Got device " << devInst->tszProductName << " - " << devInst->tszInstanceName;
+    }
+    return DIENUM_CONTINUE;
 }
 
-void testFunc() {
+void getGamepads() {
+    if (device->EnumDevices(DI8DEVCLASS_GAMECTRL, &enumerateGameControllers, device, DIEDFL_ATTACHEDONLY) != DI_OK) {
+        LOG(DEBUG) << "Can't find gamepad";
+        device->Release();
+    }
+    //gamepad->Acquire();
+}
+
+void getInput() {
+    memset(gInput, 0, 32);
     DIJOYSTATE gamepadState;
+    for (auto gamepad : gamepads) {
+        if (FAILED(gamepad->Poll())) {
+            gamepad->Acquire();
+        }
+        else {
+            gamepad->GetDeviceState(sizeof(DIJOYSTATE), &gamepadState);
+            for (int i = 0; i < 32; i++) {
+                gInput[i] |= gamepadState.rgbButtons[i];
+            }
+        }
+    }
+}
+
+void sleep() {
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+void gamepadLoop() {
     bool Select = false;
     bool L1 = false;
 
@@ -135,24 +178,23 @@ void testFunc() {
         setHandle();
     }
 
-    while (gamepad != nullptr) {
-        if (FAILED(gamepad->Poll())) {
-            gamepad->Acquire();
-        }
-        else {
-            gamepad->GetDeviceState(sizeof(DIJOYSTATE), &gamepadState);
+    while (gamepads.size() == 0) {
+        getGamepads();
+        sleep();
+    }
 
-            if (btnPressed(6, Select, gamepadState) == PRESSED) {
-                toggleSubtitles();
-            }
-            auto l1 = btnPressed(4, L1, gamepadState);
-            if (l1 == PRESSED) {
-                toggleHUD();
-            } else if(l1 == RELEASED) {
-                toggleHUD();
-            }
+    while (gamepads.size() > 0) {
+        getInput();
+        if (btnPressed(6, Select, gInput) == PRESSED) {
+            toggleSubtitles();
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        auto l1 = btnPressed(4, L1, gInput);
+        if (l1 == PRESSED) {
+            toggleHUD();
+        } else if(l1 == RELEASED) {
+            toggleHUD();
+        }
+        sleep();
     }
     LOG(ERR) << "Terminating... Not checking user input anymore!";
 }
@@ -164,7 +206,7 @@ CreateHook(MH::File::LoadResource, StartGamepadThread, void*, void* fileMgr,
     if (flag == 1 && objDef == MH::Quest::QuestNoList::ResourcePtr) {
         if (!ctrlThread.valid()) {
             LOG(DEBUG) << "Starting user input thread...";
-            ctrlThread = std::async(std::launch::async, testFunc);
+            ctrlThread = std::async(std::launch::async, gamepadLoop);
         }
     }
     return object;
@@ -191,22 +233,7 @@ void* hookVTable(void* pVTable, int nOffset, PVOID detour) {
     return hookVTable(pVTable, nOffset, detour, "OriginalFunction");
 }
 
-BOOL enumerateGameControllers(LPCDIDEVICEINSTANCE devInst, LPVOID devPtr)
-{
-    auto device = (IDirectInput8*)devPtr;
-    if (FAILED(device->CreateDevice(devInst->guidInstance, &gamepad, NULL)))
-    {
-        LOG(ERR) << "Failed to get device " << devInst->tszProductName << " - " << devInst->tszInstanceName;
-    }
-    else
-    {
-        LOG(DEBUG) << "Got device " << devInst->tszProductName << " - " << devInst->tszInstanceName;
-    }
-    return DIENUM_CONTINUE;
-}
-
 int createDevicesAndHook() {
-    IDirectInput8* device = nullptr;
     HINSTANCE hInst = (HINSTANCE)GetModuleHandle("MonsterHunterWorld.exe");
     LOG(DEBUG) << "DInput Got";
     if (DirectInput8Create(hInst, DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&device, NULL) != DI_OK)
@@ -214,37 +241,7 @@ int createDevicesAndHook() {
         LOG(ERR) << "Failed to acquire DirectInput handle";
         return -1;
     }
-    //if (device->CreateDevice(GUID_SysKeyboard, &kb, NULL) != DI_OK)
-    //{
-    //    LOG(DEBUG) << "Can't find keyboard";
-    //    device->Release();
-    //    return -1;
-    //}
-    //if (device->CreateDevice(GUID_SysMouse, &mouse, NULL) != DI_OK)
-    //{
-    //    LOG(DEBUG) << "Can't find mouse";
-    //    device->Release();
-    //    return -1;
-    //}
-    
-    LOG(DEBUG) << "Enum Devices";
 
-    if (device->EnumDevices(DI8DEVCLASS_GAMECTRL, &enumerateGameControllers, device, DIEDFL_ATTACHEDONLY) != DI_OK) {
-        LOG(DEBUG) << "Can't find gamepad";
-        device->Release();
-        return -1;
-    }
-
-    //gamepad->SetCooperativeLevel(hGameWindow, DISCL_BACKGROUND | DISCL_EXCLUSIVE);
-    //kb->Acquire();
-    //mouse->Acquire();
-
-    LOG(DEBUG) << "Set Ctrl data";
-    gamepad->SetDataFormat(&c_dfDIJoystick);
-    LOG(DEBUG) << "Aquire Ctrl";
-
-    //gamepad->Acquire();
-    // maybe hook to MH::File::LoadResource
     //fnCreateDevice = (CreateDevice)hookVTable(device, 2, CreateDeviceHook, "CreateDeviceHook");
     return 0;
 }
@@ -257,9 +254,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        LOG(DEBUG) << "create devices";
         createDevicesAndHook();
-        LOG(DEBUG) << "hook fn";
         MH_Initialize();
         QueueHook(StartGamepadThread);
         MH_ApplyQueued();
