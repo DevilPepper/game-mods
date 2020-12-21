@@ -3,15 +3,18 @@
 #include <thread>
 #include <chrono>
 
+#include <windows.h>;
+#include <detours\detours.h>
+
 #include "loader.h"
 #include "util.h"
 #include "ghidra_export.h"
 
-#define DIRECTINPUT_VERSION 0x0800
-#include <Windows.h>
-#include <dinput.h>
+// There has to be a better way
+#include "../stuff/stuff.h"
 
-#include <detours\detours.h>
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
 
 #pragma comment (lib, "dinput8.lib")
 #pragma comment (lib, "dxguid.lib")
@@ -21,6 +24,8 @@ using loader::DEBUG;
 using loader::ERR;
 using std::string;
 using std::vector;
+using stuff::memory::readMem;
+using stuff::memory::writeMem;
 
 typedef HRESULT(__fastcall* CreateDevice)(REFGUID, LPDIRECTINPUTDEVICE*, LPUNKNOWN);
 CreateDevice fnCreateDevice = nullptr;
@@ -59,25 +64,6 @@ HRESULT CreateDeviceHook(
     // TODO: start thread here
     LOG(DEBUG) << "Starting thread";
     return fnCreateDevice(rguid, lplpDirectInputDevice, pUnkOuter);
-}
-
-void readMem(HANDLE proc, intptr_t base, vector<intptr_t>& offsets, LPVOID buffer, SIZE_T size) {
-    intptr_t addy = base;
-    int i = 0;
-    for (; i < offsets.size() - 1; i++) {
-        ReadProcessMemory(proc, (LPVOID)(addy + offsets[i]), &addy, sizeof(intptr_t), NULL);
-    }
-    ReadProcessMemory(proc, (LPVOID)(addy + offsets[i]), buffer, size, NULL);
-}
-
-void writeMem(HANDLE proc, intptr_t base, vector<intptr_t>& offsets, LPVOID buffer, SIZE_T size) {
-    intptr_t addy = base;
-    int i = 0;
-    for (; i < offsets.size() - 1; i++) {
-        ReadProcessMemory(proc, (LPVOID)(addy + offsets[i]), &addy, sizeof(intptr_t), NULL);
-    }
-    LOG(DEBUG) << std::hex << "Writing @ 0x" << addy + offsets[i];
-    WriteProcessMemory(proc, (LPVOID)(addy + offsets[i]), buffer, size, NULL);
 }
 
 void toggleSubtitles() {
