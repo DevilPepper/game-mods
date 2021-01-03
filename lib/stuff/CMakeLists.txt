@@ -1,0 +1,6 @@
+project(stuff)
+FILE(GLOB stuffSources CONFIGURE_DEPENDS *.h *.cpp)
+add_library(stuff STATIC ${stuffSources})
+target_include_directories(stuff PUBLIC .)
+target_compile_features(stuff PUBLIC cxx_std_17)
+target_link_libraries(stuff PUBLIC loader)
