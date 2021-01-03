@@ -145,3 +145,24 @@
 //    MH_QueueEnableHook(proc);
 //    MH_ApplyQueued();
 //}
+
+// void* hookVTable(void* pVTable, int nOffset, PVOID detour, string fnName) {
+//     auto ptrVtable = *((intptr_t*)pVTable);
+//     auto ptrFunction = ptrVtable + sizeof(intptr_t) * nOffset;
+//     auto ptrOriginal = *((intptr_t*)ptrFunction);
+
+//     LOG(DEBUG) << "VTable containing pointer to" << fnName << "(): " << std::hex << ptrVtable;
+//     LOG(DEBUG) << std::hex 
+//                << "Hooking " << fnName << "() @ 0x" << ptrOriginal
+//                << "with hook function at @ 0x" << detour;
+
+//     DetourTransactionBegin();
+//     DetourUpdateThread(GetCurrentThread());
+//     DetourAttach(&(PVOID&)ptrOriginal, detour);
+//     DetourTransactionCommit();
+
+//     return (void*)ptrOriginal;
+// }
+// void* hookVTable(void* pVTable, int nOffset, PVOID detour) {
+//     return hookVTable(pVTable, nOffset, detour, "OriginalFunction");
+// }

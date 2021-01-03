@@ -1,0 +1,5 @@
+project(HUDToggler)
+FILE(GLOB HUDTogglerSources CONFIGURE_DEPENDS *.h *.cpp)
+add_library(HUDToggler SHARED ${HUDTogglerSources})
+target_compile_features(HUDToggler PRIVATE cxx_std_17)
+target_link_libraries(HUDToggler PRIVATE loader stuff)

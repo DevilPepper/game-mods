@@ -4,7 +4,6 @@
 #include <chrono>
 
 #include <windows.h>;
-#include <detours\detours.h>
 
 #include "loader.h"
 #include "util.h"
@@ -185,6 +184,17 @@ void gamepadLoop() {
     LOG(ERR) << "Terminating... Not checking user input anymore!";
 }
 
+int createDevicesAndHook() {
+    HINSTANCE hInst = (HINSTANCE)GetModuleHandle("MonsterHunterWorld.exe");
+    LOG(DEBUG) << "DInput Got";
+    if (DirectInput8Create(hInst, DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&device, NULL) != DI_OK)
+    {
+        LOG(ERR) << "Failed to acquire DirectInput handle";
+        return -1;
+    }
+
+    return 0;
+}
 
 CreateHook(MH::File::LoadResource, StartGamepadThread, void*, void* fileMgr,
     void* objDef, char* filename, int flag) {
@@ -196,40 +206,6 @@ CreateHook(MH::File::LoadResource, StartGamepadThread, void*, void* fileMgr,
         }
     }
     return object;
-}
-
-void* hookVTable(void* pVTable, int nOffset, PVOID detour, string fnName) {
-    auto ptrVtable = *((intptr_t*)pVTable);
-    auto ptrFunction = ptrVtable + sizeof(intptr_t) * nOffset;
-    auto ptrOriginal = *((intptr_t*)ptrFunction);
-
-    LOG(DEBUG) << "VTable containing pointer to" << fnName << "(): " << std::hex << ptrVtable;
-    LOG(DEBUG) << std::hex 
-               << "Hooking " << fnName << "() @ 0x" << ptrOriginal
-               << "with hook function at @ 0x" << detour;
-
-    DetourTransactionBegin();
-    DetourUpdateThread(GetCurrentThread());
-    DetourAttach(&(PVOID&)ptrOriginal, detour);
-    DetourTransactionCommit();
-
-    return (void*)ptrOriginal;
-}
-void* hookVTable(void* pVTable, int nOffset, PVOID detour) {
-    return hookVTable(pVTable, nOffset, detour, "OriginalFunction");
-}
-
-int createDevicesAndHook() {
-    HINSTANCE hInst = (HINSTANCE)GetModuleHandle("MonsterHunterWorld.exe");
-    LOG(DEBUG) << "DInput Got";
-    if (DirectInput8Create(hInst, DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)&device, NULL) != DI_OK)
-    {
-        LOG(ERR) << "Failed to acquire DirectInput handle";
-        return -1;
-    }
-
-    //fnCreateDevice = (CreateDevice)hookVTable(device, 2, CreateDeviceHook, "CreateDeviceHook");
-    return 0;
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
@@ -252,4 +228,3 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     }
     return TRUE;
 }
-
