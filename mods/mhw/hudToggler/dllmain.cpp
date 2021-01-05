@@ -8,13 +8,13 @@
 #include "loader.h"
 #include "util.h"
 #include "ghidra_export.h"
+#pragma comment (lib, "loader.lib")
 
-// There has to be a better way
-#include "../stuff/stuff.h"
+#include "stuff.h"
+#pragma comment (lib, "stuff.lib")
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
-
 #pragma comment (lib, "dinput8.lib")
 #pragma comment (lib, "dxguid.lib")
 
@@ -38,6 +38,7 @@ LPDIRECTINPUTDEVICE8 mouse = nullptr;
 std::future<void> ctrlThread;
 
 HANDLE procHandle = NULL;
+HWND hGameWindow = NULL;
 // TODO: Doesn't work. Need to unprotect memory...
 intptr_t mhw = 0x140000000;
 
