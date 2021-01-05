@@ -8,8 +8,10 @@
 
 #include "loader.h"
 #include "util.h"
+#pragma comment (lib, "loader.lib")
 
-#include "../stuff/stuff.h"
+#include "stuff.h"
+#pragma comment (lib, "stuff.lib")
 
 using loader::LOG;
 using loader::DEBUG;
@@ -145,4 +147,3 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     }
     return TRUE;
 }
-
