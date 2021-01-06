@@ -21,12 +21,12 @@ using MHW::Targets::pinMap;
 
 using namespace stuff::memory;
 
-vector<intptr_t> lockOnOffsets{ 0x05073EC0, 0x50, 0x80, 0x80, -0x7C };
+vector<intptr_t> lockOnOffsets{ 0x05073ED0, 0x50, 0x80, 0x80, -0x7C };
 vector<intptr_t> unknown{ 0x5224B80, 0x13FA0 };
-vector<intptr_t> lastMonster{ 0x5183DF0, 0x698, 0, 0x138 };
-vector<intptr_t> numMonsters{ 0x05073EC0, 0x50, 0x80, 0x80, 0x120, 0x958 };
-vector<intptr_t> nonZero{ 0x5073DA0, 0x128 };
-vector<intptr_t> pinnedMonsterPtr{ 0x5073DA0, 0x148 };
+vector<intptr_t> lastMonster{ 0x5183E00, 0x698, 0, 0x138 };
+vector<intptr_t> numMonsters{ 0x05073ED0, 0x50, 0x80, 0x80, 0x120, 0x958 };
+vector<intptr_t> nonZero{ 0x5073DB0, 0x128 };
+vector<intptr_t> pinnedMonsterPtr{ 0x5073DB0, 0x148 };
 
 intptr_t mhw = 0x140000000;
 
