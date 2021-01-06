@@ -3,7 +3,7 @@
 #include <thread>
 #include <chrono>
 
-#include <windows.h>;
+#include <windows.h>
 
 #include "loader.h"
 #include "util.h"
