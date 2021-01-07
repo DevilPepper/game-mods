@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <vector>
 #include <string>
+#include "MinHook.h"
 
 using std::vector;
 using std::string;

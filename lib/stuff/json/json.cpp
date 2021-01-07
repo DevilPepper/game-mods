@@ -21,5 +21,9 @@ namespace stuff {
             }
             return pointers;
         }
+        intptr_t parseHexString(nlohmann::json node) {
+            auto str = node.get<string>();
+            return std::stoll(str, nullptr, 16);
+        }
     }
 }
