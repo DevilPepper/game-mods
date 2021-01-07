@@ -20,15 +20,26 @@ using std::string;
 using MHW::Targets::pinMap;
 
 using namespace stuff::memory;
+using stuff::json::parseHexStrings;
 
-vector<intptr_t> lockOnOffsets{ 0x05073ED0, 0x50, 0x80, 0x80, -0x7C };
-vector<intptr_t> unknown{ 0x5224B80, 0x13FA0 };
-vector<intptr_t> lastMonster{ 0x5183E00, 0x698, 0, 0x138 };
-vector<intptr_t> numMonsters{ 0x05073ED0, 0x50, 0x80, 0x80, 0x120, 0x958 };
-vector<intptr_t> nonZero{ 0x5073DB0, 0x128 };
-vector<intptr_t> pinnedMonsterPtr{ 0x5073DB0, 0x148 };
+vector<intptr_t> lockOnOffsets;
+vector<intptr_t> unknown;
+vector<intptr_t> lastMonster;
+vector<intptr_t> numMonsters;
+vector<intptr_t> nonZero;
+vector<intptr_t> pinnedMonsterPtr;
 
 intptr_t mhw = 0x140000000;
+
+void loadAddresses() {
+    auto addys = stuff::json::loadAddresses();
+    lockOnOffsets    = parseHexStrings(addys["lockOnOffsets"]);
+    unknown          = parseHexStrings(addys["unknown"]);
+    lastMonster      = parseHexStrings(addys["lastMonster"]);
+    numMonsters      = parseHexStrings(addys["numMonsters"]);
+    nonZero          = parseHexStrings(addys["nonZero"]);
+    pinnedMonsterPtr = parseHexStrings(addys["pinnedMonsterPtr"]);
+}
 
 bool isOnTheLoose(intptr_t monsterAddr) {
     // Shameless copy and paste from Hunter Pie    
@@ -129,6 +140,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
+        loadAddresses();
         MH_Initialize();
         QueueHook(LockOnIncHook);
         MH_ApplyQueued();
