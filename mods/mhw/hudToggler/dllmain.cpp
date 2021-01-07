@@ -10,7 +10,6 @@
 #pragma comment (lib, "loader.lib")
 
 #include "stuff.h"
-#include "Gamepad.h"
 #pragma comment (lib, "stuff.lib")
 
 using loader::LOG;
