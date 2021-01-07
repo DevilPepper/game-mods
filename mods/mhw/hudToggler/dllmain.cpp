@@ -35,10 +35,7 @@ vector<intptr_t> subtitle_setting;
 vector<intptr_t> subtitle_show;
 vector<intptr_t> hud_settings;
 
-union boolsUlonglong {
-    bool bs[8];
-    long long ll;
-} toggles;
+bool toggles[8];
 
 void loadAddresses() {
     auto addys = stuff::json::loadAddresses();
@@ -63,7 +60,7 @@ void loadConfig() {
     };
     auto settings = stuff::json::loadConfig("HUD_toggles.json");
     for (int i=0; i<8; i++) {
-        toggles.bs[i] = settings[toggleStr[i]].get<bool>();
+        toggles[i] = settings[toggleStr[i]].get<bool>();
     }
 }
 
@@ -87,7 +84,7 @@ void toggleHUD() {
     long long hud;
     auto hudAddr = readMem(mhw, hud_settings, hud);
     LOG(DEBUG) << std::hex << "Before @ 0x" << hudAddr << ": " << hud;
-    hud ^= toggles.ll;
+    hud ^= *reinterpret_cast<long long*>(toggles);
     writeMem(mhw, hud_settings, hud);
     LOG(DEBUG) << std::hex << "After @ 0x" << hudAddr << ": " << hud;
 }
