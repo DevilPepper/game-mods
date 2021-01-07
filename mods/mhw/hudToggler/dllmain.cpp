@@ -18,14 +18,22 @@ using std::string;
 using std::vector;
 using stuff::memory::readMem;
 using stuff::memory::writeMem;
+using stuff::json::parseHexStrings;
 
 typedef void(__fastcall* PointerBiConsumer)(long long, long long);
 
 intptr_t mhw = 0x140000000;
 
-vector<intptr_t> subtitle_setting{ 0x5073E80, 0x10A };
-vector<intptr_t> subtitle_show{ 0x5224B80, 0x13e20, 0x332c };
-vector<intptr_t> hud_settings{ 0x5073E80, 0xa8, 0x151F8C };
+vector<intptr_t> subtitle_setting;
+vector<intptr_t> subtitle_show;
+vector<intptr_t> hud_settings;
+
+void loadAddresses() {
+    auto addys = stuff::json::loadAddresses();
+    subtitle_setting = parseHexStrings(addys["subtitle_setting"]);
+    subtitle_show    = parseHexStrings(addys["subtitle_show"]);
+    hud_settings     = parseHexStrings(addys["hud_settings"]);
+}
 
 long long xor_settings = 0x0001000001000101;
 
@@ -105,6 +113,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
+        loadAddresses();
         MH_Initialize();
         QueueHook(PollCtrlHook);
         MH_ApplyQueued();
