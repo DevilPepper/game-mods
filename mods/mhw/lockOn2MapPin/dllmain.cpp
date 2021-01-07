@@ -4,10 +4,7 @@
 #include <string>
 #include <algorithm>
 
-#include "mhw_functions.h"
-
 #include "loader.h"
-#include "util.h"
 #pragma comment (lib, "loader.lib")
 
 #include "stuff.h"
@@ -17,10 +14,12 @@ using loader::LOG;
 using loader::DEBUG;
 using std::vector;
 using std::string;
-using MHW::Targets::pinMap;
 
 using namespace stuff::memory;
+using stuff::json::parseHexString;
 using stuff::json::parseHexStrings;
+
+using namespace stuff::functions;
 
 vector<intptr_t> lockOnOffsets;
 vector<intptr_t> unknown;
@@ -31,6 +30,11 @@ vector<intptr_t> pinnedMonsterPtr;
 
 intptr_t mhw = 0x140000000;
 
+PtrPtrCharCharConsumer PinMapActual = nullptr;
+
+PointerConsumer original = nullptr;
+intptr_t LockOnInc;
+
 void loadAddresses() {
     auto addys = stuff::json::loadAddresses();
     lockOnOffsets    = parseHexStrings(addys["lockOnOffsets"]);
@@ -39,6 +43,13 @@ void loadAddresses() {
     numMonsters      = parseHexStrings(addys["numMonsters"]);
     nonZero          = parseHexStrings(addys["nonZero"]);
     pinnedMonsterPtr = parseHexStrings(addys["pinnedMonsterPtr"]);
+
+    PinMapActual     = (PtrPtrCharCharConsumer)parseHexString(addys["PinMap()"]);
+    LockOnInc        = parseHexString(addys["LockOnIncrement()"]);
+}
+
+void pinMap(uintptr_t unknown, uintptr_t target, char isMonster) {
+    PinMapActual(unknown, target, isMonster, 0);
 }
 
 bool isOnTheLoose(intptr_t monsterAddr) {
@@ -127,9 +138,15 @@ void lockOn2MapPin() {
     }
 }
 
-CreateHook(MHW::Targets::lockOnInc, LockOnIncHook, void, uintptr_t ptr) {
+void LockOnIncHook(uintptr_t ptr) {
     original(ptr);
     lockOn2MapPin();
+}
+
+void hookem() {
+    MH_Initialize();
+    QueueHook(LockOnInc, &LockOnIncHook, &original);
+    MH_ApplyQueued();
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
@@ -141,9 +158,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
         loadAddresses();
-        MH_Initialize();
-        QueueHook(LockOnIncHook);
-        MH_ApplyQueued();
+        hookem();
         break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
