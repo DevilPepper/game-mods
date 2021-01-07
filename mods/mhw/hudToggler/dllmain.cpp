@@ -22,11 +22,19 @@ using stuff::json::parseHexStrings;
 
 typedef void(__fastcall* PointerBiConsumer)(long long, long long);
 
+Button HUDToggle = Button::L1;
+Button SubtitlesToggle = Button::Select;
+
 intptr_t mhw = 0x140000000;
 
 vector<intptr_t> subtitle_setting;
 vector<intptr_t> subtitle_show;
 vector<intptr_t> hud_settings;
+
+union boolsUlonglong {
+    bool bs[8];
+    long long ll;
+} toggles;
 
 void loadAddresses() {
     auto addys = stuff::json::loadAddresses();
@@ -35,7 +43,24 @@ void loadAddresses() {
     hud_settings     = parseHexStrings(addys["hud_settings"]);
 }
 
-long long xor_settings = 0x0001000001000101;
+void loadConfig() {
+    // TODO: get this tf outta here
+    vector<string> toggleStr {
+        "Player Info",
+        "Partner Info",
+        "Scoutfly Notifications",
+        "Minimap",
+        "Large Monster Icon",
+        "Button Guide",
+        "Objectives",
+        "Slinger Display",
+        "Item Bar"
+    };
+    auto settings = stuff::json::loadConfig("HUD_toggles.json");
+    for (int i=0; i<8; i++) {
+        toggles.bs[i] = settings[toggleStr[i]].get<bool>();
+    }
+}
 
 bool SelectPressed = false;
 bool L1Pressed = false;
@@ -57,7 +82,7 @@ void toggleHUD() {
     long long hud;
     auto hudAddr = readMem(mhw, hud_settings, hud);
     LOG(DEBUG) << std::hex << "Before @ 0x" << hudAddr << ": " << hud;
-    hud ^= xor_settings;
+    hud ^= toggles.ll;
     writeMem(mhw, hud_settings, hud);
     LOG(DEBUG) << std::hex << "After @ 0x" << hudAddr << ": " << hud;
 }
@@ -90,13 +115,13 @@ CreateHook((PointerBiConsumer)0x1418e8ea0, PollCtrlHook, void, long long p1, lon
     original(p1, p2);
 
     Gamepad* gamepad = (Gamepad*)p1;
-    if (btnPressed(Button::Select, SelectPressed, gamepad->buttons) == PRESSED) {
-        LOG(DEBUG) << std::hex << "Toggle Subtitles: " << Buttons[Button::Select];
+    if (btnPressed(SubtitlesToggle, SelectPressed, gamepad->buttons) == PRESSED) {
+        LOG(DEBUG) << std::hex << "Toggle Subtitles: " << Buttons[SubtitlesToggle];
         toggleSubtitles();
     }
-    auto l1 = btnPressed(Button::L1, L1Pressed, gamepad->buttons);
+    auto l1 = btnPressed(HUDToggle, L1Pressed, gamepad->buttons);
     if (l1 == PRESSED) {
-        LOG(DEBUG) << std::hex << "HUD On: " << Buttons[Button::L1];
+        LOG(DEBUG) << std::hex << "HUD On: " << Buttons[HUDToggle];
         toggleHUD();
     } else if(l1 == RELEASED) {
         LOG(DEBUG) << "HUD Off";
@@ -114,6 +139,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
         loadAddresses();
+        loadConfig();
         MH_Initialize();
         QueueHook(PollCtrlHook);
         MH_ApplyQueued();

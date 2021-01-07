@@ -1,0 +1,11 @@
+{
+    "Player Info"            : true,
+    "Partner Info"           : true,
+    "Scoutfly Notifications" : false,
+    "Minimap"                : true,
+    "Large Monster Icon"     : true,
+    "Button Guide"           : false,
+    "Objectives"             : true,
+    "Slinger Display"        : false,
+    "Item Bar"               : false
+}
