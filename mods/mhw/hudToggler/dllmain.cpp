@@ -1,4 +1,5 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
+// #include <functional>
 #include <future>
 #include <thread>
 #include <chrono>
@@ -6,7 +7,6 @@
 #include <windows.h>
 
 #include "loader.h"
-#include "util.h"
 #pragma comment (lib, "loader.lib")
 
 #include "stuff.h"
@@ -18,9 +18,13 @@ using std::string;
 using std::vector;
 using stuff::memory::readMem;
 using stuff::memory::writeMem;
+using stuff::json::parseHexString;
 using stuff::json::parseHexStrings;
 
-typedef void(__fastcall* PointerBiConsumer)(long long, long long);
+using namespace stuff::functions;
+
+PointerBiConsumer original = nullptr;
+intptr_t PollCtrl;
 
 Button HUDToggle = Button::L1;
 Button SubtitlesToggle = Button::Select;
@@ -41,6 +45,7 @@ void loadAddresses() {
     subtitle_setting = parseHexStrings(addys["subtitle_setting"]);
     subtitle_show    = parseHexStrings(addys["subtitle_show"]);
     hud_settings     = parseHexStrings(addys["hud_settings"]);
+    PollCtrl         = parseHexString(addys["PollController()"]);
 }
 
 void loadConfig() {
@@ -111,7 +116,7 @@ BTN_ACTION btnPressed(Button btn, bool& pressed, uint32_t buttons) {
     }
 }
 
-CreateHook((PointerBiConsumer)0x1418e8ea0, PollCtrlHook, void, long long p1, long long p2) {
+void PollCtrlHook(long long p1, long long p2) {
     original(p1, p2);
 
     Gamepad* gamepad = (Gamepad*)p1;
@@ -130,6 +135,14 @@ CreateHook((PointerBiConsumer)0x1418e8ea0, PollCtrlHook, void, long long p1, lon
    return;
 }
 
+void hookem() {
+    MH_Initialize();
+    // PointerBiConsumer PollCtrl = nullptr;
+    // auto hook = std::bind_front(PollCtrlHook, PollCtrl);
+    QueueHook(PollCtrl, &PollCtrlHook, &original);
+    MH_ApplyQueued();
+}
+
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -140,9 +153,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     case DLL_PROCESS_ATTACH:
         loadAddresses();
         loadConfig();
-        MH_Initialize();
-        QueueHook(PollCtrlHook);
-        MH_ApplyQueued();
+        hookem();
         break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
