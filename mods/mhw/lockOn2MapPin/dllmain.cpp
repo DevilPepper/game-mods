@@ -1,13 +1,14 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
-#include <optional>
 #include <string>
-#include <algorithm>
 
 #include "loader.h"
 #pragma comment (lib, "loader.lib")
 
 #include "stuff.h"
 #pragma comment (lib, "stuff.lib")
+
+#include "GamepadEventListeners.h"
+#pragma comment (lib, "GamepadHook.lib")
 
 using loader::LOG;
 using loader::DEBUG;
@@ -155,10 +156,11 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 {
     switch (ul_reason_for_call)
     {
-    case DLL_PROCESS_ATTACH:
+    case DLL_PROCESS_ATTACH: {
         loadAddresses();
         hookem();
         break;
+    }
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
