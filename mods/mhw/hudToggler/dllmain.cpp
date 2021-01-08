@@ -1,9 +1,4 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
-// #include <functional>
-#include <future>
-#include <thread>
-#include <chrono>
-
 #include <windows.h>
 
 #include "loader.h"
@@ -11,6 +6,9 @@
 
 #include "stuff.h"
 #pragma comment (lib, "stuff.lib")
+
+#include "GamepadEventListeners.h"
+#pragma comment (lib, "GamepadHook.lib")
 
 using loader::LOG;
 using loader::DEBUG;
@@ -22,9 +20,7 @@ using stuff::json::parseHexString;
 using stuff::json::parseHexStrings;
 
 using namespace stuff::functions;
-
-PointerBiConsumer original = nullptr;
-intptr_t PollCtrl;
+using namespace stuff::gamepad;
 
 Button HUDToggle = Button::L1;
 Button SubtitlesToggle = Button::Select;
@@ -42,7 +38,6 @@ void loadAddresses() {
     subtitle_setting = parseHexStrings(addys["subtitle_setting"]);
     subtitle_show    = parseHexStrings(addys["subtitle_show"]);
     hud_settings     = parseHexStrings(addys["hud_settings"]);
-    PollCtrl         = parseHexString(addys["PollController()"]);
 }
 
 void loadConfig() {
@@ -113,15 +108,12 @@ BTN_ACTION btnPressed(Button btn, bool& pressed, uint32_t buttons) {
     }
 }
 
-void PollCtrlHook(long long p1, long long p2) {
-    original(p1, p2);
-
-    Gamepad* gamepad = (Gamepad*)p1;
-    if (btnPressed(SubtitlesToggle, SelectPressed, gamepad->buttons) == PRESSED) {
+void callback(Gamepad& gamepad, bool areSpikes[32]) {
+    if (btnPressed(SubtitlesToggle, SelectPressed, gamepad.buttons) == PRESSED) {
         LOG(DEBUG) << std::hex << "Toggle Subtitles: " << Buttons[SubtitlesToggle];
         toggleSubtitles();
     }
-    auto l1 = btnPressed(HUDToggle, L1Pressed, gamepad->buttons);
+    auto l1 = btnPressed(HUDToggle, L1Pressed, gamepad.buttons);
     if (l1 == PRESSED) {
         LOG(DEBUG) << std::hex << "HUD On: " << Buttons[HUDToggle];
         toggleHUD();
@@ -133,11 +125,7 @@ void PollCtrlHook(long long p1, long long p2) {
 }
 
 void hookem() {
-    MH_Initialize();
-    // PointerBiConsumer PollCtrl = nullptr;
-    // auto hook = std::bind_front(PollCtrlHook, PollCtrl);
-    QueueHook(PollCtrl, &PollCtrlHook, &original);
-    MH_ApplyQueued();
+    GetListener().registerCallback(&callback);
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
@@ -147,11 +135,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 {
     switch (ul_reason_for_call)
     {
-    case DLL_PROCESS_ATTACH:
+    case DLL_PROCESS_ATTACH: {
         loadAddresses();
         loadConfig();
         hookem();
         break;
+    }
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
