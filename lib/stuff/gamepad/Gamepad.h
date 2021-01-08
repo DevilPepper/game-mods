@@ -18,7 +18,7 @@ struct Gamepad {
     float pressDuration[32];
 };
 
-uint32_t Buttons[32] = {
+static uint32_t Buttons[32] = {
     0x00000001,
     0x00000002,
     0x00000004,
