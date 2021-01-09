@@ -3,9 +3,10 @@
 #include <cstdint>
 
 typedef unsigned char byte;
+typedef uint32_t GamepadInput;
 struct Gamepad {
     uintptr_t somePtr;
-    uint32_t buttons;
+    GamepadInput buttons;
     byte unkBytes[12];
     float leftStickX;
     float leftStickY;
