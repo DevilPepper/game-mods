@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cstdint>
+#include "GamepadInput.h"
 
 namespace gamepad {
-    static uint32_t Buttons[32] = {
+    static GamepadInput Buttons[32] = {
         0x00000001,
         0x00000002,
         0x00000004,

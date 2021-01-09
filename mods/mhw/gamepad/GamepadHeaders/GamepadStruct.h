@@ -1,14 +1,14 @@
 #pragma once
 
-#include <cstdint>
+#include "GamepadInput.h"
 
 namespace gamepad {
-    typedef uint32_t GamepadInput;
-    
     struct Gamepad {
         uintptr_t somePtr;
         GamepadInput buttons;
-        unsigned char unknownBytes[12];
+        GamepadInput buttonsJustPressed;
+        GamepadInput buttonsJustReleased;
+        GamepadInput simultaneousButtons_NotFullyUnderstood_DoNotUse;
         float leftStickX;
         float leftStickY;
         float rightStickX;

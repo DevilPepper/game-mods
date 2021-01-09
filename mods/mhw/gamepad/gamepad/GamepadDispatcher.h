@@ -8,11 +8,10 @@
 namespace gamepad {
     class GamepadDispatcher : public IGamepadDispatcher {
         private:
-            std::vector<std::function<void(const Gamepad&, const bool(&)[32])>> callbacks;
-            GamepadInput previous = 0;
+            std::vector<std::function<void(const Gamepad&)>> callbacks;
         public:
             GamepadDispatcher();
-            IGamepadDispatcher& registerCallback(std::function<void(const Gamepad&, const bool(&)[32])> callback);
-            GamepadInput update(const Gamepad& input);
+            IGamepadDispatcher& registerCallback(std::function<void(const Gamepad&)> callback);
+            void update(Gamepad input);
     };
 }

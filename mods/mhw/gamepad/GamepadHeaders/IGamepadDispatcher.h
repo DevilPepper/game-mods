@@ -12,7 +12,7 @@
 namespace gamepad {
         class IGamepadDispatcher {
                 public:
-                virtual IGamepadDispatcher& registerCallback(std::function<void(const Gamepad&, const bool(&)[32])> callback) = 0;
+                virtual IGamepadDispatcher& registerCallback(std::function<void(const Gamepad&)> callback) = 0;
         };
 
         GPL_DLL IGamepadDispatcher& GetDispatcher();
