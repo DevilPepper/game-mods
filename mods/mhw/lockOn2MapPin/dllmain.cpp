@@ -7,9 +7,6 @@
 #include "stuff.h"
 #pragma comment (lib, "stuff.lib")
 
-#include "GamepadEventListeners.h"
-#pragma comment (lib, "GamepadHook.lib")
-
 using loader::LOG;
 using loader::DEBUG;
 using std::vector;
