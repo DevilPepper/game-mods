@@ -81,23 +81,24 @@ void toggleHUD() {
     LOG(DEBUG) << std::hex << "After @ 0x" << hudAddr << ": " << hud;
 }
 
-bool justPressed(const Gamepad& gamepad, const bool (&stateChanged)[32], Button btn) {
-    return (((gamepad.buttons & Buttons[btn]) > 0) && stateChanged[btn]);
+bool justPressed(const Gamepad& gamepad, GamepadInput btns) {
+    return (((gamepad.buttons & btns) > 0) && ((gamepad.buttonsJustPressed & btns) > 0));
 }
 
-bool justReleased(const Gamepad& gamepad, const bool (&stateChanged)[32], Button btn){
-    return (((gamepad.buttons & Buttons[btn]) == 0) && stateChanged[btn]);
+bool justReleased(const Gamepad& gamepad, GamepadInput btns){
+    return (((gamepad.buttons & btns) == 0) && ((gamepad.buttonsJustReleased & btns) > 0));
 }
 
-void callback(const Gamepad& gamepad, const bool (&stateChanged)[32]) {
-    if (justPressed(gamepad, stateChanged, SubtitlesToggle)) {
-        LOG(DEBUG) << std::hex << "Toggle Subtitles: " << Buttons[SubtitlesToggle];
+void callback(const Gamepad& gamepad) {
+    if (justPressed(gamepad, Buttons[SubtitlesToggle])) {
+
+        LOG(DEBUG) << std::hex << "Toggle Subtitles";
         toggleSubtitles();
     }
-    if (justPressed(gamepad, stateChanged, HUDToggle)
-     || justReleased(gamepad, stateChanged, HUDToggle))
+    if (justPressed(gamepad, Buttons[HUDToggle])
+     || justReleased(gamepad, Buttons[HUDToggle]))
     {
-        LOG(DEBUG) << std::hex << "Toggle HUD: " << Buttons[HUDToggle];
+        LOG(DEBUG) << std::hex << "Toggle HUD";
         toggleHUD();
     }
     return;
