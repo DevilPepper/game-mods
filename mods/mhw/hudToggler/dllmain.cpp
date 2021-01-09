@@ -7,7 +7,7 @@
 #include "stuff.h"
 #pragma comment (lib, "stuff.lib")
 
-#include "GamepadEventListeners.h"
+#include "gamepad.h"
 #pragma comment (lib, "GamepadHook.lib")
 
 using loader::LOG;
@@ -20,7 +20,7 @@ using stuff::json::parseHexString;
 using stuff::json::parseHexStrings;
 
 using namespace stuff::functions;
-using namespace stuff::gamepad;
+using namespace gamepad;
 
 Button HUDToggle = Button::L1;
 Button SubtitlesToggle = Button::Select;
@@ -104,7 +104,7 @@ void callback(const Gamepad& gamepad, const bool (&stateChanged)[32]) {
 }
 
 void hookem() {
-    GetListener().registerCallback(&callback);
+    gamepad::GetDispatcher().registerCallback(&callback);
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
