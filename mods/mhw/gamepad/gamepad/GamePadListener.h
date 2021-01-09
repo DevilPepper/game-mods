@@ -10,11 +10,12 @@ namespace stuff {
 	namespace gamepad {
         class GamepadEventListeners : public IGamepadEventListeners {
             private:
-                std::vector<std::function<void(Gamepad&, bool[32])>> callbacks;
+                std::vector<std::function<void(const Gamepad&, const bool(&)[32])>> callbacks;
+                GamepadInput previous = 0;
             public:
                 GamepadEventListeners();
-                IGamepadEventListeners& registerCallback(std::function<void(Gamepad&, bool[32])> callback);
-                void update(Gamepad input);
+                IGamepadEventListeners& registerCallback(std::function<void(const Gamepad&, const bool(&)[32])> callback);
+                GamepadInput update(const Gamepad& input);
         };
 	}
 }

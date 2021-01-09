@@ -13,7 +13,7 @@ namespace stuff {
 	namespace gamepad {
         class IGamepadEventListeners {
             public:
-                virtual IGamepadEventListeners& registerCallback(std::function<void(Gamepad&, bool[32])> callback) = 0;
+                virtual IGamepadEventListeners& registerCallback(std::function<void(const Gamepad&, const bool(&)[32])> callback) = 0;
         };
 
         GPL_DLL IGamepadEventListeners& GetListener();
