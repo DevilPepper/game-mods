@@ -59,9 +59,6 @@ void loadConfig() {
     }
 }
 
-bool SelectPressed = false;
-bool L1Pressed = false;
-
 void toggleSubtitles() {
 
     bool subs_setting;
@@ -84,44 +81,26 @@ void toggleHUD() {
     LOG(DEBUG) << std::hex << "After @ 0x" << hudAddr << ": " << hud;
 }
 
-enum BTN_ACTION { PRESSED, RELEASED, LONG_PRESS, LONG_RELEASE };
-
-BTN_ACTION btnPressed(Button btn, bool& pressed, uint32_t buttons) {
-    auto button = Buttons[btn];
-    if ((buttons & button) != 0) {
-        if (!pressed) {
-            pressed = true;
-            return BTN_ACTION::PRESSED;
-        }
-        else {
-            return BTN_ACTION::LONG_PRESS;
-        }
-    }
-    else {
-        if (pressed) {
-            pressed = false;
-            return BTN_ACTION::RELEASED;
-        }
-        else {
-            return BTN_ACTION::LONG_RELEASE;
-        }
-    }
+bool justPressed(const Gamepad& gamepad, const bool (&stateChanged)[32], Button btn) {
+    return (((gamepad.buttons & Buttons[btn]) > 0) && stateChanged[btn]);
 }
 
-void callback(Gamepad& gamepad, bool areSpikes[32]) {
-    if (btnPressed(SubtitlesToggle, SelectPressed, gamepad.buttons) == PRESSED) {
+bool justReleased(const Gamepad& gamepad, const bool (&stateChanged)[32], Button btn){
+    return (((gamepad.buttons & Buttons[btn]) == 0) && stateChanged[btn]);
+}
+
+void callback(const Gamepad& gamepad, const bool (&stateChanged)[32]) {
+    if (justPressed(gamepad, stateChanged, SubtitlesToggle)) {
         LOG(DEBUG) << std::hex << "Toggle Subtitles: " << Buttons[SubtitlesToggle];
         toggleSubtitles();
     }
-    auto l1 = btnPressed(HUDToggle, L1Pressed, gamepad.buttons);
-    if (l1 == PRESSED) {
-        LOG(DEBUG) << std::hex << "HUD On: " << Buttons[HUDToggle];
-        toggleHUD();
-    } else if(l1 == RELEASED) {
-        LOG(DEBUG) << "HUD Off";
+    if (justPressed(gamepad, stateChanged, HUDToggle)
+     || justReleased(gamepad, stateChanged, HUDToggle))
+    {
+        LOG(DEBUG) << std::hex << "Toggle HUD: " << Buttons[HUDToggle];
         toggleHUD();
     }
-   return;
+    return;
 }
 
 void hookem() {
