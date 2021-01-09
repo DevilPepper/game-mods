@@ -7,18 +7,18 @@
 #include "stuff.h"
 #pragma comment (lib, "stuff.lib")
 
-#include "GamePadListener.h"
+#include "gamepad/GamepadDispatcher.h"
 
 using loader::LOG;
 using loader::DEBUG;
 using stuff::json::parseHexString;
 
 using namespace stuff::functions;
-using namespace stuff::gamepad;
+using namespace gamepad;
 
-static GamepadEventListeners instance;
+static GamepadDispatcher instance;
 
-IGamepadEventListeners& stuff::gamepad::GetListener() {
+IGamepadDispatcher& gamepad::GetDispatcher() {
     return instance;
 }
 
