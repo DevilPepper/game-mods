@@ -8,7 +8,7 @@ using namespace std;
 
 namespace stuff {
   namespace memory {
-    intptr_t followPointers(intptr_t base, vector<intptr_t>& offsets) {
+    intptr_t followPointers(intptr_t base, const vector<intptr_t>& offsets) {
       auto addy = base;
       int i = 0;
       for (; i < offsets.size() - 1; i++) {
