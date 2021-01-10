@@ -82,14 +82,6 @@ void toggleHUD() {
   LOG(DEBUG) << std::hex << "After @ 0x" << hudAddr << ": " << hud;
 }
 
-bool justPressed(const Gamepad& gamepad, GamepadInput btns) {
-  return (((gamepad.buttons & btns) > 0) && ((gamepad.buttonsJustPressed & btns) > 0));
-}
-
-bool justReleased(const Gamepad& gamepad, GamepadInput btns) {
-  return (((gamepad.buttons & btns) == 0) && ((gamepad.buttonsJustReleased & btns) > 0));
-}
-
 void callback(const Gamepad& gamepad) {
   if (justPressed(gamepad, Buttons[SubtitlesToggle])) {
     LOG(DEBUG) << std::hex << "Toggle Subtitles";
