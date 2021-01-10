@@ -15,7 +15,6 @@ class HUDHookHelper : public MHW::IHook {
   static const string settings;
   static const Button HUDToggle = Button::L1;
   static const Button SubtitlesToggle = Button::Select;
-  static const intptr_t mhw = 0x140000000;
 
   bool toggles[8];
 
