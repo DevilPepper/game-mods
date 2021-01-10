@@ -7,13 +7,14 @@
 #endif
 
 #include <functional>
+
 #include "GamepadStruct.h"
 
 namespace gamepad {
-        class IGamepadDispatcher {
-                public:
-                virtual IGamepadDispatcher& registerCallback(std::function<void(const Gamepad&)> callback) = 0;
-        };
+  class IGamepadDispatcher {
+   public:
+    virtual IGamepadDispatcher& registerCallback(std::function<void(const Gamepad&)> callback) = 0;
+  };
 
-        GPL_DLL IGamepadDispatcher& GetDispatcher();
-}
+  GPL_DLL IGamepadDispatcher& GetDispatcher();
+}  // namespace gamepad

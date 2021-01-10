@@ -1,17 +1,20 @@
-#include <functional>
-#include <vector>
 #include "GamepadDispatcher.h"
 
-namespace gamepad {
-    GamepadDispatcher::GamepadDispatcher(): callbacks(std::vector<std::function<void(const Gamepad&)>>()) {}
+#include <functional>
+#include <vector>
 
-    IGamepadDispatcher& GamepadDispatcher::registerCallback(std::function<void(const Gamepad&)> callback) {
-        callbacks.push_back(callback);
-        return *this;
+namespace gamepad {
+  GamepadDispatcher::GamepadDispatcher() :
+      callbacks(std::vector<std::function<void(const Gamepad&)>>()) {}
+
+  IGamepadDispatcher& GamepadDispatcher::registerCallback(
+      std::function<void(const Gamepad&)> callback) {
+    callbacks.push_back(callback);
+    return *this;
+  }
+  void GamepadDispatcher::update(Gamepad input) {
+    for (auto callback : callbacks) {
+      callback(input);
     }
-    void GamepadDispatcher::update(Gamepad input) {
-        for (auto callback : callbacks) {
-            callback(input);
-        }
-    }
-}
+  }
+}  // namespace gamepad
