@@ -1,0 +1,25 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+TabWidth: 2
+IndentWidth: 2
+UseTab: Never
+ColumnLimit: 100
+
+NamespaceIndentation: All
+AlignOperands: true
+#AlignOperands: AlignAfterOperator
+Cpp11BracedListStyle: false
+BinPackArguments: false
+BinPackParameters: false
+AllowShortLambdasOnASingleLine: All
+AllowAllArgumentsOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+#AllowShortEnumsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+BreakConstructorInitializers: AfterColon
