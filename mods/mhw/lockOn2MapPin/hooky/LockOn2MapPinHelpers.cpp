@@ -12,7 +12,7 @@ using loader::DEBUG;
 using loader::LOG;
 
 void LockOn2MapPin::pinMap(uintptr_t unknown, uintptr_t target, char isMonster) {
-  addresses.getPinMapFunction()(unknown, target, isMonster, 0);
+  ((PtrPtrCharCharConsumer)addresses.get<intptr_t>("PinMap()"))(unknown, target, isMonster, 0);
 }
 
 bool LockOn2MapPin::isOnTheLoose(intptr_t monsterAddr) {

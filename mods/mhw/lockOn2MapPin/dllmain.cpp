@@ -18,7 +18,7 @@ void LockOnIncrement(uintptr_t ptr) {
 
 void hookem() {
   MH_Initialize();
-  QueueHook(CaptainHook.addresses.getLockOnIncrementAddress(), &LockOnIncrement, &original);
+  QueueHook(CaptainHook.addresses.get<intptr_t>("LockOnIncrement()"), &LockOnIncrement, &original);
   MH_ApplyQueued();
 }
 
