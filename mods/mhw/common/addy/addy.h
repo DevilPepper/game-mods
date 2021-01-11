@@ -2,46 +2,63 @@
 
 #include <windows.h>
 
+#include <map>
+#include <nlohmann/json.hpp>
+#include <string>
 #include <vector>
 
-#include "function/function.h"
+#include "stuff.h"
+#pragma comment(lib, "stuff.lib")
+
+using stuff::json::parseHexString;
+using stuff::json::parseHexStrings;
 
 using namespace stuff::functions;
+using std::map;
+using std::string;
 using std::vector;
 
 namespace MHW {
+  typedef vector<intptr_t> Offsets;
+
   class Addy {
    private:
-    vector<intptr_t> subtitleSettingOffsets;
-    vector<intptr_t> subtitleShowOffsets;
-    vector<intptr_t> hudSettingsOffsets;
-
-    vector<intptr_t> lockOnOffsets;
-    vector<intptr_t> unknownOffsets;
-    vector<intptr_t> lastMonsterOffsets;
-    vector<intptr_t> numMonstersOffsets;
-    vector<intptr_t> nonZeroOffsets;
-    vector<intptr_t> pinnedMonsterOffsets;
-
-    intptr_t lockOnIncrementAddress;
-    PtrPtrCharCharConsumer pinMapFunction;
+    map<string, Offsets> offsets;
+    map<string, intptr_t> address;
+    nlohmann::json json;
 
    public:
     Addy();
 
-    const vector<intptr_t>& getSubtitleSettingOffsets();
-    const vector<intptr_t>& getSubtitleShowOffsets();
-    const vector<intptr_t>& getHudSettingsOffsets();
+    template <typename T>
+    const T& get(string node) {
+      return json[node].get<T>();
+    }
 
-    const vector<intptr_t>& getLockOnOffsets();
-    const vector<intptr_t>& getUnknownOffsets();
-    const vector<intptr_t>& getLastMonsterOffsets();
-    const vector<intptr_t>& getNumMonstersOffsets();
-    const vector<intptr_t>& getNonZeroOffsets();
-    const vector<intptr_t>& getPinnedMonsterPtrOffsets();
+    template <>
+    const intptr_t& get<intptr_t>(string node) {
+      // Not O(1)???
+      auto cached = address.find(node);
+      if (cached != address.end()) {
+        return cached->second;
+      } else {
+        auto computed = parseHexString(json[node]);
+        address[node] = computed;
+        return address[node];
+      }
+    }
 
-    const intptr_t& getLockOnIncrementAddress();
-    const PtrPtrCharCharConsumer& getPinMapFunction();
+    template <>
+    const Offsets& get<Offsets>(string node) {
+      auto cached = offsets.find(node);
+      if (cached != offsets.end()) {
+        return cached->second;
+      } else {
+        auto computed = parseHexStrings(json[node]);
+        offsets[node] = computed;
+        return offsets[node];
+      }
+    }
   };
 
 }  // namespace MHW
