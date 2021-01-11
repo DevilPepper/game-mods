@@ -8,6 +8,7 @@
 
 #include "HUDHookHelper.h"
 
+using MHW::Offsets;
 using stuff::memory::readMem;
 using stuff::memory::writeMem;
 
@@ -15,8 +16,8 @@ using loader::DEBUG;
 using loader::LOG;
 
 void HUDHookHelper::toggleSubtitles() {
-  auto subtitle_setting = addresses.getSubtitleSettingOffsets();
-  auto subtitle_show = addresses.getSubtitleShowOffsets();
+  auto subtitle_setting = addresses.get<Offsets>("subtitle_setting");
+  auto subtitle_show = addresses.get<Offsets>("subtitle_show");
 
   bool subs_setting;
   bool subs_show;
@@ -41,7 +42,7 @@ void HUDHookHelper::toggleSubtitles() {
 
 void HUDHookHelper::toggleHUD() {
   long long hud;
-  auto hud_settings = addresses.getHudSettingsOffsets();
+  auto hud_settings = addresses.get<Offsets>("hud_settings");
   auto hudAddr = readMem(mhw, hud_settings, hud);
   LOG(DEBUG) << std::hex << "Toggle HUD... Before @ 0x" << hudAddr << ": " << hud;
   hud ^= *reinterpret_cast<long long*>(toggles);
