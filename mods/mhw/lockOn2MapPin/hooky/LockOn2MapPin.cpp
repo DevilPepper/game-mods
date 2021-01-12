@@ -11,7 +11,7 @@ using stuff::memory::readMem;
 using loader::DEBUG;
 using loader::LOG;
 
-using MHW::Offsets;
+using stuff::addy::Offsets;
 
 LockOn2MapPin::LockOn2MapPin() : MHW::IHook() {}
 
