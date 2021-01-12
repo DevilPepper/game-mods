@@ -8,7 +8,6 @@
 
 #include "HUDHookHelper.h"
 
-using MHW::Offsets;
 using stuff::memory::readMem;
 using stuff::memory::writeMem;
 
@@ -16,13 +15,11 @@ using loader::DEBUG;
 using loader::LOG;
 
 void HUDHookHelper::toggleSubtitles() {
-  auto subtitle_setting = addresses.get<Offsets>("subtitle_setting");
-  auto subtitle_show = addresses.get<Offsets>("subtitle_show");
-
   bool subs_setting;
   bool subs_show;
-  auto subsSettingsAddr = readMem(mhw, subtitle_setting, subs_setting);
-  auto subsShowAddr = readMem(mhw, subtitle_show, subs_show);
+  auto subsSettingsAddr =
+      readMem(addresses.get<intptr_t>("save_data"), subtitle_setting, subs_setting);
+  auto subsShowAddr = readMem(addresses.get<intptr_t>("display_options"), subtitle_show, subs_show);
   // clang-format off
   LOG(DEBUG) << std::hex << std::boolalpha << "Toggle Subtitles... "
              << "Before @ 0x" << subsSettingsAddr << ": " << subs_setting
@@ -31,8 +28,8 @@ void HUDHookHelper::toggleSubtitles() {
 
   subs_setting ^= true;
   subs_show ^= true;
-  writeMem(mhw, subtitle_setting, subs_setting);
-  writeMem(mhw, subtitle_show, subs_show);
+  writeMem(addresses.get<intptr_t>("save_data"), subtitle_setting, subs_setting);
+  writeMem(addresses.get<intptr_t>("display_options"), subtitle_show, subs_show);
   // clang-format off
   LOG(DEBUG) << std::hex << std::boolalpha << "Toggle Subtitles... "
              << "After @ 0x" << subsSettingsAddr << ": " << subs_setting
@@ -42,10 +39,9 @@ void HUDHookHelper::toggleSubtitles() {
 
 void HUDHookHelper::toggleHUD() {
   long long hud;
-  auto hud_settings = addresses.get<Offsets>("hud_settings");
-  auto hudAddr = readMem(mhw, hud_settings, hud);
+  auto hudAddr = readMem(addresses.get<intptr_t>("save_data"), hud_settings, hud);
   LOG(DEBUG) << std::hex << "Toggle HUD... Before @ 0x" << hudAddr << ": " << hud;
   hud ^= *reinterpret_cast<long long*>(toggles);
-  writeMem(mhw, hud_settings, hud);
+  writeMem(addresses.get<intptr_t>("save_data"), hud_settings, hud);
   LOG(DEBUG) << std::hex << "Toggle HUD... After @ 0x" << hudAddr << ": " << hud;
 }
