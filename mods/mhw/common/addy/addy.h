@@ -7,13 +7,6 @@
 #include <string>
 #include <vector>
 
-#include "stuff.h"
-#pragma comment(lib, "stuff.lib")
-
-using stuff::json::parseHexString;
-using stuff::json::parseHexStrings;
-
-using namespace stuff::functions;
 using std::map;
 using std::string;
 using std::vector;
@@ -27,6 +20,9 @@ namespace MHW {
     map<string, intptr_t> address;
     nlohmann::json json;
 
+    const Offsets& getOffsets(string node);
+    const intptr_t& getPointer(string node);
+
    public:
     Addy();
 
@@ -37,28 +33,12 @@ namespace MHW {
 
     template <>
     const intptr_t& get<intptr_t>(string node) {
-      // Not O(1)???
-      auto cached = address.find(node);
-      if (cached != address.end()) {
-        return cached->second;
-      } else {
-        auto computed = parseHexString(json[node]);
-        address[node] = computed;
-        return address[node];
-      }
+      return getPointer(node);
     }
 
     template <>
     const Offsets& get<Offsets>(string node) {
-      auto cached = offsets.find(node);
-      if (cached != offsets.end()) {
-        return cached->second;
-      } else {
-        auto computed = parseHexStrings(json[node]);
-        offsets[node] = computed;
-        return offsets[node];
-      }
+      return getOffsets(node);
     }
   };
-
 }  // namespace MHW
