@@ -4,14 +4,14 @@
 #include "gamepad.h"
 #pragma comment(lib, "GamepadHook.lib")
 
-// #include "hooky\HUDHookHelper.h"
+#include "hermes/Hermes.h"
 
 using gamepad::Gamepad;
 
-// HUDHookHelper CaptainHook;
+Hermes hermes;
 
 void callback(const Gamepad& gamepad) {
-  // CaptainHook.handleInput(gamepad);
+  hermes.handleInput(gamepad);
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
