@@ -23,9 +23,10 @@ bool LockOn2MapPin::isOnTheLoose(intptr_t monsterAddr) {
 
   LOG(DEBUG) << std::hex << "actionId @ 0x" << (monsterAddr + 0xB0) << ": " << actionId;
 
+  auto monsterActionBase = monsterAddr + (2 * 8) + 0x68;
+
   // clang-format off
   vector<intptr_t> monsterAction{
-    monsterAddr + (2 * 8) + 0x68,
     (intptr_t)actionId * 8,
     0,
     0x20
@@ -33,16 +34,17 @@ bool LockOn2MapPin::isOnTheLoose(intptr_t monsterAddr) {
   // clang-format on
 
   intptr_t actionPtr = NULL;
-  auto actionAddr = readMem(0, monsterAction, actionPtr);
+  auto actionAddr = readMem(monsterActionBase, monsterAction, actionPtr, false);
   LOG(DEBUG) << std::hex << "monster action @ 0x" << actionAddr << ": " << actionPtr;
 
   auto offset = *(unsigned int*)(actionPtr + 3);
   LOG(DEBUG) << std::hex << "action offset @ 0x" << (actionPtr + 3) << ": " << offset;
 
-  vector<intptr_t> actionRef{ actionPtr + offset + 7 + 8, 0 };
+  auto strAddr = (char**)(actionPtr + offset + 7 + 8);
+  // vector<intptr_t> actionRef{ actionPtr + offset + 7 + 8, 0 };
 
-  auto strAddr = (char*)followPointers(0, actionRef);
-  string action(strAddr);
+  // auto strAddr = (char*)followPointers(0, actionRef);
+  string action(*strAddr);
 
   LOG(DEBUG) << std::hex << "action string @ 0x" << strAddr << ": " << action;
 

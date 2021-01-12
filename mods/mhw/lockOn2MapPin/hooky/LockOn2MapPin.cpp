@@ -13,23 +13,22 @@ using loader::LOG;
 
 using MHW::Offsets;
 
-LockOn2MapPin::LockOn2MapPin() : MHW::IHook() {
-  monster_i = addresses.get<Offsets>("lastMonster");
-}
+LockOn2MapPin::LockOn2MapPin() : MHW::IHook() {}
 
 void LockOn2MapPin::updatePin() {
   int idx = -1;
-  auto lockOnAddr = readMem(mhw, addresses.get<Offsets>("lockOnOffsets"), idx);
+  auto lockOnAddr = readMem(addresses.get<intptr_t>("quest_manager"), lockOnOffsets, idx);
   LOG(DEBUG) << std::hex << "lockOn @ 0x" << lockOnAddr << ": " << idx;
 
   uintptr_t p0 = 0;
-  auto unknownAddr = readMem(mhw, addresses.get<Offsets>("unknown"), p0);
+  auto unknownAddr = readMem(addresses.get<intptr_t>("display_options"), unknown, p0);
   LOG(DEBUG) << std::hex << "p0 @ 0x" << unknownAddr << ": " << p0;
 
   uintptr_t monster = 0;
   if (idx != -1) {
     int nMonsters = -1;
-    auto numMonstersAddr = readMem(mhw, addresses.get<Offsets>("numMonsters"), nMonsters);
+    auto numMonstersAddr =
+        readMem(addresses.get<intptr_t>("quest_manager"), numMonsters, nMonsters);
     LOG(DEBUG) << std::hex << "numMonsters @ 0x" << numMonstersAddr << ": " << nMonsters;
 
     if (nMonsters > 0) {
@@ -37,8 +36,8 @@ void LockOn2MapPin::updatePin() {
       nMonsters--;
       for (int i = 0; i <= nMonsters; i++) {
         auto offset = (nMonsters - i) * 8;
-        monster_i[2] = offset;
-        auto monsterAddr = readMem(mhw, monster_i, monster);
+        monster_i[1] = offset;
+        auto monsterAddr = readMem(addresses.get<intptr_t>("monsters"), monster_i, monster);
         LOG(DEBUG) << std::hex << "monster found @ 0x" << monsterAddr << ": " << monster;
         monsters.push_back(monster);
       }
@@ -53,11 +52,12 @@ void LockOn2MapPin::updatePin() {
       pinMap(p0, monstersOnTheLoose[getRealIndex(lockOnAddr, idx)], 1);
     }
   } else {
-    auto nonZeroAddr = readMem(mhw, addresses.get<Offsets>("nonZero"), monster);
+    auto nonZeroAddr = readMem(addresses.get<intptr_t>("pin_params"), nonZero, monster);
     LOG(DEBUG) << std::hex << "non-zero @ 0x" << nonZeroAddr << ": " << monster;
 
     if (monster != 0) {
-      auto pinnedMonsterAddr = readMem(mhw, addresses.get<Offsets>("pinnedMonster"), monster);
+      auto pinnedMonsterAddr =
+          readMem(addresses.get<intptr_t>("pin_params"), pinnedMonster, monster);
       LOG(DEBUG) << std::hex << "pinned monster @ 0x" << pinnedMonsterAddr << ": " << monster;
       pinMap(p0, monster, 1);
     }
