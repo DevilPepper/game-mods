@@ -1,16 +1,13 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 // #include <functional>
 
-#include "loader.h"
-#pragma comment(lib, "loader.lib")
+#include <MinHook.h>
 
 #include "stuff.h"
 #pragma comment(lib, "stuff.lib")
 
 #include "gamepad/GamepadDispatcher.h"
 
-using loader::DEBUG;
-using loader::LOG;
 using stuff::json::parseHexString;
 
 using namespace stuff::functions;
@@ -22,6 +19,8 @@ IGamepadDispatcher& gamepad::GetDispatcher() {
   return instance;
 }
 
+/////// This should be 2 separate DLLs ///////
+
 PointerBiConsumer original = nullptr;
 
 void PollCtrlHook(long long p1, long long p2) {
@@ -31,7 +30,8 @@ void PollCtrlHook(long long p1, long long p2) {
 }
 
 void hookem() {
-  auto PollCtrl = parseHexString(stuff::json::loadAddresses()["PollController()"]);
+  auto PollCtrl = parseHexString(
+      stuff::json::loadConfig("nativePC/plugins/config/addresses.json")["PollController()"]);
   MH_Initialize();
   // PointerBiConsumer PollCtrl = nullptr;
   // auto hook = std::bind_front(PollCtrlHook, PollCtrl);
@@ -39,9 +39,7 @@ void hookem() {
   MH_ApplyQueued();
 }
 
-BOOL APIENTRY DllMain(HMODULE hModule,
-                      DWORD ul_reason_for_call,
-                      LPVOID lpReserved) {
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH: {
       hookem();
