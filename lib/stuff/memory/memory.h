@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "MinHook.h"
-
 using std::string;
 using std::vector;
 

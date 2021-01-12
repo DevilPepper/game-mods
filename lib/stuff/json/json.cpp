@@ -5,12 +5,8 @@
 namespace stuff {
   namespace json {
     nlohmann::json loadConfig(string fileName) {
-      std::ifstream config("nativePC/plugins/config/" + fileName);
+      std::ifstream config(fileName);
       return nlohmann::json::parse(config);
-    }
-
-    nlohmann::json loadAddresses() {
-      return loadConfig("addresses.json");
     }
 
     vector<intptr_t> parseHexStrings(nlohmann::json node) {
