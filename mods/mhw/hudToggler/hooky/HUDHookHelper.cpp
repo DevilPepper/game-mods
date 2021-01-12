@@ -2,12 +2,10 @@
 
 #include <string>
 
-#include "stuff.h"
-#pragma comment(lib, "stuff.lib")
+#include "MHW.h"
+#pragma comment(lib, "mhw-common.lib")
 
 using std::string;
-
-const string HUDHookHelper::settings = "HUD_toggles.json";
 
 HUDHookHelper::HUDHookHelper() : MHW::IHook() {
   // TODO: get this tf outta here
@@ -24,7 +22,7 @@ HUDHookHelper::HUDHookHelper() : MHW::IHook() {
     "Item Bar"
   };
   // clang-format on
-  auto json = stuff::json::loadConfig("HUD_toggles.json");
+  auto json = MHW::loadConfig(settings);
   for (int i = 0; i < 8; i++) {
     toggles[i] = json[toggleStr[i]].get<bool>();
   }

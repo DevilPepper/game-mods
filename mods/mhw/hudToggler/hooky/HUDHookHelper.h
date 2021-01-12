@@ -12,7 +12,7 @@ using std::string;
 
 class HUDHookHelper : public MHW::IHook {
  private:
-  static const string settings;
+  const string settings = "HUD_toggles.json";
   static const Button HUDToggle = Button::L1;
   static const Button SubtitlesToggle = Button::Select;
 
