@@ -7,6 +7,7 @@
 #include "LockOn2MapPin.h"
 
 using namespace stuff::memory;
+using stuff::functions::PtrPtrCharCharConsumer;
 
 using loader::DEBUG;
 using loader::LOG;
