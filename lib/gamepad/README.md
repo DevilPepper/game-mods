@@ -5,7 +5,7 @@
 It's a library allowing other plugins to subscribe to receive gamepad input.
 I believe input looks the same regardless of controller thanks to Steam,
 but you'll additionally need a plugin to hook to the appropriate function and pass the input to subscribers.
-i.e. [MHW Gamepad Hook]
+i.e. [MHW Gamepad Hook](https://github.com/Stuff-Mods/MHW-GamepadHook)
 
 ### Library
 
@@ -14,17 +14,17 @@ To use the library, I recommend using CMake's `FetchContent`:
 ```CMake
 include(FetchContent)
 
-FetchContent_Declare(GamepadHook
-  GIT_REPOSITORY https://github.com/SupaStuff/MHW-GamepadPlugins.git
-  GIT_TAG 710f81b26ffbc8272a1a71cf2229b8eec2535dca)
+FetchContent_Declare(GamepadLib
+  GIT_REPOSITORY https://github.com/Stuff-Mods/GamepadLib.git
+  GIT_TAG 644b76aa89cea7c12c6a7d5a2641ecb67e44b29a)
 
-FetchContent_GetProperties(GamepadHook)
-if(NOT GamepadHook_POPULATED)
-  FetchContent_Populate(GamepadHook)
-  add_subdirectory(${GamepadHook_SOURCE_DIR} ${GamepadHook_BINARY_DIR} EXCLUDE_FROM_ALL)
+FetchContent_GetProperties(GamepadLib)
+if(NOT GamepadLib_POPULATED)
+  FetchContent_Populate(GamepadLib)
+  add_subdirectory(${GamepadLib_SOURCE_DIR} ${GamepadLib_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-target_link_libraries(MyDopeAFPlugin PRIVATE GamepadHook)
+target_link_libraries(MyDopeAFPlugin PRIVATE GamepadLib)
 ```
 
 Alternatively, you could probably grab the headers and the lib file and dump it into your project.
@@ -37,22 +37,22 @@ Add this to your includes:
 
 ```cpp
 #include "gamepad.h"
-#pragma comment(lib, "GamepadHook.lib")
+#pragma comment(lib, "GamepadLib.lib")
 ```
 
 _gamepad.h_ includes all of these that you may include individually if you prefer:
 
-- [Button.h](https://github.com/SupaStuff/MHW-GamepadPlugins/blob/master/GamepadHook/GamepadHeaders/Button.h): Defines an enum for button names (Currently only PS4 controller buttons, but matching buttons should work)
-- [Buttons.h](https://github.com/SupaStuff/MHW-GamepadPlugins/blob/master/GamepadHook/GamepadHeaders/Buttons.h): Defines a list of `GamepadInput` representing 1 button each. These can be combined by using bitwise OR. i.e.:
+- [Button.h](https://github.com/Stuff-Mods/GamepadLib/blob/master/src/GamepadHeaders/Button.h): Defines an enum for button names (Currently only PS4 controller buttons, but matching buttons should work)
+- [Buttons.h](https://github.com/Stuff-Mods/GamepadLib/blob/master/src/GamepadHeaders/Buttons.h): Defines a list of `GamepadInput` representing 1 button each. These can be combined by using bitwise OR. i.e.:
 
 ```cpp
 auto btns = Buttons[Button::Circle] | Buttons[Button::Triangle]
 ```
 
-- [GamepadInput.h](https://github.com/SupaStuff/MHW-GamepadPlugins/blob/master/GamepadHook/GamepadHeaders/GamepadInput.h): Just a typedef for GamepadInput. It's an unsigned 32 bit integer. Each bit represents a button
-- [GamepadInputHelper.h](https://github.com/SupaStuff/MHW-GamepadPlugins/blob/master/GamepadHook/GamepadHeaders/GamepadInputHelper.h): A couple of helper functions
-- [GamepadStruct.h](https://github.com/SupaStuff/MHW-GamepadPlugins/blob/master/GamepadHook/GamepadHeaders/GamepadStruct.h): The Gamepad struct that's taken from memory every frame and callbacks accept as input
-- [IGamepadDispatcher.h](https://github.com/SupaStuff/MHW-GamepadPlugins/blob/master/GamepadHook/GamepadHeaders/IGamepadDispatcher.h): The dispatcher interface and `gamepad::GetDispatcher()` are here
+- [GamepadInput.h](https://github.com/Stuff-Mods/GamepadLib/blob/master/src/GamepadHeaders/GamepadInput.h): Just a typedef for GamepadInput. It's an unsigned 32 bit integer. Each bit represents a button
+- [GamepadInputHelper.h](https://github.com/Stuff-Mods/GamepadLib/blob/master/src/GamepadHeaders/GamepadInputHelper.h): A couple of helper functions
+- [GamepadStruct.h](https://github.com/Stuff-Mods/GamepadLib/blob/master/src/GamepadHeaders/GamepadStruct.h): The Gamepad struct that's taken from memory every frame and callbacks accept as input
+- [IGamepadDispatcher.h](https://github.com/Stuff-Mods/GamepadLib/blob/master/src/GamepadHeaders/IGamepadDispatcher.h): The dispatcher interface and `gamepad::GetDispatcher()` are here
 
 ### Subscribing
 
@@ -91,7 +91,7 @@ The `Gamepad` struct should be self explanatory, but I think I should give some 
 (gamepad.buttons & btns) > 0
 ```
 
-A helper function exists that does this for you. Look in [GamepadInputHelper.h](https://github.com/SupaStuff/MHW-GamepadPlugins/blob/master/GamepadHook/GamepadHeaders/GamepadInputHelper.h)
+A helper function exists that does this for you. Look in [GamepadInputHelper.h](https://github.com/Stuff-Mods/GamepadLib/blob/master/src/GamepadHeaders/GamepadInputHelper.h)
 
 `Gamepad.buttonsJust{Pressed|Released}`: Similarly to buttons, these represent buttons that were just pressed/released this frame. Useful for doing something just once on press/release. Helpers exist for these.
 
