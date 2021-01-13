@@ -1,0 +1,66 @@
+name: Merge Releases
+
+on:
+  push:
+    branches: [ master ]
+  #manual trigger button
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+env:
+  PROJECT_NAME: SupaStuff_Plugins
+
+jobs:
+  download:
+    strategy:
+      matrix:
+        plugin:
+          - TheFlash
+          - GamepadHook
+          - HUDToggler
+          - LockOn2MapPin
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Download ${{ matrix.plugin }} Release
+      env:
+        plugin: ${{ matrix.plugin }}
+      run: |
+        curl -L https://github.com/Stuff-Mods/MHW-${plugin}/releases/latest/download/${plugin}.zip -o ${plugin}.zip
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.plugin }} Zip
+        path: ./*.zip
+  
+  merge:
+    needs: download
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+    
+    - name: Merge zips
+      run: |
+        find -name '*.zip' -exec mv -i -- {} . \;
+        unzip "*.zip"
+        cp addresses.json nativePC/plugins/config
+        zip $PROJECT_NAME.zip -r nativePC GamepadLib.dll
+
+    - name: Create release with binaries
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        version=$(date +%F)-$GITHUB_RUN_NUMBER
+        gh release create $version -t "$version" \
+           $PROJECT_NAME.zip \
+           addresses.json

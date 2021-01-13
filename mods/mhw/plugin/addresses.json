@@ -1,0 +1,12 @@
+{
+  "display_options": "0x5224b80",
+  "monsters": "0x5183e00",
+  "pin_params": "0x5073db0",
+  "pl_params": "0x5072488",
+  "quest_manager": "0x5073ed0",
+  "save_data": "0x5073e80",
+
+  "PollController()": "0x1418e8ea0",
+  "LockOnIncrement()": "0x1412a54a0",
+  "PinMap()": "0x141dd3060"
+}
