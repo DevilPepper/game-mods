@@ -3,7 +3,7 @@
 #include <string>
 
 #include "gamepad.h"
-#pragma comment(lib, "GamepadHook.lib")
+#pragma comment(lib, "GamepadLib.lib")
 
 #include "hooky/IHook.h"
 
@@ -11,6 +11,10 @@ using std::string;
 
 class Hermes : public MHW::IHook {
  private:
+  intptr_t walkSpeedOffset = 0x940;
+  intptr_t runSpeedOffset = 0x980;
+  intptr_t dashSpeedOffset = 0x9b0;
+
   float walk = 1.12;
   float run = 1;
   float dash = 1.20;

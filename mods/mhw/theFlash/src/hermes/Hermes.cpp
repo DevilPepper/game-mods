@@ -2,15 +2,12 @@
 
 #include <math.h>
 
-#include "loader.h"
-#pragma comment(lib, "loader.lib")
-
-#include "stuff.h"
-#pragma comment(lib, "stuff.lib")
+#include "MHW-deps.h"
+#pragma comment(lib, "mhw-common.lib")
 
 using loader::DEBUG;
 using loader::LOG;
-using MHW::Offsets;
+using stuff::addy::Offsets;
 using stuff::memory::writeMem;
 
 using namespace gamepad;
@@ -25,9 +22,10 @@ void Hermes::handleInput(const Gamepad& input) {
     float runSpeed = run * multiplier;
     float dashSpeed = dash * multiplier;
 
-    auto walkAddr = writeMem(mhw, addresses.get<Offsets>("walkSpeed"), walkSpeed);
-    auto runAddr = writeMem(mhw, addresses.get<Offsets>("runSpeed"), runSpeed);
-    auto dashAddr = writeMem(mhw, addresses.get<Offsets>("dashSpeed"), dashSpeed);
+    auto speedBase = addresses.get<intptr_t>("pl_params");
+    auto walkAddr = writeMem(speedBase, walkSpeedOffset, walkSpeed);
+    auto runAddr = writeMem(speedBase, runSpeedOffset, runSpeed);
+    auto dashAddr = writeMem(speedBase, dashSpeedOffset, dashSpeed);
 
     if (multiplier == 1) {
       LOG(DEBUG) << std::hex << "Wrote " << walkSpeed << " @ 0x" << walkAddr;

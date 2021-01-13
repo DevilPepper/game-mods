@@ -2,7 +2,7 @@
 #include <windows.h>
 
 #include "gamepad.h"
-#pragma comment(lib, "GamepadHook.lib")
+#pragma comment(lib, "GamepadLib.lib")
 
 #include "hermes/Hermes.h"
 
