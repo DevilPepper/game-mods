@@ -84,5 +84,5 @@ jobs:
       run: |
         gh release create v$GIT_TAG -t "Release v$GIT_TAG" --notes-file notes.md \
            *.zip \
-           .json \
+           *.json \
            nativePC/plugins/*.dll
