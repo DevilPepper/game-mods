@@ -5,12 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "gamepad.h"
-#pragma comment(lib, "GamepadHook.lib")
-
 #include "hooky/IHook.h"
 
-using namespace gamepad;
 using std::string;
 using std::vector;
 
