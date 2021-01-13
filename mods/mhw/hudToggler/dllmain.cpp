@@ -1,6 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "gamepad.h"
-#pragma comment(lib, "GamepadHook.lib")
+#pragma comment(lib, "GamepadLib.lib")
 
 #include "hooky\HUDHookHelper.h"
 

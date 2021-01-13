@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "gamepad.h"
-#pragma comment(lib, "GamepadHook.lib")
+#pragma comment(lib, "GamepadLib.lib")
 
 #include "hooky/IHook.h"
 
