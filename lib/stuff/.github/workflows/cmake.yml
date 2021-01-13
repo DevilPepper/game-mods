@@ -59,7 +59,7 @@ jobs:
         mkdir temp/
         find src -name '*.h' | cpio -pdm temp/
         mv temp/src lib
-        mv $PROJECT_NAME.lib
+        mv $PROJECT_NAME.lib lib
         zip $PROJECT_NAME.zip -r lib
 
     - name: Update changelog and bump version
