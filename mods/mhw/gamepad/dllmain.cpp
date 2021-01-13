@@ -3,35 +3,28 @@
 
 #include <MinHook.h>
 
-#include "stuff.h"
-#pragma comment(lib, "stuff.lib")
+#include "gamepad.h"
+#pragma comment(lib, "GamepadLib.lib")
 
-#include "gamepad/GamepadDispatcher.h"
+#include "MHW-deps.h"
+#include "MHW.h"
+#pragma comment(lib, "mhw-common.lib")
 
 using stuff::json::parseHexString;
 
 using namespace stuff::functions;
 using namespace gamepad;
 
-static GamepadDispatcher instance;
-
-IGamepadDispatcher& gamepad::GetDispatcher() {
-  return instance;
-}
-
-/////// This should be 2 separate DLLs ///////
-
 PointerBiConsumer original = nullptr;
 
 void PollCtrlHook(long long p1, long long p2) {
   original(p1, p2);
-  instance.update(*(Gamepad*)p1);
+  gamepad::GetDispatcher().update(*(Gamepad*)p1);
   return;
 }
 
 void hookem() {
-  auto PollCtrl = parseHexString(
-      stuff::json::loadConfig("nativePC/plugins/config/addresses.json")["PollController()"]);
+  auto PollCtrl = parseHexString(MHW::loadConfig("addresses.json")["PollController()"]);
   MH_Initialize();
   // PointerBiConsumer PollCtrl = nullptr;
   // auto hook = std::bind_front(PollCtrlHook, PollCtrl);
