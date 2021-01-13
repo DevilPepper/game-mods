@@ -25,7 +25,7 @@ I recommend going to **Game Settings->HUD Display** and setting everything to of
 - Currently only made for gamepads, but feel free to open a PR adding keyboard and mouse support
 - Buttons are hard coded as **L1** for HUD and **Select** for subtitles because there's no clean built in way of parsing a string to an enum.
   - If you require different buttons, for now you'll have to rebuild after you edit it here:
-  - <https://github.com/SupaStuff/MHW-GamepadPlugins/blob/c96cb990c24c69d122a9f1f7060bf039dc64d2e8/HUDToggler/dllmain.cpp#L25-L26>
+  - <https://github.com/Stuff-Mods/MHW-HUDToggler/blob/f6d69f038eea201ce851d6923520112a956b8519/src/hooky/HUDHookHelper.h#L20-L21>
 
 ## Compiling and coding
 
