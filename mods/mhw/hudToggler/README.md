@@ -62,6 +62,8 @@ I symlink the built dll to my _nativePC/plugins/_ so that I can do less copying 
 
 ```cmd
 mklink "C:\Program Files (x86)\Steam\steamapps\common\Monster Hunter World\nativePC\plugins\HUDToggler.dll" "%cd%\build\src\Debug\HUDToggler.dll"
+mklink "C:\Program Files (x86)\Steam\steamapps\common\Monster Hunter World\nativePC\plugins\config\HUD_toggles.json" "%cd%\HUD_toggles.json"
+
 ```
 
 > TODO: Give credit to whoever I copied offsets from
