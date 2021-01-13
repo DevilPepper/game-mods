@@ -59,4 +59,5 @@ I symlink the built dll to my _nativePC/plugins/_ so that I can do less copying 
 
 ```cmd
 mklink "C:\Program Files (x86)\Steam\steamapps\common\Monster Hunter World\nativePC\plugins\LockOn2MapPin.dll" "%cd%\build\src\Debug\LockOn2MapPin.dll"
+
 ```
