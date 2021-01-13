@@ -1,0 +1,86 @@
+name: CMake
+
+on:
+  push:
+    branches: [ master ]
+
+defaults:
+  run:
+    shell: bash
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  PROJECT_NAME: LockOn2MapPin
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure CMake
+      run: cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -S . -B build/ -A x64
+
+    - name: Build
+      # Execute the build.  You can specify a specific target with "--target <NAME>"
+      run: cmake --build build/ --config $BUILD_TYPE
+
+#     - name: Test
+#       working-directory: ${{runner.workspace}}/build
+#       shell: bash
+#       # Execute tests defined by the CMake configuration.  
+#       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+#       run: ctest -C $BUILD_TYPE
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.PROJECT_NAME }} Release
+        path: ./build/src/Release/*
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ env.PROJECT_NAME }} Release
+
+    - name: Zip it
+      run: |
+        mkdir -p nativePC/plugins/
+        mv $PROJECT_NAME.dll \
+           nativePC/plugins
+        zip $PROJECT_NAME.zip -r nativePC
+
+    - name: Update changelog and bump version
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        npx standard-version --silent --dry-run | sed '/---/d' > notes.md
+
+        git config user.name "Github Actions"
+        git config user.email action@github.com
+        npx standard-version
+        git push --follow-tags origin master
+        
+        GIT_TAG=$(cat CHANGELOG.md | grep -o "\[.*\]" -m 2 | tail -n1)
+        GIT_TAG=${GIT_TAG#[}
+        GIT_TAG=${GIT_TAG%]}
+        echo "GIT_TAG=$GIT_TAG" >> $GITHUB_ENV
+        
+    - name: Create release with binaries
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create v$GIT_TAG -t "Release v$GIT_TAG" --notes-file notes.md \
+           *.zip \
+           nativePC/plugins/*.dll
