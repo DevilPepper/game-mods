@@ -12,7 +12,6 @@ namespace gamepad {
     callbacks.erase(token);
     return *this;
   }
-
   IGamepadDispatcher& GamepadDispatcher::registerCallback(GamepadCallback callback,
                                                           GamepadTokens& tokens) {
     tokens.push(registerCallback(callback));
@@ -25,9 +24,11 @@ namespace gamepad {
     }
   }
 
-  void GamepadDispatcher::update(Gamepad input) {
+  void GamepadDispatcher::update(Gamepad* input) {
     for (auto callback : callbacks) {
-      callback(input);
+      callback(*input);
     }
   }
+  void GamepadDispatcher::sendInput(Gamepad input) {}
+
 }  // namespace gamepad

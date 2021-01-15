@@ -25,8 +25,8 @@ namespace gamepad {
     virtual IGamepadDispatcher& registerCallback(GamepadCallback callback,
                                                  GamepadTokens& tokens) = 0;
     virtual void unregisterCallback(GamepadTokens& tokens) = 0;
-
-    virtual void update(Gamepad input) = 0;
+    virtual void update(Gamepad* input) = 0;
+    virtual void sendInput(Gamepad input) = 0;
   };
 
   GPL_DLL IGamepadDispatcher& GetDispatcher();

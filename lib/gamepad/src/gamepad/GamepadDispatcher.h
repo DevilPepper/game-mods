@@ -17,7 +17,7 @@ namespace gamepad {
 
     IGamepadDispatcher& registerCallback(GamepadCallback callback, GamepadTokens& tokens);
     void unregisterCallback(GamepadTokens& tokens);
-
-    void update(Gamepad input);
+    void update(Gamepad* input);
+    void sendInput(Gamepad input);
   };
 }  // namespace gamepad
