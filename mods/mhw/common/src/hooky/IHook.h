@@ -12,5 +12,6 @@ namespace MHW {
 
    protected:
     IHook();
+    int getZoneID();
   };
 }  // namespace MHW
