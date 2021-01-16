@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/Stuff-Mods/MHW-TheFlash/compare/v0.0.5...v0.0.6) (2021-01-16)
+
+
+### Bug Fixes
+
+* **Hermes:** always poke speed so that speed can't get stuck if onRelease didn't register ([d2134a9](https://github.com/Stuff-Mods/MHW-TheFlash/commit/d2134a98440b7781b8e1cd4e9d15a6e5188f121a))
+
 ### [0.0.5](https://github.com/Stuff-Mods/MHW-TheFlash/compare/v0.0.4...v0.0.5) (2021-01-16)
 
 ### [0.0.4](https://github.com/Stuff-Mods/MHW-TheFlash/compare/v0.0.3...v0.0.4) (2021-01-13)
