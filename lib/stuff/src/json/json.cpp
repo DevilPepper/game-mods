@@ -6,7 +6,7 @@ namespace stuff {
   namespace json {
     nlohmann::json loadConfig(string fileName) {
       std::ifstream config(fileName);
-      return nlohmann::json::parse(config);
+      return nlohmann::json::parse(config, nullptr, true, true);
     }
 
     vector<intptr_t> parseHexStrings(nlohmann::json node) {
