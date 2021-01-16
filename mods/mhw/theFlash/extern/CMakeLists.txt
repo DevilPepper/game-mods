@@ -18,7 +18,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         mhw-common
         GIT_REPOSITORY "https://github.com/Stuff-Mods/MHW-CommonLib"
-        GIT_TAG "38bdbc1b2e21112c45443de5667dc01285825c61"
+        GIT_TAG "d04f9465d46e7f09ef04766fa8ee165ad981d03a"
 )
 
 FetchContent_MakeAvailableNotAll(loader)

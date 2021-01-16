@@ -15,7 +15,7 @@ using namespace gamepad;
 Hermes::Hermes() : MHW::IHook() {}
 
 void Hermes::handleInput(const Gamepad& input) {
-  if (pressing(input, Buttons[Button::R2]) || justReleased(input, Buttons[Button::R2])) {
+  if (getZoneID() != 0) {
     auto multiplier = pow(10, input.rightTriggerMagnitude);
 
     float walkSpeed = walk * multiplier;
@@ -26,11 +26,5 @@ void Hermes::handleInput(const Gamepad& input) {
     auto walkAddr = writeMem(speedBase, walkSpeedOffset, walkSpeed);
     auto runAddr = writeMem(speedBase, runSpeedOffset, runSpeed);
     auto dashAddr = writeMem(speedBase, dashSpeedOffset, dashSpeed);
-
-    if (multiplier == 1) {
-      LOG(DEBUG) << std::hex << "Wrote " << walkSpeed << " @ 0x" << walkAddr;
-      LOG(DEBUG) << std::hex << "Wrote " << runSpeed << " @ 0x" << runAddr;
-      LOG(DEBUG) << std::hex << "Wrote " << dashSpeed << " @ 0x" << dashAddr;
-    }
   }
 }
