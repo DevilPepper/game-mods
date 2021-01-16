@@ -60,7 +60,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        version=$(date +%F)-$GITHUB_RUN_NUMBER
+        version=$GITHUB_RUN_NUMBER-$(date +%F)
         gh release create $version -t "$version" \
            $PROJECT_NAME.zip \
            addresses.json
