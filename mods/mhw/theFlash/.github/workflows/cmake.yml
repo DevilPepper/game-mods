@@ -84,3 +84,18 @@ jobs:
         gh release create v$GIT_TAG -t "Release v$GIT_TAG" --notes-file notes.md \
            *.zip \
            nativePC/plugins/*.dll
+
+  next:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger MHW-Plugins workflow
+      env:
+        GITHUB_TOKEN: ${{ secrets.MHWPLUGINS }}
+        REPO_OWNER: ${{ github.repository_owner }}
+      run: |
+        curl -X POST \
+             -H "Accept: application/vnd.github.v3+json" \
+             -H "Authorization: token $GITHUB_TOKEN" \
+             -d '{"ref":"master"}' \
+             https://api.github.com/repos/$REPO_OWNER/MHW-Plugins/actions/workflows/pack.yml/dispatches
