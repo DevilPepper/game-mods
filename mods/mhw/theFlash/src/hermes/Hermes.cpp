@@ -16,7 +16,7 @@ Hermes::Hermes() : MHW::IHook() {}
 
 void Hermes::handleInput(const Gamepad& input) {
   if (getZoneID() != 0) {
-    auto multiplier = pow(10, input.rightTriggerMagnitude);
+    auto multiplier = pow(10, input.leftTriggerMagnitude);
 
     float walkSpeed = walk * multiplier;
     float runSpeed = run * multiplier;
