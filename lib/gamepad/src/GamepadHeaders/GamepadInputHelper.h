@@ -4,14 +4,14 @@
 
 namespace gamepad {
   static bool justPressed(const Gamepad& gamepad, GamepadInput btns) {
-    return ((gamepad.buttonsJustPressed & btns) > 0);
+    return ((gamepad.buttonsJustPressed & btns) == btns);
   }
 
   static bool justReleased(const Gamepad& gamepad, GamepadInput btns) {
-    return ((gamepad.buttonsJustReleased & btns) > 0);
+    return ((gamepad.buttonsJustReleased & btns) == btns);
   }
 
   static bool pressing(const Gamepad& gamepad, GamepadInput btns) {
-    return ((gamepad.buttons & btns) > 0);
+    return ((gamepad.buttons & btns) == btns);
   }
 }  // namespace gamepad
