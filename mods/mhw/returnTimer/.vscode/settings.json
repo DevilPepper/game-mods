@@ -1,0 +1,13 @@
+{
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.eol": "\n",
+  "C_Cpp.default.compilerArgs": [
+    "/std:c++latest"
+  ],
+  "C_Cpp.clang_format_fallbackStyle": "Google",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false
+}
