@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "MHW-deps.h"
+#include "MHW.h"
 #pragma comment(lib, "mhw-common.lib")
 
 using loader::DEBUG;
@@ -12,11 +13,13 @@ using stuff::memory::writeMem;
 
 using namespace gamepad;
 
-Hermes::Hermes() : MHW::IHook() {}
+Hermes::Hermes() : MHW::IHook() {
+  expBase = MHW::loadConfig(settings)["maxSpeedMultiplier"].get<int>();
+}
 
 void Hermes::handleInput(const Gamepad& input) {
   if (getZoneID() != 0) {
-    auto multiplier = pow(10, input.leftTriggerMagnitude);
+    auto multiplier = pow(expBase, input.leftTriggerMagnitude);
 
     float walkSpeed = walk * multiplier;
     float runSpeed = run * multiplier;

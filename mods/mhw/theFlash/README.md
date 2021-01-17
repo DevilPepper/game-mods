@@ -61,6 +61,7 @@ I symlink the built dll to my _nativePC/plugins/_ so that I can do less copying 
 
 ```cmd
 mklink "C:\Program Files (x86)\Steam\steamapps\common\Monster Hunter World\nativePC\plugins\TheFlash.dll" "%cd%\build\src\Debug\TheFlash.dll"
+mklink "C:\Program Files (x86)\Steam\steamapps\common\Monster Hunter World\nativePC\plugins\config\TheFlash.json" "%cd%\TheFlash.json"
 
 ```
 
