@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This plugin lets you zip around town like The Flash by pressing R2.
+This plugin lets you zip around town like The Flash by pressing L2.
 The speed is increased as you press down further.
 
 ## Requirements
@@ -12,10 +12,19 @@ The speed is increased as you press down further.
 
 ## Limitations
 
-It's made to only work while you are not on the field.
-The in quest controls makes it hard to pick a good speed up button,
-but also zipping around in quest is not cool.
-Build your own plugin if this is what you require.
+The following movements are not multiplied because I don't know what floats to poke:
+
+- Walk (small tilt - in quest)
+- Run (full tilt - in quest)
+- Run for your life
+- Crouch walk
+- Sneak walk
+- Roll
+- Climb
+- Fast Climb
+
+That's a lot, I know. I started with what was in Marcus's cheat table.
+I imagine these won't be hard to find, but feel free to open a PR adding multipliers for these if you find it first.
 
 ## Compiling and coding
 
@@ -55,4 +64,8 @@ mklink "C:\Program Files (x86)\Steam\steamapps\common\Monster Hunter World\nativ
 
 ```
 
-> TODO: Give credit to whoever I copied offsets from
+## Credits
+
+- **Marcus101RR** for his [cheat table](https://www.nexusmods.com/monsterhunterworld/mods/2161)
+  - And anyone that contributed to the pointers section
+- **Haato** because I copied ZoneId from the latest address map included in [HunterPie](https://github.com/Haato3o/HunterPie)
