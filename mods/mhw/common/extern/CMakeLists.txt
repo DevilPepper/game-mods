@@ -8,7 +8,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         stuff
         GIT_REPOSITORY "https://github.com/Stuff-Mods/StuffLib"
-        GIT_TAG "251a38551b0705479e3ba4a6bd1afc0252a7899d"
+        GIT_TAG "caa6d581a050ffe5e12261bc065b0f1620cb6ea3"
 )
 FetchContent_Declare(
         loader
