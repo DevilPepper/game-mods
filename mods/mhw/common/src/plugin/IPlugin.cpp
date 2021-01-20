@@ -1,4 +1,4 @@
-#include "IHook.h"
+#include "IPlugin.h"
 
 #include <string>
 
@@ -9,9 +9,9 @@ using stuff::addy::Pointer;
 using stuff::memory::readMem;
 
 namespace MHW {
-  IHook::IHook() : addresses(Addy()) {}
+  IPlugin::IPlugin() : addresses(addy::Addy()), sinker(hook::Line()) {}
 
-  int IHook::getZoneID() {
+  int IPlugin::getZoneID() {
     int zoneID;
     readMem(addresses.get<Pointer>("zone"), 0xaed0, zoneID);
     return zoneID;
@@ -19,6 +19,9 @@ namespace MHW {
 }  // namespace MHW
 
 intptr_t stuff::memory::exeBase = 0x140000000;
+
+#ifdef STUFF_PLUGIN
 std::string stuff::addy::getAddressFilePath() {
   return "nativePC/plugins/config/addresses.json";
 }
+#endif

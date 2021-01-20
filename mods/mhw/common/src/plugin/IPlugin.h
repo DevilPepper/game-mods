@@ -1,17 +1,19 @@
 #pragma once
 
 #include "addy/addy.h"
+#include "hook/line.h"
 #pragma comment(lib, "stuff.lib")
 
-using stuff::addy::Addy;
+using namespace stuff;
 
 namespace MHW {
-  class IHook {
+  class IPlugin {
    public:
-    Addy addresses;
+    addy::Addy addresses;
+    hook::Line sinker;
 
    protected:
-    IHook();
+    IPlugin();
     int getZoneID();
   };
 }  // namespace MHW
