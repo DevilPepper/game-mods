@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/Stuff-Mods/StuffLib/compare/v0.1.3...v0.1.4) (2021-01-20)
+
+
+### Features
+
+* **hook:** add void function queueHook template ([caa6d58](https://github.com/Stuff-Mods/StuffLib/commit/caa6d581a050ffe5e12261bc065b0f1620cb6ea3))
+
 ### [0.1.3](https://github.com/Stuff-Mods/StuffLib/compare/v0.1.2...v0.1.3) (2021-01-20)
 
 
