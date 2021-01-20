@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/Stuff-Mods/StuffLib/compare/v0.1.4...v0.1.5) (2021-01-20)
+
+
+### Bug Fixes
+
+* **hook:** add template for first hook param ([2167b99](https://github.com/Stuff-Mods/StuffLib/commit/2167b99d880739d95bd6cb5edc2aef53df1d4dd0))
+
 ### [0.1.4](https://github.com/Stuff-Mods/StuffLib/compare/v0.1.3...v0.1.4) (2021-01-20)
 
 
