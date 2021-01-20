@@ -23,21 +23,20 @@ namespace stuff {
 
       Line& init();
 
-      template <class R, class... Args>
-      Line& queueHook(intptr_t targetAddr, function<R(function<R(Args...)>*, Args...)> detour) {
+      template <class R, class F, class... Args>
+      Line& queueHook(intptr_t targetAddr, function<R(F*, Args...)> detour) {
         hooks.push_back({ targetAddr, nullptr });
-        auto original = (function<R(Args...)>*)(&hooks.back().second);
+        auto original = (F*)(&hooks.back().second);
         auto hook = [original](Args... args) -> R { return detour(original, &args...); };
         QueueHook(targetAddr, hook, original);
         return *this;
       }
 
-      template <class... Args>
-      Line& queueHook(intptr_t targetAddr,
-                      function<void(function<void(Args...)>*, Args...)> detour) {
+      template <class F, class... Args>
+      Line& queueHook(intptr_t targetAddr, function<void(F*, Args...)> detour) {
         hooks.push_back({ targetAddr, nullptr });
-        auto original = (function<void(Args...)>*)(&hooks.back().second);
-        auto hook = [original](Args... args) -> void { detour(original, &args...); };
+        auto original = (F*)(&hooks.back().second);
+        auto hook = [original](Args... args) { detour(original, &args...); };
         QueueHook(targetAddr, hook, original);
         return *this;
       }
