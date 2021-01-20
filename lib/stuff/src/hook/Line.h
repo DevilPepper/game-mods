@@ -27,7 +27,17 @@ namespace stuff {
       Line& queueHook(intptr_t targetAddr, function<R(function<R(Args...)>*, Args...)> detour) {
         hooks.push_back({ targetAddr, nullptr });
         auto original = (function<R(Args...)>*)(&hooks.back().second);
-        auto hook = [original](Args... args) -> R { detour(original, &args...); };
+        auto hook = [original](Args... args) -> R { return detour(original, &args...); };
+        QueueHook(targetAddr, hook, original);
+        return *this;
+      }
+
+      template <class... Args>
+      Line& queueHook(intptr_t targetAddr,
+                      function<void(function<void(Args...)>*, Args...)> detour) {
+        hooks.push_back({ targetAddr, nullptr });
+        auto original = (function<void(Args...)>*)(&hooks.back().second);
+        auto hook = [original](Args... args) -> void { detour(original, &args...); };
         QueueHook(targetAddr, hook, original);
         return *this;
       }
