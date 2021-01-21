@@ -16,12 +16,8 @@ namespace stuff {
       MH_ApplyQueued();
     }
 
-    void unhook(std::vector<intptr_t>& targets) {
-      MH_Initialize();
-      for (auto& target : targets) {
-        MH_QueueDisableHook((LPVOID)target);
-      }
-      MH_ApplyQueued();
+    void unhook() {
+      MH_DisableHook(MH_ALL_HOOKS);
     }
   }  // namespace hook
 }  // namespace stuff

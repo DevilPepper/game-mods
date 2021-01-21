@@ -2,8 +2,6 @@
 
 #include <Windows.h>
 
-#include <vector>
-
 namespace stuff {
   namespace hook {
     void init();
@@ -15,13 +13,7 @@ namespace stuff {
       queue((LPVOID)pTarget, pDetour, reinterpret_cast<LPVOID*>(ppOriginal));
     }
 
-    template <typename T>
-    void queue(intptr_t pTarget, LPVOID pDetour, T** ppOriginal, std::vector<intptr_t>& targets) {
-      targets.push_back(pTarget);
-      queue((LPVOID)pTarget, pDetour, reinterpret_cast<LPVOID*>(ppOriginal));
-    }
-
     void apply();
-    void unhook(std::vector<intptr_t>& targets);
+    void unhook();
   }  // namespace hook
 }  // namespace stuff
