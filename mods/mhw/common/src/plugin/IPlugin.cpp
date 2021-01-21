@@ -9,7 +9,7 @@ using stuff::addy::Pointer;
 using stuff::memory::readMem;
 
 namespace MHW {
-  IPlugin::IPlugin() : addresses(addy::Addy()), targets(vector<intptr_t>()) {}
+  IPlugin::IPlugin() : addresses(addy::Addy()) {}
 
   int IPlugin::getZoneID() {
     int zoneID;

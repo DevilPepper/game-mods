@@ -8,7 +8,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         stuff
         GIT_REPOSITORY "https://github.com/Stuff-Mods/StuffLib"
-        GIT_TAG "cf0cb20af9f430b7b85bd425efcd47234748ddc4"
+        GIT_TAG "2ac3bfda4c075fc8a6bdc25a94bf7d750c6f95de"
 )
 
 FetchContent_MakeAvailableNotAll(nlohmann-json)
