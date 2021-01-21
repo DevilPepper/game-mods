@@ -5,12 +5,12 @@
 #include <string>
 #include <vector>
 
-#include "hooky/IHook.h"
+#include "plugin/IPlugin.h"
 
 using std::string;
 using std::vector;
 
-class LockOn2MapPin : public MHW::IHook {
+class LockOn2MapPin : public MHW::IPlugin {
  private:
   intptr_t nonZero = 0x128;
   intptr_t pinnedMonster = 0x148;

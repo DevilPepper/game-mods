@@ -13,7 +13,7 @@ using loader::LOG;
 
 using stuff::addy::Offsets;
 
-LockOn2MapPin::LockOn2MapPin() : MHW::IHook() {}
+LockOn2MapPin::LockOn2MapPin() : MHW::IPlugin() {}
 
 void LockOn2MapPin::updatePin() {
   int idx = -1;
