@@ -9,7 +9,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         GamepadLib
         GIT_REPOSITORY "https://github.com/Stuff-Mods/GamepadLib"
-        GIT_TAG "41f27ec7d9a97a5a3e0968bbbccdba7eecfe0f07"
+        GIT_TAG "6f16e7fea327fe2e21f171ac7b552ab24ee69384"
 )
 FetchContent_Declare(
         stuff
