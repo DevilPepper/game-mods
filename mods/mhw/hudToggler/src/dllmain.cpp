@@ -2,11 +2,13 @@
 #include "gamepad.h"
 #pragma comment(lib, "GamepadLib.lib")
 
-#include "hooky\HUDHookHelper.h"
+#include "plugin/HUDHookHelper.h"
 
 using gamepad::Gamepad;
+using gamepad::GamepadToken;
 
 HUDHookHelper CaptainHook;
+GamepadToken token;
 
 void callback(const Gamepad& gamepad) {
   CaptainHook.handleInput(gamepad);
@@ -15,7 +17,10 @@ void callback(const Gamepad& gamepad) {
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH:
-      gamepad::GetDispatcher().registerCallback(&callback);
+      token = gamepad::GetDispatcher().registerCallback(&callback);
+      break;
+    case DLL_PROCESS_DETACH:
+      gamepad::GetDispatcher().unregisterCallback(token);
       break;
     default:
       break;

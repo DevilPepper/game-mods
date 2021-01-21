@@ -7,7 +7,7 @@
 
 using std::string;
 
-HUDHookHelper::HUDHookHelper() : MHW::IHook() {
+HUDHookHelper::HUDHookHelper() : MHW::IPlugin() {
   // TODO: get this tf outta here
   // clang-format off
   vector<string> toggleStr{

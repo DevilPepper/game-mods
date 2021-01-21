@@ -1,4 +1,5 @@
 #include <iomanip>
+#include <iostream>
 
 #include "stuff.h"
 #pragma comment(lib, "stuff.lib")
@@ -13,6 +14,7 @@ using stuff::memory::writeMem;
 
 using loader::DEBUG;
 using loader::LOG;
+using std::cout;
 
 void HUDHookHelper::toggleSubtitles() {
   bool subs_setting;
@@ -24,6 +26,10 @@ void HUDHookHelper::toggleSubtitles() {
   LOG(DEBUG) << std::hex << std::boolalpha << "Toggle Subtitles... "
              << "Before @ 0x" << subsSettingsAddr << ": " << subs_setting
              << " | @ 0x" << subsShowAddr << ": " << subs_show;
+             
+  cout << std::hex << std::boolalpha << "Toggle Subtitles... "
+             << "Before @ 0x" << subsSettingsAddr << ": " << subs_setting
+             << " | @ 0x" << subsShowAddr << ": " << subs_show << std::endl;
   // clang-format on
 
   subs_setting ^= true;
@@ -41,7 +47,9 @@ void HUDHookHelper::toggleHUD() {
   long long hud;
   auto hudAddr = readMem(addresses.get<intptr_t>("save_data"), hud_settings, hud);
   LOG(DEBUG) << std::hex << "Toggle HUD... Before @ 0x" << hudAddr << ": " << hud;
+  cout << std::hex << "Toggle HUD... Before @ 0x" << hudAddr << ": " << hud;
   hud ^= *reinterpret_cast<long long*>(toggles);
   writeMem(addresses.get<intptr_t>("save_data"), hud_settings, hud);
   LOG(DEBUG) << std::hex << "Toggle HUD... After @ 0x" << hudAddr << ": " << hud;
+  cout << std::hex << "Toggle HUD... After @ 0x" << hudAddr << ": " << hud;
 }

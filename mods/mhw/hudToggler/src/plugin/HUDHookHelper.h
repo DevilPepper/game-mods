@@ -8,13 +8,13 @@
 #include "gamepad.h"
 #pragma comment(lib, "GamepadLib.lib")
 
-#include "hooky/IHook.h"
+#include "plugin/IPlugin.h"
 
 using namespace gamepad;
 using std::string;
 using std::vector;
 
-class HUDHookHelper : public MHW::IHook {
+class HUDHookHelper : public MHW::IPlugin {
  private:
   const string settings = "HUD_toggles.json";
   static const Button HUDToggle = Button::L1;

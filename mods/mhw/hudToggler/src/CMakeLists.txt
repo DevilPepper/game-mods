@@ -1,5 +1,6 @@
 project(HUDToggler)
 FILE(GLOB_RECURSE HUDTogglerSources CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR} *.h *.cpp)
+target_compile_definitions(mhw-common PRIVATE STUFF_PLUGIN)
 add_library(HUDToggler SHARED ${HUDTogglerSources})
 target_compile_features(HUDToggler PRIVATE cxx_std_20)
 target_link_libraries(HUDToggler PRIVATE loader stuff mhw-common GamepadLib)
