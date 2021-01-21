@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/Stuff-Mods/GamepadLib/compare/v0.1.3...v0.1.4) (2021-01-21)
+
+
+### Features
+
+* add unregisterCallback() ([9e0f5cb](https://github.com/Stuff-Mods/GamepadLib/commit/9e0f5cb3b326c792c2bbdcc8ed7e51b810382d69))
+
 ### [0.1.3](https://github.com/Stuff-Mods/GamepadLib/compare/v0.1.2...v0.1.3) (2021-01-17)
 
 
