@@ -1,7 +1,10 @@
 #pragma once
 
+#include <Windows.h>
+
+#include <vector>
+
 #include "addy/addy.h"
-#include "hook/line.h"
 #pragma comment(lib, "stuff.lib")
 
 using namespace stuff;
@@ -10,7 +13,7 @@ namespace MHW {
   class IPlugin {
    public:
     addy::Addy addresses;
-    hook::Line sinker;
+    std::vector<intptr_t> targets;
 
    protected:
     IPlugin();
