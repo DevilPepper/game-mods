@@ -2,23 +2,34 @@
 
 #include <algorithm>
 #include <functional>
+#include <iostream>
 #include <vector>
 
 namespace gamepad {
-  GamepadDispatcher::GamepadDispatcher() : callbacks(std::vector<GamepadCallback>()) {}
+  GamepadDispatcher::GamepadDispatcher() : callbacks(std::list<GamepadCallback>()) {}
 
-  IGamepadDispatcher& GamepadDispatcher::registerCallback(GamepadCallback callback) {
-    callbacks.push_back(callback);
+  GamepadToken GamepadDispatcher::registerCallback(GamepadCallback callback) {
+    callbacks.push_front(callback);
+    std::cout << "Registered callback. # registered: " << callbacks.size() << std::endl;
+    return callbacks.begin();
+  }
+
+  IGamepadDispatcher& GamepadDispatcher::unregisterCallback(GamepadToken token) {
+    callbacks.erase(token);
+    std::cout << "Unregistered callback. # registered: " << callbacks.size() << std::endl;
     return *this;
   }
 
-  IGamepadDispatcher& GamepadDispatcher::unregisterCallback(GamepadCallback callback) {
-    auto end =
-        std::remove_if(callbacks.begin(), callbacks.end(), [callback](auto& current) -> bool {
-          return callback.target<GamepadCallback>() == current.target<GamepadCallback>();
-        });
-    callbacks = std::vector<GamepadCallback>(callbacks.begin(), end);
+  IGamepadDispatcher& GamepadDispatcher::registerCallback(GamepadCallback callback,
+                                                          GamepadTokens& tokens) {
+    tokens.push(registerCallback(callback));
     return *this;
+  }
+  void GamepadDispatcher::unregisterCallback(GamepadTokens& tokens) {
+    while (!tokens.empty()) {
+      unregisterCallback(tokens.front());
+      tokens.pop();
+    }
   }
 
   void GamepadDispatcher::update(Gamepad input) {

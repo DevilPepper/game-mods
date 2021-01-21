@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include <vector>
+#include <list>
 
 #include "GamepadStruct.h"
 #include "IGamepadDispatcher.h"
@@ -9,12 +9,16 @@
 namespace gamepad {
   class GamepadDispatcher : public IGamepadDispatcher {
    private:
-    std::vector<GamepadCallback> callbacks;
+    std::list<GamepadCallback> callbacks;
 
    public:
     GamepadDispatcher();
-    IGamepadDispatcher& registerCallback(GamepadCallback callback);
-    IGamepadDispatcher& unregisterCallback(GamepadCallback callback);
+    GamepadToken registerCallback(GamepadCallback callback);
+    IGamepadDispatcher& unregisterCallback(GamepadToken callback);
+
+    IGamepadDispatcher& registerCallback(GamepadCallback callback, GamepadTokens& tokens);
+    void unregisterCallback(GamepadTokens& tokens);
+
     void update(Gamepad input);
   };
 }  // namespace gamepad
