@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/Stuff-Mods/MHW-CommonLib/compare/v0.1.8...v0.1.9) (2021-01-21)
+
+
+### Bug Fixes
+
+* **CMake:** remove loader lib from target linking ([7f611e3](https://github.com/Stuff-Mods/MHW-CommonLib/commit/7f611e344cfa2b97e774c56605546a4a2b8b9e6c))
+
 ### [0.1.8](https://github.com/Stuff-Mods/MHW-CommonLib/compare/v0.1.7...v0.1.8) (2021-01-21)
 
 ### [0.1.7](https://github.com/Stuff-Mods/MHW-CommonLib/compare/v0.1.6...v0.1.7) (2021-01-21)
