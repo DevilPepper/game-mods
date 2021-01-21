@@ -11,9 +11,12 @@
 #include "GamepadStruct.h"
 
 namespace gamepad {
+  using GamepadCallback = std::function<void(const Gamepad&)>;
+
   class IGamepadDispatcher {
    public:
-    virtual IGamepadDispatcher& registerCallback(std::function<void(const Gamepad&)> callback) = 0;
+    virtual IGamepadDispatcher& registerCallback(GamepadCallback callback) = 0;
+    virtual IGamepadDispatcher& unregisterCallback(GamepadCallback callback) = 0;
     virtual void update(Gamepad input) = 0;
   };
 
