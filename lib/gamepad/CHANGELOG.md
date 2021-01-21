@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/Stuff-Mods/GamepadLib/compare/v0.1.4...v0.2.0) (2021-01-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* change api to use tokens since there is no way to compare std::functions
+
+### Bug Fixes
+
+* change api to use tokens since there is no way to compare std::functions ([41f27ec](https://github.com/Stuff-Mods/GamepadLib/commit/41f27ec7d9a97a5a3e0968bbbccdba7eecfe0f07))
+
 ### [0.1.4](https://github.com/Stuff-Mods/GamepadLib/compare/v0.1.3...v0.1.4) (2021-01-21)
 
 
