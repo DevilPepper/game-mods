@@ -4,11 +4,13 @@
 #include "gamepad.h"
 #pragma comment(lib, "GamepadLib.lib")
 
-#include "hermes/Hermes.h"
+#include "plugin/Hermes.h"
 
 using gamepad::Gamepad;
+using gamepad::GamepadToken;
 
 Hermes hermes;
+GamepadToken token;
 
 void callback(const Gamepad& gamepad) {
   hermes.handleInput(gamepad);
@@ -17,7 +19,10 @@ void callback(const Gamepad& gamepad) {
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH:
-      gamepad::GetDispatcher().registerCallback(&callback);
+      token = gamepad::GetDispatcher().registerCallback(&callback);
+      break;
+    case DLL_PROCESS_DETACH:
+      gamepad::GetDispatcher().unregisterCallback(token);
       break;
     default:
       break;

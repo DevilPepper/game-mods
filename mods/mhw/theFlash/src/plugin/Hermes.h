@@ -5,11 +5,11 @@
 #include "gamepad.h"
 #pragma comment(lib, "GamepadLib.lib")
 
-#include "hooky/IHook.h"
+#include "plugin/IPlugin.h"
 
 using std::string;
 
-class Hermes : public MHW::IHook {
+class Hermes : public MHW::IPlugin {
  private:
   const string settings = "TheFlash.json";
   intptr_t walkSpeedOffset = 0x940;

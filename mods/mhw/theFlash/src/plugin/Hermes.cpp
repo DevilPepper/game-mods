@@ -6,6 +6,9 @@
 #include "MHW.h"
 #pragma comment(lib, "mhw-common.lib")
 
+#include "loader.h"
+#pragma comment(lib, "loader.lib")
+
 using loader::DEBUG;
 using loader::LOG;
 using stuff::addy::Offsets;
@@ -13,7 +16,7 @@ using stuff::memory::writeMem;
 
 using namespace gamepad;
 
-Hermes::Hermes() : MHW::IHook() {
+Hermes::Hermes() : MHW::IPlugin() {
   expBase = MHW::loadConfig(settings)["maxSpeedMultiplier"].get<int>();
 }
 
