@@ -69,12 +69,12 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        wget -nc -q -O CHANGELOG.md https://raw.githubusercontent.com/wiki/$GITHUB_REPOSITORY/CHANGELOG.md || true
+        wget -nc -q -O Changelog.md https://raw.githubusercontent.com/wiki/$GITHUB_REPOSITORY/Changelog.md || true
         npx standard-version --silent --dry-run | sed '/---/d' > notes.md
 
         git config user.name "Github Actions"
         git config user.email action@github.com
-        npx standard-version
+        npx standard-version --infile Changelog.md
         git reset --soft HEAD~
         
         GIT_TAG=$(cat notes.md | grep -o "\[.*\]" -m 1 | tail -n1)
@@ -95,7 +95,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.PROJECT_NAME }} Changelog
-        path: CHANGELOG.md
+        path: Changelog.md
 
   wiki:
     needs: publish
