@@ -6,9 +6,12 @@
 #include <vector>
 
 #include "plugin/IPlugin.h"
+#include "stuff.h"
+#pragma comment(lib, "stuff.lib")
 
 using std::string;
 using std::vector;
+using stuff::functions::PtrPtrCharCharConsumer;
 
 class LockOn2MapPin : public MHW::IPlugin {
  private:
@@ -18,10 +21,12 @@ class LockOn2MapPin : public MHW::IPlugin {
   vector<intptr_t> monster_i{ 0x698, 0, 0x138 };
   vector<intptr_t> lockOnOffsets{ 0x50, 0x80, 0x80, -0x7C };
   vector<intptr_t> numMonsters{ 0x50, 0x80, 0x80, 0x120, 0x958 };
+  PtrPtrCharCharConsumer pinFunc;
 
   void pinMap(uintptr_t unknown, uintptr_t target, char isMonster);
   bool isOnTheLoose(intptr_t monsterAddr);
   int getRealIndex(intptr_t address, int idx);
+  int* getRealIndexArray(intptr_t address);
 
  public:
   LockOn2MapPin();

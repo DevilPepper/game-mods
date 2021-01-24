@@ -13,7 +13,7 @@ using loader::DEBUG;
 using loader::LOG;
 
 void LockOn2MapPin::pinMap(uintptr_t unknown, uintptr_t target, char isMonster) {
-  ((PtrPtrCharCharConsumer)addresses.get<intptr_t>("PinMap()"))(unknown, target, isMonster, 0);
+  pinFunc(unknown, target, isMonster, 0);
 }
 
 bool LockOn2MapPin::isOnTheLoose(intptr_t monsterAddr) {
@@ -56,6 +56,10 @@ bool LockOn2MapPin::isOnTheLoose(intptr_t monsterAddr) {
 }
 
 int LockOn2MapPin::getRealIndex(intptr_t address, int idx) {
-  address -= 0x19F8;
   return *(int*)(address + ((intptr_t)idx * 8));
+}
+
+int* LockOn2MapPin::getRealIndexArray(intptr_t address) {
+  address += 0x6C;
+  return (int*)address;
 }

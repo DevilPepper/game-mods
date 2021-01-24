@@ -13,7 +13,9 @@ using loader::LOG;
 
 using stuff::addy::Offsets;
 
-LockOn2MapPin::LockOn2MapPin() : MHW::IPlugin() {}
+LockOn2MapPin::LockOn2MapPin() : MHW::IPlugin() {
+  pinFunc = (PtrPtrCharCharConsumer)addresses.get<intptr_t>("PinMap()");
+}
 
 void LockOn2MapPin::updatePin() {
   int idx = -1;
@@ -49,7 +51,11 @@ void LockOn2MapPin::updatePin() {
                    std::back_inserter(monstersOnTheLoose),
                    [this](uintptr_t m) { return isOnTheLoose(m); });
 
-      pinMap(p0, monstersOnTheLoose[getRealIndex(lockOnAddr, idx)], 1);
+      lockOnAddr -= 0x19F8;
+      auto realIdx = getRealIndex(lockOnAddr, idx);
+      auto realIdxArr = getRealIndexArray(lockOnAddr);
+
+      pinMap(p0, monstersOnTheLoose[realIdxArr[realIdx]], 1);
     }
   } else {
     auto nonZeroAddr = readMem(addresses.get<intptr_t>("pin_params"), nonZero, monster);
