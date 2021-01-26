@@ -10,6 +10,7 @@ This is also where I'll keep _addresses.json_ updated
 - [GamepadHook](https://github.com/Stuff-Mods/MHW-GamepadHook)
 - [HUDToggler](https://github.com/Stuff-Mods/MHW-HUDToggler)
 - [LockOn2MapPin](https://github.com/Stuff-Mods/MHW-LockOn2MapPin)
+- [ReturnTimer](https://github.com/Stuff-Mods/MHW-ReturnTimer)
 
 ## Symlink
 
