@@ -21,6 +21,7 @@ jobs:
           - GamepadHook
           - HUDToggler
           - LockOn2MapPin
+          - ReturnTimer
     runs-on: ubuntu-latest
     steps:
 
