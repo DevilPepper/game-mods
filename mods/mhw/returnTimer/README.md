@@ -2,12 +2,44 @@
 
 ## What is this?
 
+This plugin lets you control the quest end timer:
+
+Input | Effect
+:--- |:---
+Hold L1 and press Triangle | Adds 10 seconds to the timer
+Hold L1 and press Circle | Toggles freeze timer on/off
+Hold L1 and press X | Ends the timer
+
 ## Requirements
 
 - [Stracker's Loader](https://www.nexusmods.com/monsterhunterworld/mods/1982)
 - [Gamepad Hook](https://github.com/Stuff-Mods/MHW-GamepadHook/releases/latest)
 
 ## Limitations
+
+It's made only for gamepads at this time, but it's easy to add other command sources (i.e. chat commands, keyboard, mouse,...):
+
+```cpp
+void ReturnTimer::controlTimerSomeOtherWay(...) {
+  auto [timerAddr, isEndOfQuest] = readTimer();
+  if (isEndOfQuest) {
+    if (freezeTime) {
+      freezeTimer(timerAddr);
+    }
+    ...
+    if (shouldAddTime) {
+      // Doesn't have to be 10 (imagine typing `/timer +20`)
+      addSeconds(10, timerAddr);
+    } else if (shouldTogleFreezeTimer) {
+      toggleFreezeTimer(timerAddr);
+    } else if (shouldEndTimer) {
+      endTimer(timerAddr);
+    }
+  }
+}
+```
+
+Maybe I'll add more command sources some day. Or feel free to open a PR.
 
 ## Compiling and coding
 
