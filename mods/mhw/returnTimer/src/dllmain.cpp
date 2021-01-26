@@ -4,20 +4,25 @@
 #include "gamepad.h"
 #pragma comment(lib, "GamepadLib.lib")
 
-#include "counter/Counter.h"
+#include "plugin/ReturnTimer.h"
 
 using gamepad::Gamepad;
+using gamepad::GamepadToken;
 
-Counter counter;
+ReturnTimer plugin;
+GamepadToken token;
 
 void callback(const Gamepad& gamepad) {
-  counter.handleInput(gamepad);
+  plugin.handleInput(gamepad);
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH:
-      gamepad::GetDispatcher().registerCallback(&callback);
+      token = gamepad::GetDispatcher().registerCallback(&callback);
+      break;
+    case DLL_PROCESS_DETACH:
+      gamepad::GetDispatcher().unregisterCallback(token);
       break;
     default:
       break;
