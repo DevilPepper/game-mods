@@ -70,8 +70,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         wget -nc -q -O Changelog.md https://raw.githubusercontent.com/wiki/$GITHUB_REPOSITORY/Changelog.md || true
-        npx standard-version --silent --dry-run | sed '/---/d' > notes.md
-        npx standard-version
+        npx standard-version --release-as major --silent --dry-run | sed '/---/d' > notes.md
+        npx standard-version --release-as major
 
         GIT_TAG=$(cat notes.md | grep -o "\[.*\]" -m 1 | tail -n1)
         GIT_TAG=${GIT_TAG#[}
