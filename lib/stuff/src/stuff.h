@@ -2,4 +2,4 @@
 
 #include "hook/hook.h"
 #include "memory/memory.h"
-#include "types/ghidra.h"
+#include "types/types.h"
