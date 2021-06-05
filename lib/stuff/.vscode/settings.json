@@ -1,0 +1,13 @@
+{
+  "C_Cpp.clang_format_fallbackStyle": "Google",
+  "C_Cpp.default.compilerArgs": [
+    "/std:c++latest"
+  ],
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+  "files.exclude": {
+    "build/": true
+  },
+  "editor.formatOnSave": true,
+  "editor.detectIndentation": false,
+  "files.trimFinalNewlines": true,
+}
