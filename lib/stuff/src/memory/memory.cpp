@@ -1,5 +1,3 @@
-// stuff.cpp : Defines the functions for the static library.
-
 #include "memory.h"
 
 #include <iostream>
