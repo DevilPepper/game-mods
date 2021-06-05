@@ -1,12 +1,19 @@
 # Need to set these env vars CC=CL CXX=CL | CC=CL.exe && CXX=CL.exe
 cmake_minimum_required(VERSION 3.19)
 
+if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
+  set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+endif()
+
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+endif()
+
 project(StuffLib CXX)
 
 # Only do these if this is the main project, and not if it is included through
 # add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-
   set(CMAKE_CXX_STANDARD 14)
   set(CXX_STANDARD_REQUIRED ON)
   add_compile_definitions(_MBCS)
@@ -35,5 +42,5 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   # endif()
 endif()
 
-add_subdirectory(extern)
+include(dependencies.cmake)
 add_subdirectory(src)
