@@ -1,4 +1,5 @@
 #pragma once
 
-#include "json/mhw-json.h"
-#include "plugin/IPlugin.h"
+#include "MHW/addy.h"
+#include "MHW/memory.h"
+#include "MHW/strings.h"

@@ -1,17 +1,17 @@
 #pragma once
 
-#include "addy/addy.h"
+#include "types/address.h"
 #pragma comment(lib, "stuff.lib")
 
-using namespace stuff;
+using stuff::types::Pointer;
 
 namespace MHW {
-  class IPlugin {
+  class Addy {
    public:
-    addy::Addy addresses;
+    Pointer zone;
 
    protected:
-    IPlugin();
+    Addy();
     int getZoneID();
   };
 }  // namespace MHW
