@@ -8,5 +8,5 @@ namespace MHW {
     return std::format("nativePC/plugins/config/{}", fileName);
   }
 
-  constexpr std::string_view addressFile = "addresses.json";
+  constexpr std::string_view addressFile = "addresses.yaml";
 }  // namespace MHW
