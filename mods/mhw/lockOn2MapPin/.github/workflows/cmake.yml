@@ -29,7 +29,7 @@ jobs:
 #     - name: Test
 #       working-directory: ${{runner.workspace}}/build
 #       shell: bash
-#       # Execute tests defined by the CMake configuration.  
+#       # Execute tests defined by the CMake configuration.
 #       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
 #       run: ctest -C $BUILD_TYPE
 
@@ -62,7 +62,7 @@ jobs:
         mkdir -p nativePC/plugins/
         mv $PROJECT_NAME.dll \
            nativePC/plugins
-        zip $PROJECT_NAME.zip -r nativePC
+        zip $PROJECT_NAME.zip -r nativePC/ yaml-cpp.dll
 
     - name: Update changelog and bump version
       id: set_vars
@@ -71,18 +71,14 @@ jobs:
       run: |
         wget -nc -q -O Changelog.md https://raw.githubusercontent.com/wiki/$GITHUB_REPOSITORY/Changelog.md || true
         npx standard-version --silent --dry-run | sed '/---/d' > notes.md
+        npx standard-version
 
-        git config user.name "Github Actions"
-        git config user.email action@github.com
-        npx standard-version --infile Changelog.md
-        git reset --soft HEAD~
-        
         GIT_TAG=$(cat notes.md | grep -o "\[.*\]" -m 1 | tail -n1)
         GIT_TAG=${GIT_TAG#[}
         GIT_TAG=${GIT_TAG%]}
         echo "GIT_TAG=v$GIT_TAG" >> $GITHUB_ENV
         echo "::set-output name=git_tag::v$GIT_TAG"
-        
+
     - name: Create release with binaries
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -116,12 +112,18 @@ jobs:
         GIT_TAG: ${{ needs.publish.outputs.git_tag }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git config user.name "Github Actions"
-        git config user.email action@github.com
-        git add -A
-        git commit -m "update wiki for $GIT_TAG"
-        git tag -a $GIT_TAG -m "$GIT_TAG"
-        git push --follow-tags origin master
+        if (test $(git diff --numstat | cut -f1) -gt 2)
+        then
+          git config user.name "Github Actions"
+          git config user.email action@github.com
+          git add -A
+          git commit -m "update wiki for $GIT_TAG"
+          git tag -a $GIT_TAG -m "$GIT_TAG"
+          git push --follow-tags origin master
+        else
+          echo "No notable changes in this release"
+          git reset --hard HEAD
+        fi
 
   next:
     needs: publish

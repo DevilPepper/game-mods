@@ -1,19 +1,17 @@
-#include "stuff.h"
-#pragma comment(lib, "stuff.lib")
+#include <loader.h>
+#include <memory/memory.h>
 
-#include "loader.h"
-#pragma comment(lib, "loader.lib")
+#include <string_view>
 
 #include "LockOn2MapPin.h"
 
-using namespace stuff::memory;
-using stuff::functions::PtrPtrCharCharConsumer;
-
 using loader::DEBUG;
 using loader::LOG;
+using std::string_view;
+using stuff::memory::readMem;
 
 void LockOn2MapPin::pinMap(uintptr_t unknown, uintptr_t target, char isMonster) {
-  pinFunc(unknown, target, isMonster, 0);
+  addresses.fnPinMap(unknown, target, isMonster, 0);
 }
 
 bool LockOn2MapPin::isOnTheLoose(intptr_t monsterAddr) {
@@ -34,7 +32,7 @@ bool LockOn2MapPin::isOnTheLoose(intptr_t monsterAddr) {
   // clang-format on
 
   intptr_t actionPtr = NULL;
-  auto actionAddr = readMem(monsterActionBase, monsterAction, actionPtr, false);
+  auto actionAddr = readMem(monsterActionBase, monsterAction, actionPtr);
   LOG(DEBUG) << std::hex << "monster action @ 0x" << actionAddr << ": " << actionPtr;
 
   auto offset = *(unsigned int*)(actionPtr + 3);
@@ -44,14 +42,14 @@ bool LockOn2MapPin::isOnTheLoose(intptr_t monsterAddr) {
   // vector<intptr_t> actionRef{ actionPtr + offset + 7 + 8, 0 };
 
   // auto strAddr = (char*)followPointers(0, actionRef);
-  string action(*strAddr);
+  string_view action(*strAddr);
 
   LOG(DEBUG) << std::hex << "action string @ 0x" << strAddr << ": " << action;
 
   // clang-format off
-  return action.find("Capture") == string::npos
-      && (action.find("Die")    == string::npos || action.find("DieSleep") != string::npos)
-      && (action.find("Dead")   == string::npos || action.find("Deadly") != string::npos);
+  return action.find("Capture") == string_view::npos
+      && (action.find("Die")    == string_view::npos || action.find("DieSleep") != string_view::npos)
+      && (action.find("Dead")   == string_view::npos || action.find("Deadly")   != string_view::npos);
   // clang-format on
 }
 
