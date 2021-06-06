@@ -11,7 +11,6 @@ namespace MHW {
     Pointer zone;
 
    protected:
-    Addy();
     int getZoneID();
   };
 }  // namespace MHW
