@@ -89,7 +89,7 @@ jobs:
         find -name '*.zip' -exec mv -i -- {} . \;
         unzip "*.zip"
         cp addresses.* nativePC/plugins/config
-        zip $PROJECT_NAME.zip -r nativePC *.dll
+        zip $PROJECT_NAME.zip -r nativePC/ licenses/ *.dll
 
     - name: Create release with binaries
       env:
