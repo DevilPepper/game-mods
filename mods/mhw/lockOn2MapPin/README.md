@@ -34,6 +34,23 @@ This project uses CMake and depends on my [fork](https://github.com/ForksKnivesA
 - Microsoft Visual C++ (MSVC) compiler toolset
   - This can be installed with Visual Studio installer :vomiting_face:
   - OR by installing [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/#other) separately :muscle:
+- [vcpkg](https://github.com/microsoft/vcpkg)
+
+### vcpkg
+
+I cloned it to _C:\\dev\\vcpkg_, but this can be anywhere.
+Follow the instructions in their readme's [Getting Started](https://github.com/microsoft/vcpkg#getting-started).
+
+In my powershell profile, I have this:
+
+```pwsh
+# vcpkg
+$env:Path+=";C:\dev\vcpkg"
+$env:VCPKG_DEFAULT_TRIPLET="x64-windows"
+$env:VCPKG_FEATURE_FLAGS="manifests,versions"
+$env:VCPKG_DISABLE_METRICS=$True
+$env:VCPKG_ROOT="C:/dev/vcpkg"
+```
 
 ### Build
 
