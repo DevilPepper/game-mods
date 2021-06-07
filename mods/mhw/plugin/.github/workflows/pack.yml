@@ -30,12 +30,16 @@ jobs:
         plugin: ${{ matrix.plugin }}
       run: |
         curl -L https://github.com/Stuff-Mods/MHW-${plugin}/releases/latest/download/${plugin}.zip -o ${plugin}.zip
+        curl -L https://raw.githubusercontent.com/Stuff-Mods/MHW-${plugin}/master/addresses.yaml -o ${plugin}.yaml
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.plugin }} Zip
-        path: ./*.zip
+        path: |
+          ./*.zip
+          ./*.yaml
+          !./addresses.yaml
   
   merge:
     needs: download
@@ -49,13 +53,31 @@ jobs:
 
     - name: Download build artifacts
       uses: actions/download-artifact@v2
+
+    - name: Merge yaml files
+      run: |
+        find -name '*.yaml' -exec mv -i -- {} . \;
+        grep -l 404 *.yaml | xargs rm
+        # TODO
+      
+    - name: Commit yaml if changed
+      run: |
+        if [ -n "$(git diff --numstat)" ]
+        then
+          git config user.name "Github Actions"
+          git config user.email action@github.com
+          git commit -am "added new addresses"
+          git push origin master
+        else
+          echo "No new addresses"
+        fi
     
     - name: Merge zips
       run: |
         find -name '*.zip' -exec mv -i -- {} . \;
         unzip "*.zip"
-        cp addresses.json nativePC/plugins/config
-        zip $PROJECT_NAME.zip -r nativePC GamepadLib.dll
+        cp addresses.* nativePC/plugins/config
+        zip $PROJECT_NAME.zip -r nativePC *.dll
 
     - name: Create release with binaries
       env:
@@ -64,4 +86,4 @@ jobs:
         version=$GITHUB_RUN_NUMBER-$(date +%F)
         gh release create $version -t "$version" \
            $PROJECT_NAME.zip \
-           addresses.json
+           addresses.*
