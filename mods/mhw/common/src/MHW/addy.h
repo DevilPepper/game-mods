@@ -1,11 +1,9 @@
 #pragma once
 
-#include "types/address.h"
-#pragma comment(lib, "stuff.lib")
-
-using stuff::types::Pointer;
+#include <types/address.h>
 
 namespace MHW {
+  using stuff::types::Pointer;
   class Addy {
    public:
     Pointer zone;

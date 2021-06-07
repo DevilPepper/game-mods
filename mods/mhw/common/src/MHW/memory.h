@@ -1,15 +1,15 @@
 #pragma once
 
 #include <Windows.h>
+#include <memory/memory.h>
+#include <types/address.h>
 
 #include <vector>
 
-#include "memory/memory.h"
-#pragma comment(lib, "stuff.lib")
-
-using std::vector;
-
 namespace MHW {
+  using std::vector;
+  using stuff::types::Offsets;
+  using stuff::types::Pointer;
   intptr_t mhwBase = 0x140000000;
 
   /**
@@ -28,7 +28,7 @@ namespace MHW {
    * @return         address computed at the end of the traversal
    */
   template <typename T>
-  intptr_t readMem(intptr_t base, const vector<intptr_t>& offsets, T& buffer) {
+  Pointer readMem(Pointer base, const Offsets& offsets, T& buffer) {
     return stuff::memory::readMem(base, offsets, buffer, mhwBase);
   }
 
@@ -48,7 +48,7 @@ namespace MHW {
    * @return         address computed at the end of the traversal
    */
   template <typename T>
-  intptr_t writeMem(intptr_t base, const vector<intptr_t>& offsets, T& buffer) {
+  Pointer writeMem(Pointer base, const Offsets& offsets, T& buffer) {
     return stuff::memory::writeMem(base, offsets, buffer, mhwBase);
   }
 
@@ -71,7 +71,7 @@ namespace MHW {
    * @return         address computed at the end of the traversal
    */
   template <typename T>
-  intptr_t readMem(intptr_t base, intptr_t offset, T& buffer) {
+  Pointer readMem(Pointer base, intptr_t offset, T& buffer) {
     return stuff::memory::readMem(base, offset, buffer, mhwBase);
   }
 
@@ -94,7 +94,7 @@ namespace MHW {
    * @return         address computed at the end of the traversal
    */
   template <typename T>
-  intptr_t writeMem(intptr_t base, intptr_t offset, T& buffer) {
+  Pointer writeMem(Pointer base, intptr_t offset, T& buffer) {
     return stuff::memory::writeMem(base, offset, buffer, mhwBase);
   }
 }  // namespace MHW

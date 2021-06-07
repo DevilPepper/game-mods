@@ -478,3 +478,6 @@ Plugins/ClutchRework/nativePC
 # dependencies (vcpkg or .libs)
 vcpkg_installed/
 deps/
+
+# Extension garbage
+c_cpp_properties.json
