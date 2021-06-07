@@ -1,4 +1,5 @@
 {
+  "C_Cpp.clang_format_style": "file",
   "C_Cpp.clang_format_fallbackStyle": "Google",
   "C_Cpp.default.compilerArgs": [
     "/std:c++latest"
@@ -10,4 +11,8 @@
   "editor.formatOnSave": true,
   "editor.detectIndentation": false,
   "files.trimFinalNewlines": true,
+  "files.associations": {
+    "**/include/**": "cpp"
+  },
+  "C_Cpp.autoAddFileAssociations": false,
 }

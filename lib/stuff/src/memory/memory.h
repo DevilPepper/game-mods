@@ -4,10 +4,9 @@
 
 #include <vector>
 
-using std::vector;
-
 namespace stuff {
   namespace memory {
+    using std::vector;
     /**
      * Returns an address found by jumping to addresses pointed by <code>address + offset</code>
      * for each offset in the list except the last. The last offset is added to the found address.
