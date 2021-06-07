@@ -11,6 +11,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   PROJECT_NAME: mhw-common
+  LICENSE_SCRIPT: https://gist.githubusercontent.com/SupaStuff/e8fe5e4edbecb87d6659ab4b686aa2bc/raw/a11a1985c5514df36962c9ace636cc2c3c6504c5/cmake-collect-licenses
 
 jobs:
   build:
@@ -33,11 +34,16 @@ jobs:
 #       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
 #       run: ctest -C $BUILD_TYPE
 
+    - name: Copy licenses
+      run: bash <(curl -Ls $LICENSE_SCRIPT)
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.PROJECT_NAME }} Release
-        path: ./build/src/Release/*
+        path: |
+          ./build/src/Release/*
+          ./licenses/
 
   publish:
     needs: build
@@ -61,8 +67,8 @@ jobs:
         mkdir temp/
         find src -name '*.h' | cpio -pdm temp/
         mv temp/src lib
-        mv $PROJECT_NAME.lib lib
-        zip $PROJECT_NAME.zip -r lib
+        mv build/src/Release/$PROJECT_NAME.lib lib
+        zip $PROJECT_NAME.zip -r lib/ licenses/
 
     - name: Update changelog and bump version
       id: set_vars
