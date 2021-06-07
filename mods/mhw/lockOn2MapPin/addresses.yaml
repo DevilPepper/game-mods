@@ -1,0 +1,8 @@
+display_options: 0x5224b80
+monsters: 0x5183e00
+pin_params: 0x5073db0
+quest_manager: 0x5073ed0
+zone: 0x0506f1b0
+
+fnLockOnIncrement: 0x1412a54a0
+fnPinMap: 0x141dd3060
