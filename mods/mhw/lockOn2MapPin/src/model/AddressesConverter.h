@@ -7,9 +7,11 @@
 
 #include "Addresses.h"
 
-using stuff::types::Pointer;
-
 namespace YAML {
+  using model::Addresses;
+  using model::InvokableConsumer;
+  using stuff::types::Pointer;
+
   template <>
   struct convert<Addresses> {
     static bool decode(const Node& node, Addresses& rhs) {
