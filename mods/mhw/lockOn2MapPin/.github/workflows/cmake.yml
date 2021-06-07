@@ -11,6 +11,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   PROJECT_NAME: LockOn2MapPin
+  LICENSE_SCRIPT: https://gist.githubusercontent.com/SupaStuff/e8fe5e4edbecb87d6659ab4b686aa2bc/raw/a11a1985c5514df36962c9ace636cc2c3c6504c5/cmake-collect-licenses
   VCPKG_DEFAULT_TRIPLET: x64-windows
   VCPKG_FEATURE_FLAGS: "manifests,versions"
   VCPKG_DISABLE_METRICS: true
@@ -42,11 +43,16 @@ jobs:
 #       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
 #       run: ctest -C $BUILD_TYPE
 
+    - name: Copy licenses
+      run: bash <(curl -Ls $LICENSE_SCRIPT)
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.PROJECT_NAME }} Release
-        path: ./build/src/Release/*
+        path: |
+          ./build/src/Release/*
+          ./licenses/
 
   publish:
     needs: build
@@ -68,10 +74,11 @@ jobs:
 
     - name: Zip it
       run: |
+        mv build/src/Release/*.dll .
         mkdir -p nativePC/plugins/
         mv $PROJECT_NAME.dll \
            nativePC/plugins
-        zip $PROJECT_NAME.zip -r nativePC/ yaml-cpp.dll
+        zip $PROJECT_NAME.zip -r nativePC/ licenses/ yaml-cpp.dll
 
     - name: Update changelog and bump version
       id: set_vars
