@@ -5,5 +5,6 @@ monsters: 0x5183e00
 pin_params: 0x5073db0
 pl_params: 0x5072488
 quest_manager: 0x5073ed0
+session_quest: 0x506f240
 zone: 0x506f1b0
 
