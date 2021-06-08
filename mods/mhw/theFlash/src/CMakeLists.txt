@@ -1,6 +1,12 @@
 project(TheFlash)
 FILE(GLOB_RECURSE TheFlashSources CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR} *.h *.cpp)
-target_compile_definitions(mhw-common PRIVATE STUFF_PLUGIN)
 add_library(TheFlash SHARED ${TheFlashSources})
 target_compile_features(TheFlash PRIVATE cxx_std_20)
-target_link_libraries(TheFlash PRIVATE loader stuff mhw-common GamepadLib)
+target_link_libraries(TheFlash
+  PRIVATE
+    loader
+    stuff
+    mhw-common
+    GamepadLib
+    yaml-cpp
+)

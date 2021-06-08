@@ -13,12 +13,12 @@ FetchContent_Declare(
 FetchContent_Declare(
         stuff
         GIT_REPOSITORY "https://github.com/Stuff-Mods/StuffLib"
-        GIT_TAG "2ac3bfda4c075fc8a6bdc25a94bf7d750c6f95de"
+        GIT_TAG "ebe57dbca3e93ea732dacf9f2f590c868682ce80"
 )
 FetchContent_Declare(
         mhw-common
         GIT_REPOSITORY "https://github.com/Stuff-Mods/MHW-CommonLib"
-        GIT_TAG "7f611e344cfa2b97e774c56605546a4a2b8b9e6c"
+        GIT_TAG "11d285239eb0e7de96481919d25f5b6771cf1013"
 )
 
 FetchContent_MakeAvailableNotAll(loader)

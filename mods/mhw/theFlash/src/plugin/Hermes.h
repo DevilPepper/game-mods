@@ -1,27 +1,34 @@
 #pragma once
 
-#include <string>
+#include <Windows.h>
+#include <gamepad.h>
+#include <types/address.h>
 
-#include "gamepad.h"
-#pragma comment(lib, "GamepadLib.lib")
+#include <string_view>
 
-#include "plugin/IPlugin.h"
+#include "../model/Addresses.h"
 
-using std::string;
+namespace plugin {
+  using gamepad::Gamepad;
+  using model::Addresses;
+  using stuff::types::Pointer;
 
-class Hermes : public MHW::IPlugin {
- private:
-  const string settings = "TheFlash.json";
-  intptr_t walkSpeedOffset = 0x940;
-  intptr_t runSpeedOffset = 0x980;
-  intptr_t dashSpeedOffset = 0x9b0;
+  constexpr std::string_view settings = "TheFlash.yaml";
 
-  int expBase;
-  float walk = 1.12;
-  float run = 1;
-  float dash = 1.20;
+  class Hermes {
+   private:
+    intptr_t walkSpeedOffset = 0x940;
+    intptr_t runSpeedOffset = 0x980;
+    intptr_t dashSpeedOffset = 0x9b0;
 
- public:
-  Hermes();
-  void handleInput(const gamepad::Gamepad& input);
-};
+    int expBase;
+    float walk = 1.12;
+    float run = 1;
+    float dash = 1.20;
+
+   public:
+    Addresses addresses;
+    Hermes();
+    void handleInput(const Gamepad& input);
+  };
+}  // namespace plugin

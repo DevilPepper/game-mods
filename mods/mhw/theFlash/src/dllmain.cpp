@@ -1,13 +1,12 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
+#include <gamepad.h>
 #include <windows.h>
-
-#include "gamepad.h"
-#pragma comment(lib, "GamepadLib.lib")
 
 #include "plugin/Hermes.h"
 
 using gamepad::Gamepad;
 using gamepad::GamepadToken;
+using plugin::Hermes;
 
 Hermes hermes;
 GamepadToken token;

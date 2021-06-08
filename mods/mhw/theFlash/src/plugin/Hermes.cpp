@@ -1,36 +1,32 @@
 #include "Hermes.h"
 
+#include <MHW/memory.h>
+#include <MHW/strings.h>
 #include <math.h>
+#include <yaml-cpp/yaml.h>
 
-#include "MHW-deps.h"
-#include "MHW.h"
-#pragma comment(lib, "mhw-common.lib")
+#include "../model/AddressesConverter.h"
 
-#include "loader.h"
-#pragma comment(lib, "loader.lib")
+namespace plugin {
+  using MHW::addressFile;
+  using MHW::writeMem;
 
-using loader::DEBUG;
-using loader::LOG;
-using stuff::addy::Offsets;
-using stuff::memory::writeMem;
-
-using namespace gamepad;
-
-Hermes::Hermes() : MHW::IPlugin() {
-  expBase = MHW::loadConfig(settings)["maxSpeedMultiplier"].get<int>();
-}
-
-void Hermes::handleInput(const Gamepad& input) {
-  if (getZoneID() != 0) {
-    auto multiplier = pow(expBase, input.leftTriggerMagnitude);
-
-    float walkSpeed = walk * multiplier;
-    float runSpeed = run * multiplier;
-    float dashSpeed = dash * multiplier;
-
-    auto speedBase = addresses.get<intptr_t>("pl_params");
-    auto walkAddr = writeMem(speedBase, walkSpeedOffset, walkSpeed);
-    auto runAddr = writeMem(speedBase, runSpeedOffset, runSpeed);
-    auto dashAddr = writeMem(speedBase, dashSpeedOffset, dashSpeed);
+  Hermes::Hermes() {
+    expBase = YAML::LoadFile(MHW::getFilePath(settings))["maxSpeedMultiplier"].as<int>();
+    addresses = YAML::LoadFile(MHW::getFilePath(addressFile)).as<Addresses>();
   }
-}
+
+  void Hermes::handleInput(const Gamepad& input) {
+    if (addresses.getZoneID() != 0) {
+      auto multiplier = pow(expBase, input.leftTriggerMagnitude);
+
+      float walkSpeed = walk * multiplier;
+      float runSpeed = run * multiplier;
+      float dashSpeed = dash * multiplier;
+
+      auto walkAddr = writeMem(addresses.pl_params, walkSpeedOffset, walkSpeed);
+      auto runAddr = writeMem(addresses.pl_params, runSpeedOffset, runSpeed);
+      auto dashAddr = writeMem(addresses.pl_params, dashSpeedOffset, dashSpeed);
+    }
+  }
+}  // namespace plugin
