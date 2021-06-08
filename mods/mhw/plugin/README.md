@@ -2,7 +2,7 @@
 
 One stop shop for my plugins. Check out the releases labeled by date.
 
-This is also where I'll keep _addresses.json_ updated
+This is also where I'll keep _addresses.yaml_ updated
 
 ## Plugins in this pack
 
@@ -14,9 +14,9 @@ This is also where I'll keep _addresses.json_ updated
 
 ## Symlink
 
-To make my life easier I symlink _addresses.json_ so that the changes I make are available to me without me having to copy it over to _nativePC/..._. I do this once by opening `cmd` as admin, navigating to this repo and running this:
+To make my life easier I symlink _addresses.yaml_ so that the changes I make are available to me without me having to copy it over to _nativePC/..._. I do this once by opening `cmd` as admin, navigating to this repo and running this:
 
 ```cmd
-mklink "C:\Program Files (x86)\Steam\steamapps\common\Monster Hunter World\nativePC\plugins\config\addresses.json" "%cd%\addresses.json"
+mklink "C:\Program Files (x86)\Steam\steamapps\common\Monster Hunter World\nativePC\plugins\config\addresses.yaml" "%cd%\addresses.yaml"
 
 ```
