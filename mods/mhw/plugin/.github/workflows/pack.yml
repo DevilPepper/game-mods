@@ -87,7 +87,7 @@ jobs:
     - name: Merge zips
       run: |
         find -name '*.zip' -exec mv -i -- {} . \;
-        unzip "*.zip"
+        unzip -n "*.zip"
         cp addresses.* nativePC/plugins/config
         zip $PROJECT_NAME.zip -r nativePC/ licenses/ *.dll
 
