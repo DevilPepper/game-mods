@@ -77,7 +77,7 @@ jobs:
         mkdir -p nativePC/plugins/config
         mv $PROJECT_NAME.dll \
            nativePC/plugins
-        cp *.json nativePC/plugins/config/
+        cp HUD_toggles.json nativePC/plugins/config/
         zip $PROJECT_NAME.zip -r nativePC/ licenses/ yaml-cpp.dll
 
     - name: Update changelog and bump version
@@ -102,7 +102,7 @@ jobs:
       run: |
         gh release create $GIT_TAG -t "Release $GIT_TAG" --notes-file notes.md \
            *.zip \
-           *.json \
+           HUD_toggles.json \
            nativePC/plugins/*.dll
 
     - name: Upload Changelog
