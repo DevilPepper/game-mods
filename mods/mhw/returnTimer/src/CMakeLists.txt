@@ -4,7 +4,6 @@ add_library(ReturnTimer SHARED ${ReturnTimerSources})
 target_compile_features(ReturnTimer PRIVATE cxx_std_20)
 target_link_libraries(ReturnTimer
   PRIVATE
-    loader
     stuff
     mhw-common
     GamepadLib
