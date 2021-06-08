@@ -6,6 +6,5 @@ target_link_libraries(LockOn2MapPin
   PRIVATE
     stuff
     mhw-common
-    loader
     yaml-cpp
 )

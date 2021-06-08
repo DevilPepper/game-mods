@@ -26,8 +26,6 @@ It's still better than opening the map to set a pin.
 
 ## Compiling and coding
 
-This project uses CMake and depends on my [fork](https://github.com/ForksKnivesAndSpoons/MHW-QuestLoader) of [Stracker's Loader](https://github.com/Strackeror/MHW-QuestLoader).
-
 ### Prerequisites
 
 - [CMake >= 3.19](https://cmake.org/download/)

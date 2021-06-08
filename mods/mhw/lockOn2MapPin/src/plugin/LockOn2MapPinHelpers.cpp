@@ -1,15 +1,14 @@
-#include <loader.h>
 #include <memory/memory.h>
 #include <types/address.h>
 
 #include <format>
+// #include <iostream>
 #include <string_view>
 
 #include "LockOn2MapPin.h"
 
 namespace plugin {
-  using loader::DEBUG;
-  using loader::LOG;
+  // using std::cout;
   using std::string_view;
   using stuff::memory::readMem;
 
@@ -22,7 +21,7 @@ namespace plugin {
     monsterAddr += 0x61C8;
     int actionId = *(int*)(monsterAddr + 0xB0);
 
-    LOG(DEBUG) << std::format("actionId @ {:#010x}: {}", (monsterAddr + 0xB0), actionId);
+    // cout << std::format("actionId @ {:#010x}: {}", (monsterAddr + 0xB0), actionId);
 
     auto monsterActionBase = monsterAddr + (2 * 8) + 0x68;
 
@@ -36,15 +35,15 @@ namespace plugin {
 
     Pointer actionPtr = NULL;
     auto actionAddr = readMem(monsterActionBase, monsterAction, actionPtr);
-    LOG(DEBUG) << std::format("monster action @ {:#010x}: {:#010x}", actionAddr, actionPtr);
+    // cout << std::format("monster action @ {:#010x}: {:#010x}", actionAddr, actionPtr);
 
     auto offset = *(unsigned int*)(actionPtr + 3);
-    LOG(DEBUG) << std::format("action offset @ {:#010x}: {:#010x}", (actionPtr + 3), offset);
+    // cout << std::format("action offset @ {:#010x}: {:#010x}", (actionPtr + 3), offset);
 
     auto strAddr = (char**)(actionPtr + offset + 7 + 8);
     string_view action(*strAddr);
 
-    LOG(DEBUG) << std::format("action string @ {:#010x}: {}", (Pointer)strAddr, action);
+    // cout << std::format("action string @ {:#010x}: {}", (Pointer)strAddr, action);
 
     return isOnTheLoose(action);
   }
