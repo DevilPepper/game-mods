@@ -4,7 +4,6 @@ add_library(TheFlash SHARED ${TheFlashSources})
 target_compile_features(TheFlash PRIVATE cxx_std_20)
 target_link_libraries(TheFlash
   PRIVATE
-    loader
     stuff
     mhw-common
     GamepadLib
