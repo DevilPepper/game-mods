@@ -10,7 +10,7 @@ namespace MHW {
   using std::vector;
   using stuff::types::Offsets;
   using stuff::types::Pointer;
-  intptr_t mhwBase = 0x140000000;
+  inline constexpr intptr_t mhwBase = 0x140000000;
 
   /**
    * Reads into <code>buffer</code> the value found by traversing pointers
