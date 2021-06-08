@@ -1,13 +1,18 @@
 {
-  "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": true,
-  "files.eol": "\n",
+  "C_Cpp.clang_format_style": "file",
+  "C_Cpp.clang_format_fallbackStyle": "Google",
   "C_Cpp.default.compilerArgs": [
     "/std:c++latest"
   ],
-  "C_Cpp.clang_format_fallbackStyle": "Google",
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+  "files.exclude": {
+    "build/": true
+  },
   "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "editor.detectIndentation": false
+  "editor.detectIndentation": false,
+  "files.trimFinalNewlines": true,
+  "files.associations": {
+    "**/include/**": "cpp"
+  },
+  "C_Cpp.autoAddFileAssociations": false,
 }
