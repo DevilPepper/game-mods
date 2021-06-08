@@ -1,20 +1,20 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 // #include <functional>
 
-#include "gamepad.h"
-#pragma comment(lib, "GamepadLib.lib")
+#include <MHW/strings.h>
+#include <Windows.h>
+#include <gamepad.h>
+#include <hook/hook.h>
+#include <types/address.h>
+#include <yaml-cpp/yaml.h>
 
-#include "MHW-deps.h"
-#include "MHW.h"
-#pragma comment(lib, "mhw-common.lib")
-
-using stuff::json::parseHexString;
-
-using namespace stuff::functions;
 using namespace stuff;
-using namespace gamepad;
+using gamepad::Gamepad;
+using MHW::addressFile;
+using stuff::types::Pointer;
 
-PointerBiConsumer original = nullptr;
+using HookedConsumer = void (*)(long long, long long);
+HookedConsumer original = nullptr;
 void PollCtrlHook(long long p1, long long p2) {
   original(p1, p2);
   gamepad::GetDispatcher().update(*(Gamepad*)p1);
@@ -24,7 +24,8 @@ void PollCtrlHook(long long p1, long long p2) {
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH: {
-      auto PollCtrl = parseHexString(MHW::loadConfig("addresses.json")["PollController()"]);
+      auto PollCtrl =
+          YAML::LoadFile(MHW::getFilePath(addressFile))["fnPollController"].as<Pointer>();
       hook::init();
       hook::queue(PollCtrl, &PollCtrlHook, &original);
       hook::apply();
