@@ -1,39 +1,30 @@
 #include "HUDHookHelper.h"
 
-#include <string>
+#include <MHW/strings.h>
+#include <yaml-cpp/yaml.h>
 
-#include "MHW.h"
-#pragma comment(lib, "mhw-common.lib")
+#include "../model/AddressesConverter.h"
+#include "strings.h"
 
-using std::string;
+namespace plugin {
+  using MHW::addressFile;
+  using namespace gamepad;
 
-HUDHookHelper::HUDHookHelper() : MHW::IPlugin() {
-  // TODO: get this tf outta here
-  // clang-format off
-  vector<string> toggleStr{
-    "Player Info",
-    "Partner Info",
-    "Scoutfly Notifications",
-    "Minimap",
-    "Large Monster Icon",
-    "Button Guide",
-    "Objectives",
-    "Slinger Display",
-    "Item Bar"
-  };
-  // clang-format on
-  auto json = MHW::loadConfig(settings);
-  for (int i = 0; i < 8; i++) {
-    toggles[i] = json[toggleStr[i]].get<bool>();
+  HUDHookHelper::HUDHookHelper() {
+    addresses = YAML::LoadFile(MHW::getFilePath(addressFile)).as<Addresses>();
+    auto json = YAML::LoadFile(MHW::getFilePath(settings));
+    for (int i = 0; i < 8; i++) {
+      toggles[i] = json[toggleSettings[i]].as<bool>();
+    }
   }
-}
 
-void HUDHookHelper::handleInput(const Gamepad& input) {
-  if (justPressed(input, Buttons[SubtitlesToggle])) {
-    toggleSubtitles();
+  void HUDHookHelper::handleInput(const Gamepad& input) {
+    if (justPressed(input, Buttons[SubtitlesToggle])) {
+      toggleSubtitles();
+    }
+    if (justPressed(input, Buttons[HUDToggle]) || justReleased(input, Buttons[HUDToggle])) {
+      toggleHUD();
+    }
+    return;
   }
-  if (justPressed(input, Buttons[HUDToggle]) || justReleased(input, Buttons[HUDToggle])) {
-    toggleHUD();
-  }
-  return;
-}
+}  // namespace plugin

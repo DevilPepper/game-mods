@@ -1,11 +1,12 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
-#include "gamepad.h"
-#pragma comment(lib, "GamepadLib.lib")
+#include <Windows.h>
+#include <gamepad.h>
 
 #include "plugin/HUDHookHelper.h"
 
 using gamepad::Gamepad;
 using gamepad::GamepadToken;
+using plugin::HUDHookHelper;
 
 HUDHookHelper CaptainHook;
 GamepadToken token;

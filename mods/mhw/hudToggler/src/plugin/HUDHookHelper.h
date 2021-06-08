@@ -1,35 +1,34 @@
 #pragma once
 
 #include <Windows.h>
+#include <gamepad.h>
+#include <types/address.h>
 
-#include <string>
-#include <vector>
+#include "../model/Addresses.h"
 
-#include "gamepad.h"
-#pragma comment(lib, "GamepadLib.lib")
+namespace plugin {
+  using gamepad::Button;
+  using gamepad::Gamepad;
+  using model::Addresses;
+  using stuff::types::Offsets;
 
-#include "plugin/IPlugin.h"
+  class HUDHookHelper {
+   private:
+    Addresses addresses;
+    static const Button HUDToggle = Button::L1;
+    static const Button SubtitlesToggle = Button::Select;
 
-using namespace gamepad;
-using std::string;
-using std::vector;
+    intptr_t subtitle_setting = 0x10A;
+    Offsets subtitle_show{ 0x13e20, 0x332c };
+    Offsets hud_settings{ 0xa8, 0x151F8C };
 
-class HUDHookHelper : public MHW::IPlugin {
- private:
-  const string settings = "HUD_toggles.json";
-  static const Button HUDToggle = Button::L1;
-  static const Button SubtitlesToggle = Button::Select;
+    bool toggles[8];
 
-  intptr_t subtitle_setting = 0x10A;
-  vector<intptr_t> subtitle_show{ 0x13e20, 0x332c };
-  vector<intptr_t> hud_settings{ 0xa8, 0x151F8C };
+    void toggleHUD();
+    void toggleSubtitles();
 
-  bool toggles[8];
-
-  void toggleHUD();
-  void toggleSubtitles();
-
- public:
-  HUDHookHelper();
-  void handleInput(const Gamepad& input);
-};
+   public:
+    HUDHookHelper();
+    void handleInput(const Gamepad& input);
+  };
+}  // namespace plugin
