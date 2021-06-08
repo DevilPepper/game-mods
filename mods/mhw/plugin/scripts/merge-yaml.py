@@ -13,4 +13,4 @@ for f in sys.argv[1:]:
     data = yaml.safe_load(file)
     merged.update(data)
 
-print(yaml.dump(merged))
+print(yaml.dump(merged), end = '')
