@@ -17,6 +17,7 @@ namespace plugin {
 
   class Hermes {
    private:
+    Addresses addresses;
     intptr_t walkSpeedOffset = 0x940;
     intptr_t runSpeedOffset = 0x980;
     intptr_t dashSpeedOffset = 0x9b0;
@@ -27,7 +28,6 @@ namespace plugin {
     float dash = 1.20;
 
    public:
-    Addresses addresses;
     Hermes();
     void handleInput(const Gamepad& input);
   };
