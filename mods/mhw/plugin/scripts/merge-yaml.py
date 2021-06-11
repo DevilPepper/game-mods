@@ -7,10 +7,14 @@ def hexint_presenter(dumper, data):
 
 yaml.add_representer(int, hexint_presenter)
 
-merged = {}
+merged = {
+  "basePointers": {},
+  "functions": {}
+}
 for f in sys.argv[1:]:
   with open(f) as file:
     data = yaml.safe_load(file)
-    merged.update(data)
+    merged["basePointers"].update(data.get("basePointers", {}))
+    merged["functions"].update(data.get("functions", {}))
 
 print(yaml.dump(merged), end = '')
