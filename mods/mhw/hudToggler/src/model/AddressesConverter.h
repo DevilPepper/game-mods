@@ -14,10 +14,12 @@ namespace YAML {
   template <>
   struct convert<Addresses> {
     static bool decode(const Node& node, Addresses& rhs) {
-      rhs.zone = node["zone"].as<Pointer>();
+      auto basePointers = node["basePointers"];
 
-      rhs.display_options = node["display_options"].as<Pointer>();
-      rhs.save_data = node["save_data"].as<Pointer>();
+      rhs.zone = basePointers["zone"]["address"].as<Pointer>();
+
+      rhs.display_options = basePointers["display_options"]["address"].as<Pointer>();
+      rhs.save_data = basePointers["save_data"]["address"].as<Pointer>();
       return true;
     }
   };

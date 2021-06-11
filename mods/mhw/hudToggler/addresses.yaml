@@ -1,2 +1,7 @@
-display_options: 0x5224b80
-save_data: 0x5073e80
+basePointers:
+  display_options:
+    address: 0x5224b80
+    source: 0x1DA251A
+  save_data:
+    address: 0x5073e80
+    source: 0x489C26
