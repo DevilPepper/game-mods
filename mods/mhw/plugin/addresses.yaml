@@ -1,2 +1,29 @@
-basePointers: {}
-functions: {}
+basePointers:
+  display_options:
+    address: 0x5224b80
+    source: 0x1da251a
+  monsters:
+    address: 0x5183e00
+    source: 0x1fcc870
+  pin_params:
+    address: 0x5073db0
+    source: 0x1dbe396
+  pl_params:
+    address: 0x5072488
+    source: 0x1b2a232
+  quest_manager:
+    address: 0x5073ed0
+    source: 0x1b34641
+  save_data:
+    address: 0x5073e80
+    source: 0x489c26
+  session_quest:
+    address: 0x506f240
+    source: 0x1f80294
+  zone:
+    address: 0x506f1b0
+    source: 0x1b51e29
+functions:
+  fnLockOnIncrement: 0x12a54a0
+  fnPinMap: 0x1dd3060
+  fnPollController: 0x18e8ea0
