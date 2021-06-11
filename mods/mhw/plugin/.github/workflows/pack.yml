@@ -38,8 +38,7 @@ jobs:
         name: ${{ matrix.plugin }} Zip
         path: |
           ./*.zip
-          ./*.yaml
-          !./addresses.yaml
+          ./${{ matrix.plugin }}.yaml
   
   merge:
     needs: download
@@ -68,8 +67,11 @@ jobs:
       run: |
         find -name '*.yaml' -not -path '*/\.*' -exec mv -i -- {} . \;
         grep -l 404 *.yaml | xargs --no-run-if-empty rm || true
-        python scripts/merge-yaml.py *.yaml addresses.yaml > addresses.yml
-        mv addresses.yml addresses.yaml
+
+        mkdir temp/
+        mv addresses.meta.yaml addresses.yaml temp/
+        python scripts/merge-yaml.py *.yaml temp/addresses.yaml > addresses.yaml
+        mv temp/addresses.meta.yaml .
       
     - name: Commit yaml if changed
       run: |
@@ -97,4 +99,4 @@ jobs:
         version=$GITHUB_RUN_NUMBER-$(date +%F)
         gh release create $version -t "$version" \
            $PROJECT_NAME.zip \
-           addresses.*
+           *.yaml
