@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Windows.h>
 #include <types/address.h>
 #include <yaml-cpp/yaml.h>
 
@@ -15,15 +16,19 @@ namespace YAML {
   template <>
   struct convert<Addresses> {
     static bool decode(const Node& node, Addresses& rhs) {
-      rhs.zone = node["zone"].as<Pointer>();
+      auto functions = node["functions"];
+      auto basePointers = node["basePointers"];
+      auto exeBase = (Pointer)GetModuleHandle(NULL);
 
-      rhs.quest_manager = node["quest_manager"].as<Pointer>();
-      rhs.pin_params = node["pin_params"].as<Pointer>();
-      rhs.display_options = node["display_options"].as<Pointer>();
-      rhs.monsters = node["monsters"].as<Pointer>();
+      rhs.zone = basePointers["zone"]["address"].as<Pointer>();
 
-      rhs.fnPinMap = (InvokableConsumer)node["fnPinMap"].as<Pointer>();
-      rhs.fnLockOnIncrement = node["fnLockOnIncrement"].as<Pointer>();
+      rhs.quest_manager = basePointers["quest_manager"]["address"].as<Pointer>();
+      rhs.pin_params = basePointers["pin_params"]["address"].as<Pointer>();
+      rhs.display_options = basePointers["display_options"]["address"].as<Pointer>();
+      rhs.monsters = basePointers["monsters"]["address"].as<Pointer>();
+
+      rhs.fnPinMap = (InvokableConsumer)(exeBase + functions["fnPinMap"].as<Pointer>());
+      rhs.fnLockOnIncrement = exeBase + functions["fnLockOnIncrement"].as<Pointer>();
       return true;
     }
   };

@@ -1,8 +1,20 @@
-display_options: 0x5224b80
-monsters: 0x5183e00
-pin_params: 0x5073db0
-quest_manager: 0x5073ed0
-zone: 0x0506f1b0
+basePointers:
+  display_options:
+    address: 0x5224b80
+    source: 0x1DA251A
+  monsters:
+    address: 0x5183e00
+    source: 0x1FCC870
+  pin_params:
+    address: 0x5073db0
+    source: 0x1DBE396
+  quest_manager:
+    address: 0x5073ed0
+    source: 0x1B34641
+  zone:
+    address: 0x0506f1b0
+    source: 0x1B51E29
 
-fnLockOnIncrement: 0x1412a54a0
-fnPinMap: 0x141dd3060
+functions:
+  fnLockOnIncrement: 0x12a54a0
+  fnPinMap: 0x1dd3060

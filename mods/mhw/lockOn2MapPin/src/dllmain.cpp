@@ -21,7 +21,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
       hook::init();
       hook::queue(CaptainHook.addresses.fnLockOnIncrement, &LockOnIncrement, &original);
       hook::apply();
-
       break;
     }
     case DLL_PROCESS_DETACH: {
