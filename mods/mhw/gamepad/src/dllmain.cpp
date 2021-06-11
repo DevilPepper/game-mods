@@ -24,10 +24,12 @@ void PollCtrlHook(long long p1, long long p2) {
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH: {
-      auto PollCtrl =
-          YAML::LoadFile(MHW::getFilePath(addressFile))["fnPollController"].as<Pointer>();
+      auto exeBase = (Pointer)GetModuleHandle(NULL);
+      auto yaml = YAML::LoadFile(MHW::getFilePath(addressFile));
+      auto PollCtrl = yaml["functions"]["fnPollController"].as<Pointer>();
+
       hook::init();
-      hook::queue(PollCtrl, &PollCtrlHook, &original);
+      hook::queue(exeBase + PollCtrl, &PollCtrlHook, &original);
       hook::apply();
       break;
     }
