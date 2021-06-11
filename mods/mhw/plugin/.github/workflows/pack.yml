@@ -70,7 +70,8 @@ jobs:
 
         mkdir temp/
         mv addresses.meta.yaml addresses.yaml temp/
-        python scripts/merge-yaml.py *.yaml temp/addresses.yaml > addresses.yaml
+        python scripts/merge-yaml.py *.yaml temp/addresses.yaml > addresses.yml
+        mv addresses.yml addresses.yaml
         mv temp/addresses.meta.yaml .
       
     - name: Commit yaml if changed
