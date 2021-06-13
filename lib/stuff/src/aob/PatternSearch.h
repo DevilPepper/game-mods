@@ -23,7 +23,8 @@ namespace stuff {
       void findInMemory(const std::vector<std::string_view>& patterns,
                         const byte* begin,
                         const byte* end,
-                        std::function<void(unsigned int, Pointer)> handleFoundAddress);
+                        std::function<void(unsigned int, Pointer)> handleFoundAddress,
+                        char trailingBytes = '-');
     }  // namespace PatternSearch
   }    // namespace aob
 }  // namespace stuff

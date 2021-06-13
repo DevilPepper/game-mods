@@ -26,9 +26,10 @@ namespace stuff {
       void findInMemory(const std::vector<std::string_view>& patterns,
                         const byte* begin,
                         const byte* end,
-                        std::function<void(unsigned int, Pointer)> handleFoundAddress) {
+                        std::function<void(unsigned int, Pointer)> handleFoundAddress,
+                        char trailingBytes) {
         fsm automaton;
-        automaton.build(patterns);
+        automaton.build(patterns, trailingBytes);
         findInMemory(automaton, begin, end, handleFoundAddress);
       }
     }  // namespace PatternSearch

@@ -38,7 +38,7 @@ namespace stuff {
        */
       vector<std::optional<OutputNode>> output;
 
-      void build(const vector<string_view>& patterns);
+      void build(const vector<string_view>& patterns, char trailingBytes = '-');
       state_t next(state_t state, byte b) const;
 
      private:
@@ -49,8 +49,9 @@ namespace stuff {
        */
       vector<std::array<state_t, alphabetSize>> moveTo;
       vector<state_t> failureLink;
+      int dbSize = 0;
 
-      void insert(const string_view& pattern);
+      void insert(const string_view& pattern, char trailingBytes);
 
       // BFS trie to create failure links and dictionary links
       void createLinks();
