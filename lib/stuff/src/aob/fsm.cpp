@@ -2,13 +2,18 @@
 
 #include <ctype.h>
 
+#include <queue>
+
 namespace stuff {
   namespace aob {
+    // Straight up copied this:
+    // https://www.geeksforgeeks.org/aho-corasick-algorithm-pattern-searching/
+
     state_t fsm::next(state_t state, byte b) const {
-      while (moveTo[state][b] == -1) {
+      while (moveTo[state][b] == -1 && moveTo[state][256] == -1) {
         state = failureLink[state];
       }
-      return moveTo[state][b];
+      return moveTo[state][b] != -1 ? moveTo[state][b] : moveTo[state][256];
     }
 
     void fsm::build(const vector<string_view>& patterns, char trailingBytes) {
@@ -64,15 +69,58 @@ namespace stuff {
       // clang-format off
       output[state] = {
         .patternIndex = dbSize++,
-        .patternSize = pathSize,
+        .patternSize = pathSize - 1,
         .isMatch = true
       };
       // clang-format on
     }
 
     void fsm::createLinks() {
-      failureLink.insert(failureLink.begin(), moveTo.size(), -1);
-    }
+      failureLink.resize(moveTo.size());
+      state_t state, nextState, failure;
 
+      std::queue<state_t> q;
+
+      for (int b = 0; b < alphabetSize; b++) {
+        state = moveTo[0][b];
+        if (state != 0) {
+          failureLink[state] = 0;
+          q.push(state);
+        }
+      }
+
+      while (!q.empty()) {
+        state = q.front();
+        q.pop();
+
+        for (int b = 0; b < alphabetSize; b++) {
+          nextState = moveTo[state][b];
+          if (nextState != -1) {
+            failure = failureLink[state];
+
+            while (moveTo[failure][b] == -1) {
+              failure = failureLink[failure];
+            }
+
+            failure = moveTo[failure][b];
+            failureLink[nextState] = failure;
+
+            if (output[failure].has_value()) {
+              auto dictionaryLink = &(output[failure].value());
+              if (output[nextState].has_value()) {
+                output[nextState]->next = dictionaryLink;
+              } else {
+                // clang-format off
+                output[nextState] = {
+                  .next = dictionaryLink
+                };
+                // clang-format on
+              }
+            }
+            q.push(nextState);
+          }
+        }
+      }
+    }
   }  // namespace aob
 }  // namespace stuff

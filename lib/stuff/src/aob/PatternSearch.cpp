@@ -4,8 +4,8 @@ namespace stuff {
   namespace aob {
     namespace PatternSearch {
       void findInMemory(const fsm& automaton,
-                        byte* begin,
-                        byte* end,
+                        const byte* begin,
+                        const byte* end,
                         std::function<void(unsigned int, Pointer)> handleFoundAddress) {
         state_t state = 0;
         auto cursor = begin;
