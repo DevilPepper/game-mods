@@ -37,9 +37,6 @@ namespace plugin {
       patterns.push_back(it.second.aob);
     }
 
-    cout << "Dictionary size: " << keys.size() << std::endl;
-    cout << "Search space size: 0x2000000\n";
-
     findInMemory(
         patterns,
         (byte*)exeBase,
@@ -59,13 +56,18 @@ namespace plugin {
 
   void AddressFacade::handleFoundAddress(unsigned int idx, Pointer address) {
     if (idx >= divider) {
-      cout << std::format("Found {} @ {:#0x}\n", keys[idx], address);
+      addresses.functions[keys[idx].data()] = address - exeBase;
     } else {
       auto offset = metadata.basePointers[keys[idx].data()].offset;
       auto constant = *(int*)(address + offset);
-      auto basePtr = address + offset + 4 + constant - exeBase;
-      cout << std::format("Found AOB for {} @ {:#0x}\n", keys[idx], address);
-      cout << std::format("\tBase Pointer is {:#0x}\n", basePtr);
+      auto basePtr = address + offset + 4 + constant;
+
+      // clang-format off
+      addresses.basePointers[keys[idx].data()] = {
+        .address = address - exeBase,
+        .source = basePtr - exeBase,
+      };
+      // clang-format on
     }
-  }
+  }  // namespace plugin
 }  // namespace plugin

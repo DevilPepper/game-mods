@@ -15,6 +15,10 @@ void sanityCheck() {
   if (!facade.isGood()) {
     facade.search();
 
+    if (!facade.foundAllAddresses()) {
+      cout << "Didn't find all addresses... You might want to report some broken plugin(s)\n";
+    }
+
     cout << std::format(
         "{} was updated. You don't have to do anything,\n"
         "\tbut you can send the updated file to the maintainers if you like.\n",
