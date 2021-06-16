@@ -2,7 +2,6 @@
 
 #include <aob/PatternSearch.h>
 #include <ctype.h>
-#include <types/ghidra.h>
 #include <yaml-cpp/yaml.h>
 
 #include <format>
@@ -16,7 +15,6 @@
 #include "../model/BasePointer.h"
 
 namespace plugin {
-  using ghidra::types::byte;
   using std::cout;
   using std::string;
   using stuff::aob::PatternSearch::findInMemory;
@@ -94,10 +92,12 @@ namespace plugin {
       patterns.push_back(it.second.aob);
     }
 
+    auto scope = getScanRange();
+
     findInMemory(
         patterns,
-        (byte*)exeBase,
-        (byte*)(exeBase + 0x2000000),
+        scope.first,
+        scope.second,
         [this](auto idx, auto address) { handleFoundAddress(idx, address); },
         config.trailingBytes);
   }
@@ -126,5 +126,9 @@ namespace plugin {
       };
       // clang-format on
     }
-  }  // namespace plugin
+  }
+  std::pair<byte*, byte*> AddressFacade::getScanRange() {
+    // TODO: get this info from PE struct
+    return { (byte*)exeBase, (byte*)(exeBase + 0x2000000) };
+  }
 }  // namespace plugin

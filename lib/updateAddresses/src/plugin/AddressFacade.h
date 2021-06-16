@@ -1,8 +1,10 @@
 #pragma once
 
 #include <types/address.h>
+#include <types/ghidra.h>
 
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "../model/Addresses.h"
@@ -10,6 +12,7 @@
 #include "../model/UpdateAddresses.h"
 
 namespace plugin {
+  using ghidra::types::byte;
   using model::Addresses;
   using model::Metadata;
   using model::UpdateAddresses;
@@ -26,6 +29,7 @@ namespace plugin {
     vector<string_view> keys;
 
     void handleFoundAddress(unsigned int idx, Pointer address);
+    std::pair<byte*, byte*> getScanRange();
 
    public:
     AddressFacade();
