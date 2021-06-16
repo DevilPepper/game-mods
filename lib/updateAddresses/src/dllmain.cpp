@@ -1,9 +1,12 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include <Windows.h>
+#include <yaml-cpp/yaml.h>
 
 #include <format>
+#include <fstream>
 #include <iostream>
 
+#include "converters/AddressesConverter.h"
 #include "plugin/AddressFacade.h"
 
 using plugin::AddressFacade;
@@ -18,6 +21,14 @@ void sanityCheck() {
     if (!facade.foundAllAddresses()) {
       cout << "Didn't find all addresses... You might want to report some broken plugin(s)\n";
     }
+
+    YAML::Emitter yaml;
+    std::ofstream file(facade.getOutputName().data(), std::ios::binary);
+
+    yaml << YAML::Hex << facade.getNewAddreses();
+    file << yaml.c_str() << std::endl;
+    file.flush();
+    file.close();
 
     cout << std::format(
         "{} was updated. You don't have to do anything,\n"

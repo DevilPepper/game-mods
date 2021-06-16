@@ -64,8 +64,8 @@ namespace plugin {
 
       // clang-format off
       addresses.basePointers[keys[idx].data()] = {
-        .address = address - exeBase,
-        .source = basePtr - exeBase,
+        .address = basePtr - exeBase,
+        .source = address - exeBase,
       };
       // clang-format on
     }
