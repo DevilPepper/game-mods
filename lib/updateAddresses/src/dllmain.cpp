@@ -34,8 +34,6 @@ void sanityCheck() {
         "{} was updated. You don't have to do anything,\n"
         "\tbut you can send the updated file to the maintainers if you like.\n",
         facade.getOutputName());
-  } else {
-    cout << "All good!\n";
   }
 }
 
