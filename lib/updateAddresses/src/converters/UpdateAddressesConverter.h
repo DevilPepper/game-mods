@@ -15,7 +15,7 @@ namespace YAML {
     static bool decode(const Node& node, UpdateAddresses& rhs) {
       rhs.addresses = node["addresses"].as<string>();
       rhs.metadata = node["metadata"].as<string>();
-      rhs.trailingBytes = node["trailingBytes"].as<char>();
+      rhs.trailingBytes = node["trailingBytes"].as<char>('-');
       return true;
     }
   };

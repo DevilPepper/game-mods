@@ -31,7 +31,7 @@ namespace YAML {
     }
   };
 
-  YAML::Emitter& operator<<(YAML::Emitter& out, const Addresses& rhs) {
+  static Emitter& operator<<(Emitter& out, const Addresses& rhs) {
     out << YAML::Hex;
     out << YAML::BeginMap;
     out << YAML::Key << "basePointers";

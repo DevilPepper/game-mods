@@ -1,19 +1,24 @@
 #include "AddressFacade.h"
 
 #include <aob/PatternSearch.h>
+#include <ctype.h>
 #include <types/ghidra.h>
 #include <yaml-cpp/yaml.h>
 
 #include <format>
 #include <functional>
 #include <iostream>
+#include <string>
 
+#include "../converters/BasePointerConverter.h"
 #include "../converters/MetadataConverter.h"
 #include "../converters/UpdateAddressesConverter.h"
+#include "../model/BasePointer.h"
 
 namespace plugin {
   using ghidra::types::byte;
   using std::cout;
+  using std::string;
   using stuff::aob::PatternSearch::findInMemory;
 
   AddressFacade::AddressFacade() {
@@ -22,8 +27,60 @@ namespace plugin {
     metadata = YAML::LoadFile(config.metadata).as<Metadata>();
   }
   bool AddressFacade::isGood() {
-    // TODO: implement
-    return false;
+    bool allGood = true;
+    auto yaml = YAML::LoadFile(config.addresses);
+
+    for (const auto& it : yaml["basePointers"]) {
+      auto info = it.second.as<model::BasePointer>();
+      // Disabled clang-format because it prefers to put the entire expression in a new line
+      // instead of AlignOperands...
+      // clang-format off
+      auto constantPtr = info.source
+                       + metadata.basePointers[it.first.as<string>()].offset
+                       + exeBase;
+      // clang-format on
+
+      allGood &= (info.address == (constantPtr + 4 + (*(int*)constantPtr) - exeBase));
+      if (!allGood) {
+        break;
+      }
+    }
+
+    for (const auto& it : yaml["functions"]) {
+      // Disabled clang-format because it prefers to put the entire expression in a new line
+      // instead of AlignOperands...
+      // clang-format off
+      auto addy = it.second.as<Pointer>()
+                + exeBase
+                - metadata.functions[it.first.as<string>()].offset;
+      // clang-format on
+
+      string_view aob = metadata.functions[it.first.as<string>()].aob;
+      auto trailingBytes = aob.find(config.trailingBytes);
+      aob = aob.substr(0, trailingBytes);
+
+      auto cursor = (byte*)addy;
+      short b;
+      for (int i = 0; i < aob.size(); i += 2) {
+        while (isspace(aob[i])) {
+          i++;
+        }
+        if (isxdigit(aob[i])) {
+          sscanf(&aob[i], "%2hx", &b);
+          if (b != *cursor) {
+            allGood = false;
+            break;
+          }
+        }
+        cursor++;
+      }
+
+      if (!allGood) {
+        break;
+      }
+    }
+
+    return allGood;
   }
   void AddressFacade::search() {
     vector<string_view> patterns;
