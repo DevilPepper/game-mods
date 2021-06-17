@@ -7,6 +7,12 @@ functions:
     aob: 48895C2408 57 4883EC20 8B8260010000
 
 basePointers:
+  afk_patch_village:
+    aob: 0F2F05???????? F30F1183C03E0500
+    offset: 3
+  afk_patch_quest:
+    aob: F30F100D???????? 889118010000
+    offset: 4
   display_options:
     aob: 57 4883EC20 488B05???????? 488BD9 488B4918
     offset: 8
