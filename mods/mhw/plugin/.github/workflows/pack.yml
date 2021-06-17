@@ -65,14 +65,12 @@ jobs:
 
     - name: Merge yaml files
       run: |
-        find -name '*.yaml' -not -path '*/\.*' -exec mv -i -- {} . \;
-        grep -l 404 *.yaml | xargs --no-run-if-empty rm || true
-
         mkdir temp/
-        mv addresses.meta.yaml addresses.yaml temp/
-        python scripts/merge-yaml.py *.yaml temp/addresses.yaml > addresses.yml
+        find -mindepth 2 -name '*.yaml' -not -path '*/\.*' -exec mv -i -- {} temp/ \;
+        grep -l ^404$ temp/*.yaml | xargs --no-run-if-empty rm || true
+
+        python scripts/merge-yaml.py temp/*.yaml addresses.yaml > addresses.yml
         mv addresses.yml addresses.yaml
-        mv temp/addresses.meta.yaml .
       
     - name: Commit yaml if changed
       run: |
