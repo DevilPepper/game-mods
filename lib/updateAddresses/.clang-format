@@ -23,3 +23,5 @@ AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
 BreakConstructorInitializers: AfterColon
+DerivePointerAlignment: false
+PointerAlignment: Left

@@ -1,21 +1,19 @@
 #include "AddressFacade.h"
 
+#include <Windows.h>
 #include <aob/PatternSearch.h>
 #include <ctype.h>
 #include <yaml-cpp/yaml.h>
 
-#include <format>
-#include <functional>
-#include <iostream>
 #include <string>
 
 #include "../converters/BasePointerConverter.h"
 #include "../converters/MetadataConverter.h"
 #include "../converters/UpdateAddressesConverter.h"
 #include "../model/BasePointer.h"
+#include "PEInfo.h"
 
 namespace plugin {
-  using std::cout;
   using std::string;
   using stuff::aob::PatternSearch::findInMemory;
 
@@ -92,7 +90,7 @@ namespace plugin {
       patterns.push_back(it.second.aob);
     }
 
-    auto scope = getScanRange();
+    auto scope = getScanRange(exeBase);
 
     findInMemory(
         patterns,
@@ -126,9 +124,5 @@ namespace plugin {
       };
       // clang-format on
     }
-  }
-  std::pair<byte*, byte*> AddressFacade::getScanRange() {
-    // TODO: get this info from PE struct
-    return { (byte*)exeBase, (byte*)(exeBase + 0x2000000) };
   }
 }  // namespace plugin
