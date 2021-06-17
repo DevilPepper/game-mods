@@ -1,10 +1,10 @@
 basePointers:
-  afk_patch_village:
-    address: 0x3124140
-    source: 0x1b1b7cd
   afk_patch_quest:
     address: 0x2f6f440
     source: 0x16dca27
+  afk_patch_village:
+    address: 0x3124140
+    source: 0x1b1b7cd
   display_options:
     address: 0x5224b80
     source: 0x1da251a
