@@ -89,9 +89,11 @@ jobs:
     - name: Merge zips
       run: |
         find -name '*.zip' -exec mv -i -- {} . \;
+        curl -L https://github.com/Stuff-Mods/UpdateAddresses/releases/latest/download/UpdateAddresses.zip -o UpdateAddresses.zip
         unzip -n "*.zip"
         cp addresses.* nativePC/plugins/config
-        zip $PROJECT_NAME.zip -r nativePC/ licenses/ *.dll
+        mv UpdateAddresses.dll nativePC/plugins/!UpdateAddresses.dll
+        zip $PROJECT_NAME.zip -r nativePC/ licenses/ UpdateAddresses.yaml *.dll 
 
     - name: Create release with binaries
       env:
