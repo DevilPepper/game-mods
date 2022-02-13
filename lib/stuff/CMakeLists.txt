@@ -6,7 +6,7 @@ project(StuffLib CXX)
 # Only do these if this is the main project, and not if it is included through
 # add_subdirectory
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 20)
   set(CXX_STANDARD_REQUIRED ON)
   add_compile_definitions(_MBCS)
   # set_property(GLOBAL)
