@@ -1,0 +1,6 @@
+[submodule "tools/rizen"]
+	path = tools/rizen
+	url = https://github.com/rizinorg/rizin.git
+[submodule "tools/squalr"]
+	path = tools/squalr
+	url = https://github.com/Squalr/Squalr.git
