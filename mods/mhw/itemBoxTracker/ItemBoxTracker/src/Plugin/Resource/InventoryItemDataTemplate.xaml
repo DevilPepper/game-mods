@@ -1,0 +1,48 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:data="clr-namespace:MHWItemBoxTracker.Model"
+    xmlns:convert="clr-namespace:MHWItemBoxTracker.Converter">
+  <DataTemplate DataType="{x:Type data:InventoryItemModel}">
+    <DataTemplate.Resources>
+      <ResourceDictionary Source="ProgressBarDataTemplate.xaml" />
+    </DataTemplate.Resources>
+    <StackPanel>
+      <Grid Margin="0 5">
+        <Grid.Effect>
+          <DropShadowEffect
+              ShadowDepth="4"
+              Direction="315"
+              Color="Black" />
+        </Grid.Effect>
+        <ContentControl
+            Grid.Column="0"
+            Content="{Binding Item}" />
+        <TextBlock
+            Grid.Column="1"
+            Foreground="#ffbfbfbf"
+            HorizontalAlignment="Right"
+            Padding="0,0,10,0">
+          <TextBlock.Text>
+            <MultiBinding Converter="{convert:InventoryToAmountsText}">
+              <Binding Path="AmountInBox" />
+              <Binding Path="AmountInPouch" />
+              <Binding Path="AmountCraftable" />
+              <Binding Path="Item.Amount" />
+              <Binding Path="TrackPouch" />
+              <Binding Path="TrackBox" />
+              <Binding Path="TrackCraftable" />
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="125" />
+        </Grid.ColumnDefinitions>
+      </Grid>
+      <ContentControl
+          Content="{Binding}"
+          ContentTemplate="{StaticResource ProgressBarX3}" />
+    </StackPanel>
+  </DataTemplate>
+</ResourceDictionary>
