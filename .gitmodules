@@ -4,3 +4,6 @@
 [submodule "tools/squalr"]
 	path = tools/squalr
 	url = https://github.com/Squalr/Squalr.git
+[submodule "mods/mhw/hunterpie"]
+	path = mods/mhw/hunterpie
+	url = git@github.com:SupaStuff/HunterPie-v2.git
