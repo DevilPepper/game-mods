@@ -1,0 +1,3 @@
+addresses: nativePC/plugins/config/addresses.yaml
+metadata: nativePC/plugins/config/addresses.meta.yaml
+trailingBytes: "-"

@@ -1,0 +1,39 @@
+functions:
+  fnLockOnIncrement: 
+    aob: 48895C2408 57 4883EC30 33C0 488BD9 3881--------
+  fnPinMap:
+    aob: 48896C2410 4889742418 48897C2420 4156 4883EC20 488B05xxxxxxxx 410FB6E9 
+  fnPollController:
+    aob: 48895C2408 57 4883EC20 8B8260010000
+
+basePointers:
+  afk_patch_village:
+    aob: 0F2F05???????? F30F1183C03E0500
+    offset: 3
+  afk_patch_quest:
+    aob: F30F100D???????? 889118010000
+    offset: 4
+  display_options:
+    aob: 57 4883EC20 488B05???????? 488BD9 488B4918
+    offset: 8
+  monsters:
+    aob: 490FBAE814 488B0D???????? e8--------
+    offset: 8
+  pin_params:
+    aob: 4883EC50 4C8BF1 488B0D???????? e8--------
+    offset: 0xa
+  pl_params:
+    aob: F30F108401100D0000 488B05???????? 488B5C2430
+    offset: 0xc
+  quest_manager:
+    aob: 488B0D???????? 450F28DF
+    offset: 3
+  save_data:
+    aob: 488D0449 488B35???????? 4C8D3400 8bc2
+    offset: 7
+  session_quest:
+    aob: 6683480C05 488B0D???????? 33D2
+    offset: 8
+  zone:
+    aob: 488B0D???????? 4889BC24E0000000
+    offset: 3
