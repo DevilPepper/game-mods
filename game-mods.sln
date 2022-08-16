@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HunterPie", "HunterPie", "{89620BAA-3D4B-4438-AF0C-EA6609ECBCE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterPie.Core", "mods\mhw\hunterpie\HunterPie.Core\HunterPie.Core.csproj", "{4EE17923-DE50-4931-8389-1AE64DEF5DF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterPie.Core", "lib/hunterpie/HunterPie.Core/HunterPie.Core.csproj", "{4EE17923-DE50-4931-8389-1AE64DEF5DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterPie.UI", "mods\mhw\hunterpie\HunterPie.UI\HunterPie.UI.csproj", "{F442A841-89FF-4C4D-B052-6C39063019C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterPie.UI", "lib/hunterpie/HunterPie.UI/HunterPie.UI.csproj", "{F442A841-89FF-4C4D-B052-6C39063019C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterPie.Core.Tests", "mods\mhw\hunterpie\HunterPie.Core.Tests\HunterPie.Core.Tests.csproj", "{256ED5AA-30B2-432B-B7A1-54416BBFBEE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterPie.Core.Tests", "lib/hunterpie/HunterPie.Core.Tests/HunterPie.Core.Tests.csproj", "{256ED5AA-30B2-432B-B7A1-54416BBFBEE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterPie.Memory", "mods\mhw\hunterpie\HunterPie.Memory\HunterPie.Memory.csproj", "{4E52CC6E-141C-4412-A3C4-E4907AF243E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HunterPie.Memory", "lib/hunterpie/HunterPie.Memory/HunterPie.Memory.csproj", "{4E52CC6E-141C-4412-A3C4-E4907AF243E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
