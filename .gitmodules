@@ -1,9 +1,9 @@
-[submodule "tools/rizen"]
+[submodule "rizen"]
 	path = tools/rizen
 	url = https://github.com/rizinorg/rizin.git
-[submodule "tools/squalr"]
+[submodule "squalr"]
 	path = tools/squalr
 	url = https://github.com/Squalr/Squalr.git
-[submodule "lib/hunterpie"]
-	path = lib/hunterpie
+[submodule "hunterpie"]
+	path = libs/hunterpie
 	url = git@github.com:SupaStuff/HunterPie-v2.git
