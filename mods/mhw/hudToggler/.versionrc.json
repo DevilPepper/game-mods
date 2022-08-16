@@ -1,7 +1,0 @@
-{
-  "infile": "Changelog.md",
-  "skip": {
-    "commit": true,
-    "tag": true
-  }
-}
