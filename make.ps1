@@ -31,7 +31,7 @@ function Command-Help { Get-Help $PSCommandPath }
 
 function Command-Deps {
   dotnet restore
-  cmake -S . -B build/ -A x64
+  cmake -E env CXXFLAGS="/MP" cmake -S . -B build/ -A x64
 }
 
 function Command-Build {
