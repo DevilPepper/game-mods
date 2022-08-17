@@ -12,6 +12,10 @@ COMMANDS
     test        run all tests
     format      format all files
     lint        lint all files and report violations
+    setup       copy configs to game directories, etc if they don't already exist.
+                Requires admin privileges or developer mode because some are symlinks.
+                Symlinks will replace existing files.
+    install     copy builds to game directories, etc, overwriting old versions
     clean       delete build output and crud that that piles up in the workspace
     purge       run clean first and then delete dependencies
     all         format, build, and test
@@ -20,57 +24,65 @@ COMMANDS
 #>
 param(
   [Parameter(Position=0)]
-  [ValidateSet("deps", "build", "test", "format", "lint", "clean", "purge", "all", "external", "help")]
+  [ValidateSet("all", "build", "clean", "deps", "external", "format", "help", "install", "lint", "purge", "setup", "test")]
   [string]$Command,
 
   [Parameter(Position=1, ValueFromRemainingArguments=$true)]
   $Rest
 )
 
-function Command-Help { Get-Help $PSCommandPath }
+function Command-Help() { Get-Help $PSCommandPath }
 
-function Command-Deps {
+function Command-Deps() {
   dotnet restore
   cmake -S . -B build/ -G Ninja
 }
 
-function Command-Build {
+function Command-Build() {
   dotnet build --no-restore
   cmake --build build/
 }
 
-function Command-Test {
+function Command-Test() {
   Command-Build
   dotnet test
   ctest --test-dir build/ --parallel 8 --progress
 }
 
-function Command-Format {
+function Command-Format() {
   # clang-format -i --style=file $$(find . \( -type f -name "*.cc" -o -name "*.cpp" -o -name "*.h" \) -not -path "./build/*")
   # cmake-format -i $$(find . -name "CMakeLists.txt" -not -path "./build/*")
 }
 
-function Command-Lint {
+function Command-Lint() {
   # clang-tidy?
 }
 
-function Command-Clean {
+function Command-Setup() {
+  ./scripts/setup.ps1
+}
+
+function Command-Install() {
+  ./scripts/install.ps1 $Rest
+}
+
+function Command-Clean() {
   Get-ChildItem mods,lib -Recurse -Filter bin | foreach { Remove-Item -Recurse -Force $_.FullName }
   Remove-Item -Recurse -Force build/
 }
 
-function Command-Purge {
+function Command-Purge() {
   Command-Clean
   Get-ChildItem mods,lib -Recurse -Filter obj | foreach { Remove-Item -Recurse -Force $_.FullName }
 }
 
-function Command-All {
+function Command-All() {
   Command-Format
   Command-Test
 }
 
-function Command-External {
-  ./external.ps1 $Rest
+function Command-External() {
+  ./scripts/external.ps1 $Rest
 }
 
 if (!$Command) {
@@ -82,6 +94,8 @@ if (!$Command) {
       "test"      { Command-Test }
       "format"    { Command-Format }
       "lint"      { Command-Lint }
+      "setup"     { Command-Setup }
+      "install"   { Command-Install }
       "clean"     { Command-Clean }
       "purge"     { Command-Purge }
       "all"       { Command-All }

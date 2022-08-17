@@ -13,18 +13,18 @@ COMMANDS
 #>
 param(
   [Parameter(Position=0)]
-  [ValidateSet("hunterpie", "all", "help", "")]
+  [ValidateSet("", "all", "help", "hunterpie")]
   [string]$Command
 )
 
-function Command-Help { Get-Help $PSCommandPath }
+function Command-Help() { Get-Help $PSCommandPath }
 
-function Command-HunterPie {
+function Command-HunterPie() {
   msbuild lib/hunterpie/HunterPie.sln -m /t:Restore
   msbuild lib/hunterpie/HunterPie.sln -m /p:Configuration=Debug
 }
 
-function Command-All {
+function Command-All() {
   Command-HunterPie
 }
 
