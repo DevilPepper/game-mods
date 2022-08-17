@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "ms-dotnettools.csharp",
+    "twxs.cmake",
+    "EditorConfig.EditorConfig",
+    "ms-vscode.hexeditor",
+    "ms-vsliveshare.vsliveshare",
+    "ms-vscode.cpptools",
+    "jeff-hykin.better-cpp-syntax",
+    "sourcegraph.sourcegraph"
+  ]
+}
