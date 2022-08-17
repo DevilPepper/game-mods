@@ -2,7 +2,7 @@
 
 if (Test-Path -Path $MHW) {
   # Copy-Force "${PWD}/build/mods/mhw/loader/loader.dll" "${MHW}/loader.dll"
-  Copy-Force "${PWD}/build/_deps/yaml-cpp-build/yaml-cpp.dll" "${MHW}/yaml-cpp.dll"
+  Copy-Force "${PWD}/build/_deps/yaml-cpp-build/yaml-cppd.dll" "${MHW}/yaml-cppd.dll"
   Copy-Force "${PWD}/build/libs/gamepad/GamepadLib.dll" "${MHW}/GamepadLib.dll"
   Copy-Force "${PWD}/build/libs/updateAddresses/UpdateAddresses.dll" "${MHW}/nativePC/plugins/!UpdateAddresses.dll"
 
