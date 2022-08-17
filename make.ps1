@@ -31,7 +31,6 @@ function Command-Help { Get-Help $PSCommandPath }
 
 function Command-Deps {
   dotnet restore
-  # x64 by default?
   cmake -S . -B build/ -G Ninja
 }
 

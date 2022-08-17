@@ -20,9 +20,6 @@ param(
 function Command-Help { Get-Help $PSCommandPath }
 
 function Command-HunterPie {
-  $MSVS = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools"
-  Import-Module $MSVS\Common7\Tools\Microsoft.VisualStudio.DevShell.dll
-  Enter-VsDevShell -SkipAutomaticLocation -SetDefaultWindowTitle -InstallPath $MSVS
   msbuild lib/hunterpie/HunterPie.sln -m /t:Restore
   msbuild lib/hunterpie/HunterPie.sln -m /p:Configuration=Debug
 }

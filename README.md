@@ -41,7 +41,7 @@ You should probably google how other people do it. I just have this in my profil
 function dev() {
     $MSVS = "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools"
     Import-Module $MSVS\Common7\Tools\Microsoft.VisualStudio.DevShell.dll
-    Enter-VsDevShell -SkipAutomaticLocation -SetDefaultWindowTitle -InstallPath $MSVS
+    Enter-VsDevShell -SkipAutomaticLocation -SetDefaultWindowTitle  -DevCmdArguments '-arch=x64' -InstallPath $MSVS
 }
 ```
 
