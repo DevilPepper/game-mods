@@ -13,6 +13,7 @@ This is a monorepo with my game mods.
   - .Net SDK
   - .Net 6.0 Runtime
 - [CMake >= 3.24](https://cmake.org/download/): This is probably included with **VS Desktop Dev w/ C++**, but you can also get it from winget: `winget install Kitware.CMake`
+- [Ninja](https://ninja-build.org/): You can pip install it, but I couldn't build without using the VS dev shell, so might as well use the one that comes with **VS Desktop Dev w/ C++**...
 - [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2): `winget install --id Microsoft.Powershell`
 
 ### The make script
