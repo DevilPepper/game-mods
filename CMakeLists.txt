@@ -34,7 +34,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   # endif()
 endif()
 
-include(dependencies.cmake)
+add_subdirectory(cmake)
 
 add_subdirectory(libs)
 add_subdirectory(mods)
