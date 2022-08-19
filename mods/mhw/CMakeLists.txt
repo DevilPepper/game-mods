@@ -1,5 +1,6 @@
 project(mhw)
 
+add_subdirectory(loader)
 add_subdirectory(common)
 add_subdirectory(gamepad)
 add_subdirectory(hudToggler)

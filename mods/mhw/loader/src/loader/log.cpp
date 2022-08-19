@@ -1,0 +1,76 @@
+#include "log.h"
+
+#include <ctime>
+#include <fstream>
+#include <map>
+
+namespace loader {
+
+  LogLevel MinLogLevel = INFO;
+  bool logcmd = false;
+  bool logfile = false;
+
+  void setLogParams(LogLevel MinLogLevel, bool logcmd, bool logfile) {
+    loader::MinLogLevel = MinLogLevel;
+    loader::logcmd = logcmd;
+    loader::logfile = logfile;
+  }
+
+  // TODO: Maybe keep the file open for the session?
+  void logToFile(const char* stamp, const char* msg) {
+    if (logfile) {
+      std::ofstream o("loader.log", std::ios::app);
+      o << "[ " << stamp << " ] " << msg;
+      o.flush();
+    }
+  }
+
+  void logToConsole(int l, const char* stamp, const char* msg) {
+    // TODO: static inside a function?
+    static HANDLE console = 0;
+    if (logcmd) {
+      if (!console) {
+        AllocConsole();
+        SetConsoleTitle("Stracker's Loader");
+        console = GetStdHandle(STD_OUTPUT_HANDLE);
+      }
+      SetConsoleTextAttribute(console, FOREGROUND_GREEN);
+      WriteConsole(console, "[ ", 2, nullptr, 0);
+      WriteConsole(console, stamp, (DWORD)strlen(stamp), nullptr, 0);
+      WriteConsole(console, " ] ", 3, nullptr, 0);
+
+      if (l == INFO || l == DEBUG)
+        SetConsoleTextAttribute(console, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+      if (l == WARN)
+        SetConsoleTextAttribute(
+            console,
+            FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
+      if (l == ERR)
+        SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_INTENSITY);
+      WriteConsole(console, msg, (DWORD)strlen(msg), nullptr, 0);
+      SetConsoleTextAttribute(console, 0);
+    }
+  }
+
+  void _log(LogLevel l, const char* s) {
+    if (l < MinLogLevel)
+      return;
+
+    time_t mytime = time(NULL);
+    tm mytm;
+    localtime_s(&mytm, &mytime);
+    char stamp[128] = { 0 };
+    strftime(stamp, sizeof(stamp), "%H:%M:%S", &mytm);
+
+    logToFile(stamp, s);
+    logToConsole(l, stamp, s);
+  }
+
+  LOG::LOG(LogLevel level) : logLevel(level) {}
+
+  LOG::~LOG() {
+    stream << std::endl;
+    stream.flush();
+    _log(logLevel, stream.str().c_str());
+  }
+}  // namespace loader
