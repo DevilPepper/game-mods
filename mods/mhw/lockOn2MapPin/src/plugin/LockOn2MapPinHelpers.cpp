@@ -12,8 +12,10 @@ namespace plugin {
   using std::string_view;
   using stuff::memory::readMem;
 
-  void LockOn2MapPin::pinMap(uintptr_t unknown, uintptr_t target, char isMonster) {
-    addresses.fnPinMap(unknown, target, isMonster, 0);
+  // Fourth param is always 0, so we're omitting it with this helper
+  // targetType is always 1 for monster
+  void LockOn2MapPin::pinMap(int64_t unknown, int64_t target, int64_t targetType) {
+    addresses.fnPinMap(unknown, target, targetType, 0);
   }
 
   bool LockOn2MapPin::isOnTheLoose(Pointer monsterAddr) {

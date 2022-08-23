@@ -8,10 +8,11 @@ using plugin::LockOn2MapPin;
 
 LockOn2MapPin CaptainHook;
 
-using HookTarget = void (*)(uintptr_t);
+using HookTarget = void (*)(int64_t, uint64_t);
 HookTarget original = nullptr;
-void LockOnIncrement(uintptr_t ptr) {
-  original(ptr);
+// previousSomething = -255 if was not locked on previously, 0 otherwise
+void LockOnIncrement(int64_t ptr, uint64_t previousSomething) {
+  original(ptr, previousSomething);
   CaptainHook.updatePin();
 }
 

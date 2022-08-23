@@ -7,7 +7,7 @@ namespace model {
   using stuff::types::Offsets;
   using stuff::types::Pointer;
 
-  using InvokableConsumer = void (*)(uintptr_t, uintptr_t, char, char);
+  using InvokableConsumer = void (*)(int64_t, int64_t, int64_t, int64_t);
 
   class Addresses : public MHW::Addy {
    public:
