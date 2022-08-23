@@ -2,6 +2,7 @@
 
 #include <ctime>
 #include <fstream>
+#include <iostream>
 #include <map>
 
 namespace loader {
@@ -14,6 +15,46 @@ namespace loader {
     loader::MinLogLevel = MinLogLevel;
     loader::logcmd = logcmd;
     loader::logfile = logfile;
+  }
+
+  // Copypasta from somewhere
+  void BindStdHandlesToConsole() {
+    // TODO: Add Error checking.
+
+    // Redirect the CRT standard input, output, and error handles to the console
+    freopen("CONIN$", "r", stdin);
+    freopen("CONOUT$", "w", stderr);
+    freopen("CONOUT$", "w", stdout);
+
+    // Note that there is no CONERR$ file
+    HANDLE hStdout = CreateFile("CONOUT$",
+                                GENERIC_READ | GENERIC_WRITE,
+                                FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                NULL,
+                                OPEN_EXISTING,
+                                FILE_ATTRIBUTE_NORMAL,
+                                NULL);
+    HANDLE hStdin = CreateFile("CONIN$",
+                               GENERIC_READ | GENERIC_WRITE,
+                               FILE_SHARE_READ | FILE_SHARE_WRITE,
+                               NULL,
+                               OPEN_EXISTING,
+                               FILE_ATTRIBUTE_NORMAL,
+                               NULL);
+
+    SetStdHandle(STD_OUTPUT_HANDLE, hStdout);
+    SetStdHandle(STD_ERROR_HANDLE, hStdout);
+    SetStdHandle(STD_INPUT_HANDLE, hStdin);
+
+    // Clear the error state for each of the C++ standard stream objects.
+    std::wclog.clear();
+    std::clog.clear();
+    std::wcout.clear();
+    std::cout.clear();
+    std::wcerr.clear();
+    std::cerr.clear();
+    std::wcin.clear();
+    std::cin.clear();
   }
 
   // TODO: Maybe keep the file open for the session?
@@ -31,6 +72,7 @@ namespace loader {
     if (logcmd) {
       if (!console) {
         AllocConsole();
+        BindStdHandlesToConsole();
         SetConsoleTitle("Stracker's Loader");
         console = GetStdHandle(STD_OUTPUT_HANDLE);
       }
@@ -48,7 +90,7 @@ namespace loader {
       if (l == ERR)
         SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_INTENSITY);
       WriteConsole(console, msg, (DWORD)strlen(msg), nullptr, 0);
-      SetConsoleTextAttribute(console, 0);
+      SetConsoleTextAttribute(console, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
     }
   }
 

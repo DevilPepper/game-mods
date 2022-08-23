@@ -19,7 +19,7 @@ static std::string GameVersionString;
 void FindVersion() {
   auto window = GetForegroundWindow();
   auto titleLength = GetWindowTextLength(window) + 1;
-  TCHAR title[30];
+  TCHAR title[35];
   GetWindowText(window, title, titleLength);
   std::string_view titleView((char*)title);
 
