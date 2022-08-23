@@ -13,10 +13,10 @@ using gamepad::Gamepad;
 using MHW::addressFile;
 using stuff::types::Pointer;
 
-using HookedConsumer = void (*)(long long, long long);
+using HookedConsumer = void (*)(int64_t, int64_t, int64_t, int64_t);
 HookedConsumer original = nullptr;
-void PollCtrlHook(long long p1, long long p2) {
-  original(p1, p2);
+void PollCtrlHook(int64_t p1, int64_t p2, int64_t p3, int64_t p4) {
+  original(p1, p2, p3, p4);
   gamepad::GetDispatcher().update(*(Gamepad*)p1);
   return;
 }
