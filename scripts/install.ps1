@@ -11,4 +11,7 @@ if (Test-Path -Path $MHW) {
   Copy-Force "${PWD}/build/mods/mhw/lockOn2MapPin/LockOn2MapPin.dll" "${MHW}/nativePC/plugins/LockOn2MapPin.dll"
   Copy-Force "${PWD}/build/mods/mhw/returnTimer/ReturnTimer.dll" "${MHW}/nativePC/plugins/ReturnTimer.dll"
   Copy-Force "${PWD}/build/mods/mhw/theFlash/TheFlash.dll" "${MHW}/nativePC/plugins/TheFlash.dll"
+  Copy-Force "${PWD}/build/mods/mhw/toggleSubtitles/ToggleSubtitles.dll" "${MHW}/nativePC/plugins/ToggleSubtitles.dll"
+
+  # Copy-Force "${PWD}/build/mods/mhw/poc/POC.dll" "${MHW}/nativePC/plugins/POC.dll"
 }
