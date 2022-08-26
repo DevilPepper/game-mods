@@ -12,12 +12,12 @@ namespace plugin {
   class HUDHookHelper {
    private:
     Addresses addresses;
-
     Offsets hud_settings{ 0xa8, 0x151F8C };
-
     bool toggles[8];
 
    public:
+    bool wasActive;
+
     HUDHookHelper();
     void writeHUD(long long* hudStruct);
   };
