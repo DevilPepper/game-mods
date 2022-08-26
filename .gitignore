@@ -500,3 +500,6 @@ FodyWeavers.xsd
 
 # dlls referenced locally
 *.dll
+
+# Don't include POCs in repo
+poc/
