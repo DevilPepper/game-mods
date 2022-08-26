@@ -18,7 +18,6 @@ namespace YAML {
 
       rhs.zone = basePointers["zone"]["address"].as<Pointer>();
 
-      rhs.display_options = basePointers["display_options"]["address"].as<Pointer>();
       rhs.save_data = basePointers["save_data"]["address"].as<Pointer>();
       return true;
     }

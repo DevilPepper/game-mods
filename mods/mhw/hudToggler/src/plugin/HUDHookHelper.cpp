@@ -8,7 +8,6 @@
 
 namespace plugin {
   using MHW::addressFile;
-  using namespace gamepad;
 
   HUDHookHelper::HUDHookHelper() {
     addresses = YAML::LoadFile(MHW::getFilePath(addressFile)).as<Addresses>();
@@ -16,12 +15,5 @@ namespace plugin {
     for (int i = 0; i < 8; i++) {
       toggles[i] = json[toggleSettings[i]].as<bool>();
     }
-  }
-
-  void HUDHookHelper::handleInput(const Gamepad& input) {
-    if (justPressed(input, Buttons[SubtitlesToggle])) {
-      toggleSubtitles();
-    }
-    return;
   }
 }  // namespace plugin

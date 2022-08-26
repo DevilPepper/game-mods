@@ -6,6 +6,5 @@ target_link_libraries(HUDToggler
 PRIVATE
   stuff
   mhw-common
-  GamepadLib
   yaml-cpp
 )
