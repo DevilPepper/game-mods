@@ -1,3 +1,4 @@
+# zoomies
 project(TheFlash)
 FILE(GLOB_RECURSE TheFlashSources CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/src *.h *.cpp)
 add_library(TheFlash MODULE ${TheFlashSources})

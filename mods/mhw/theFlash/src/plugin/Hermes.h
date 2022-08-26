@@ -21,11 +21,16 @@ namespace plugin {
     intptr_t walkSpeedOffset = 0x940;
     intptr_t runSpeedOffset = 0x980;
     intptr_t dashSpeedOffset = 0x9b0;
+    intptr_t sprintSpeedOffset = 0xa10;
+    // intptr_t gravitySpeedOffset = 0xbc;
 
     int expBase;
+    int direction = 1;
     float walk = 1.12;
     float run = 1;
     float dash = 1.20;
+    float sprint = 1.35;
+    // float gravity = 1.32;
 
    public:
     Hermes();
