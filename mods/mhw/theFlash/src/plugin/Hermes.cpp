@@ -2,6 +2,7 @@
 
 #include <MHW/memory.h>
 #include <MHW/strings.h>
+#include <gamepad.h>
 #include <math.h>
 #include <yaml-cpp/yaml.h>
 
@@ -10,6 +11,7 @@
 namespace plugin {
   using MHW::addressFile;
   using MHW::writeMem;
+  using namespace gamepad;
 
   Hermes::Hermes() {
     expBase = YAML::LoadFile(MHW::getFilePath(settings))["maxSpeedMultiplier"].as<int>();
