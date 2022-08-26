@@ -22,9 +22,6 @@ namespace plugin {
     if (justPressed(input, Buttons[SubtitlesToggle])) {
       toggleSubtitles();
     }
-    if (justPressed(input, Buttons[HUDToggle]) || justReleased(input, Buttons[HUDToggle])) {
-      toggleHUD();
-    }
     return;
   }
 }  // namespace plugin

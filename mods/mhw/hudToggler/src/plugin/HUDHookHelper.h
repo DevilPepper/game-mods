@@ -24,11 +24,11 @@ namespace plugin {
 
     bool toggles[8];
 
-    void toggleHUD();
     void toggleSubtitles();
 
    public:
     HUDHookHelper();
     void handleInput(const Gamepad& input);
+    void writeHUD(long long* hudStruct);
   };
 }  // namespace plugin
