@@ -1,9 +1,13 @@
 function Copy-Force([string]$source, [string]$destination) {
   if (Test-Path -Path $source) {
-    echo "`u{2795} `"${source}`" -> `"${destination}`""
     $directory = $(Split-Path -Path $destination -Parent)
     New-Item -ItemType "directory" -Path $directory -Force > $null
-    Copy-Item $source -Destination $destination
+    Copy-Item $source -Destination $destination > $null 2>&1
+    if ($?) {
+      echo "`u{2795} `"${source}`" -> `"${destination}`""
+    } else {
+      echo "`u{274c} `"${source}`" -> `"${destination}`""
+    }
   }
 }
 
