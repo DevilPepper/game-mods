@@ -19,6 +19,6 @@ namespace plugin {
     bool wasActive;
 
     HUDHookHelper();
-    void writeHUD(long long* hudStruct);
+    void writeHUD();
   };
 }  // namespace plugin

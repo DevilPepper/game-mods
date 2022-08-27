@@ -2,30 +2,36 @@
 #include <Windows.h>
 #include <hook/hook.h>
 
+#include <chrono>
+#include <thread>
+
 #include "plugin/HUDHookHelper.h"
 
 using namespace stuff;
 using plugin::HUDHookHelper;
 
 HUDHookHelper CaptainHook;
+std::jthread hudChecker;
 
-using InvokableConsumer = void (*)(int64_t, int64_t);
-InvokableConsumer original = nullptr;
-void toggleHUD(int64_t hudStruct, int64_t _unknown) {
-  original(hudStruct, _unknown);
-  CaptainHook.writeHUD((long long*)hudStruct);
+void toggleHUD(std::stop_token token) {
+  while (!token.stop_requested()) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    CaptainHook.writeHUD();
+  }
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call) {
-    case DLL_PROCESS_ATTACH:
-      hook::init();
-      hook::queue(0x141e42e30, &toggleHUD, &original);
-      hook::apply();
+    case DLL_PROCESS_ATTACH: {
+      std::jthread actualHUDChecker(toggleHUD);
+      actualHUDChecker.swap(hudChecker);
       break;
-    case DLL_PROCESS_DETACH:
-      hook::unhook();
+    }
+    case DLL_PROCESS_DETACH: {
+      hudChecker.request_stop();
+      hudChecker.join();
       break;
+    }
     default:
       break;
   }

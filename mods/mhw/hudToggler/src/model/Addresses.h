@@ -8,6 +8,7 @@ namespace model {
 
   class Addresses : public MHW::Addy {
    public:
+    Pointer display_options;
     Pointer save_data;
   };
 }  // namespace model
