@@ -1,10 +1,12 @@
 functions:
-  fnLockOnIncrement: 
+  fnLockOnIncrement:
     aob: 48895C2408 57 4883EC30 33C0 488BD9 3881--------
   fnPinMap:
-    aob: 48896C2410 4889742418 48897C2420 4156 4883EC20 488B05xxxxxxxx 410FB6E9 
+    aob: 48896C2410 4889742418 48897C2420 4156 4883EC20 488B05xxxxxxxx 410FB6E9
   fnPollController:
     aob: 48895C2408 57 4883EC20 8B8260010000
+  fnSendSystemMessage:
+    aob: 48895C2408 4889742410 57 4881EC C0010000 80793000
 
 basePointers:
   afk_patch_village:
@@ -13,6 +15,9 @@ basePointers:
   afk_patch_quest:
     aob: F30F100D???????? 889118010000
     offset: 4
+  chat_instance:
+    aob: 488BD9 0F29B424 00010000 488B0D ????????
+    offset: 0xe
   display_options:
     aob: 57 4883EC20 488B05???????? 488BD9 488B4918
     offset: 8

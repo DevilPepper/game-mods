@@ -5,6 +5,9 @@ basePointers:
   afk_patch_village:
     address: 0x3124140
     source: 0x1b1b7cd
+  chat_instance:
+    address: 0x506d340
+    source: 0x1da0ff0
   display_options:
     address: 0x5224b80
     source: 0x1da251a
@@ -33,3 +36,4 @@ functions:
   fnLockOnIncrement: 0x12a54a0
   fnPinMap: 0x1dd3060
   fnPollController: 0x18e8ea0
+  fnSendSystemMessage: 0x1a671f0

@@ -1,9 +1,13 @@
 #include "dll.h"
 
+#include <MHW/chat.h>
+#include <MHW/strings.h>
 #include <MemoryModule.h>
+#include <yaml-cpp/yaml.h>
 
 #include <chrono>
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <iterator>
 #include <sstream>
@@ -13,9 +17,16 @@
 #include <vector>
 
 #include "../loader/log.h"
+#include "../model/Addresses.h"
+#include "../model/AddressesConverter.h"
 
 namespace dll {
   using namespace loader;
+  using MHW::addressFile;
+  using MHW::Chat;
+  using MHW::Color;
+  using MHW::Icon;
+  using model::Addresses;
 
   namespace fs = std::filesystem;
   using FilePath = fs::path;
@@ -23,8 +34,26 @@ namespace dll {
   using DLL = std::tuple<HMEMORYMODULE, FilePath, FileTime>;
 
   std::vector<DLL> dlls;
+  Chat chat(0, 0);
+  std::string successIcon;
+  std::string successText;
+  std::string failureIcon;
+  std::string failureText;
 
   static void* currentModule;
+
+  void initSystemMessages() {
+    auto addresses = YAML::LoadFile(MHW::getFilePath(addressFile)).as<Addresses>();
+    chat = Chat(addresses.chat_instance, addresses.fnSendSystemMessage);
+    // successIcon = chat.wrapIcon(Icon::DECIDE);
+    // successText = chat.wrapColor("Success", Color::MOJI_LIGHTGREEN_DEFAULT);
+    // failureIcon = chat.wrapIcon(Icon::CANCEL);
+    // failureText = chat.wrapColor("Failure", Color::MOJI_RED2_DEFAULT);
+    successIcon = "<ICON DECIDE>";
+    successText = "<STYL MOJI_LIGHTGREEN_DEFAULT>Success</STYL>";
+    failureIcon = "<ICON CANCEL>";
+    failureText = "<STYL MOJI_RED2_DEFAULT>Failure</STYL>";
+  }
 
   HCUSTOMMODULE CustomLoadLibrary(const char* path, void* _) {
     if (std::string(path) == "loader.dll") {
@@ -69,8 +98,17 @@ namespace dll {
         MemoryFreeLibrary(std::get<HMEMORYMODULE>(dll));
         auto memModule = LoadDll(filePath.string().c_str());
 
+        auto pluginName = filePath.stem().string();
+
         if (!memModule) {
           LOG(ERR) << "Failed to load " << filePath;
+          chat.sendSystemMessage(
+              std::format("{} {} reloading {}", failureIcon, failureText, pluginName),
+              true);
+        } else {
+          chat.sendSystemMessage(
+              std::format("{} {} reloading {}", successIcon, successText, pluginName),
+              true);
         }
         std::get<HMEMORYMODULE>(dll) = memModule;
         std::get<FileTime>(dll) = writeTime;

@@ -36,8 +36,9 @@ __declspec(dllexport) extern void Initialize(void* memModule) {
     if (config.enablePluginLoader && std::filesystem::exists("nativePC\\plugins")) {
       FindVersion();
       loader::setLogParams(config.logLevel, config.logcmd, config.logfile);
-      dll::LoadAllPluginDlls(memModule);
 
+      dll::LoadAllPluginDlls(memModule);
+      dll::initSystemMessages();
       threads.emplace_back(dll::watch);
     }
     return;

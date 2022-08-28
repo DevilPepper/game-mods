@@ -5,6 +5,7 @@ target_compile_definitions(loader PRIVATE DINPUT8MHW_EXPORTS)
 target_compile_features(loader PRIVATE cxx_std_20)
 target_link_libraries(loader
   PRIVATE
+    mhw-common
     MemoryModule
     yaml-cpp
 )
