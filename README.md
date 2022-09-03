@@ -51,3 +51,8 @@ Typing `dev` gets me there. Now you can:
 1. `make deps`: Restores NuGet packages and generates the Ninja build project. Do this one time.
 2. `make build`: Build all the projects.
 3. `make clean`: Clean up build output... You'll have to `make deps` again, though. Don't do this if you want incremental builds
+
+#### Misc
+
+You can set `$env:BuildConfiguration = "Release"` if you want to build release binaries, but why?
+This exists so that the CI can build optimized binaries for release.
