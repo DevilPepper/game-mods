@@ -71,13 +71,13 @@ function Command-Install() {
 }
 
 function Command-Clean() {
-  Get-ChildItem mods,lib -Recurse -Filter bin | foreach { Remove-Item -Recurse -Force $_.FullName }
+  Get-ChildItem mods,lib,external -Recurse -Filter bin | foreach { Remove-Item -Recurse -Force $_.FullName }
   Remove-Item -Recurse -Force build/
 }
 
 function Command-Purge() {
   Command-Clean
-  Get-ChildItem mods,lib -Recurse -Filter obj | foreach { Remove-Item -Recurse -Force $_.FullName }
+  Get-ChildItem mods,lib,external -Recurse -Filter obj | foreach { Remove-Item -Recurse -Force $_.FullName }
 }
 
 function Command-All() {
