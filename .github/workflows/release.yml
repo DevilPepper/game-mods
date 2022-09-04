@@ -1,0 +1,138 @@
+name: Build & Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  BuildConfiguration: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Generate Ninja project and fetch dependencies
+      run: ./make.ps1 deps
+
+    - name: Run linters
+      run: ./make.ps1 lint
+
+    - name: Build everything
+      run: ./make.ps1 build
+
+    # - name: Run tests
+    #   run: ./make.ps1 test
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: |
+          build/**/*.dll
+          build/**/*license*
+          build/**/*copyright*
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      git_tag: ${{ steps.set_vars.outputs.git_tag }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-artifacts
+        path: build
+
+    - name: Collect license
+      run: ./scripts/collect-licenses.sh
+
+    - name: Zip it
+      run: ./scripts/pack.sh
+
+    - name: Update changelog and bump version
+      id: set_vars
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        wget -nc -q -O Changelog.md https://raw.githubusercontent.com/wiki/$GITHUB_REPOSITORY/Changelog.md || true
+        npx standard-version --silent --dry-run | sed '/---/d' > notes.md
+
+        npx standard-version
+
+        GIT_TAG=$(cat notes.md | grep -o "\[.*\]" -m 1 | tail -n1)
+        GIT_TAG=${GIT_TAG#[}
+        GIT_TAG=${GIT_TAG%]}
+        echo "GIT_TAG=v$GIT_TAG" >> $GITHUB_ENV
+        echo "::set-output name=git_tag::v$GIT_TAG"
+
+    - name: Create release with binaries
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create $GIT_TAG -t "Release $GIT_TAG" --notes-file notes.md zips/*.zip
+
+    - name: Upload Changelog
+      uses: actions/upload-artifact@v3
+      with:
+        name: Changelog
+        path: Changelog.md
+
+  wiki:
+    needs: publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: ${{github.repository}}.wiki
+
+    - name: Download Changelog
+      uses: actions/download-artifact@v3
+      with:
+        name: Changelog
+
+    - name: Commit changes and push
+      env:
+        GIT_TAG: ${{ needs.publish.outputs.git_tag }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if (test $(git diff --numstat | cut -f1) -gt 2)
+        then
+          git config user.name "Github Actions"
+          git config user.email action@github.com
+          git add -A
+          git commit -m "update wiki for $GIT_TAG"
+          git tag -a $GIT_TAG -m "$GIT_TAG"
+          git push --follow-tags origin master
+        else
+          echo "No notable changes in this release"
+          git reset --hard HEAD
+        fi
