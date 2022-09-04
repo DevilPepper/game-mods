@@ -24,7 +24,7 @@ COMMANDS
 #>
 param(
   [Parameter(Position=0)]
-  [ValidateSet("all", "build", "clean", "deps", "external", "format", "help", "install", "lint", "purge", "setup", "test")]
+  [ValidateSet("all", "build", "clean", "deps", "env", "external", "format", "help", "install", "lint", "purge", "setup", "test")]
   [string]$Command,
 
   [Parameter(Position=1, ValueFromRemainingArguments=$true)]
@@ -44,13 +44,15 @@ function Command-Build() {
   $BuildConfiguration = $env:BuildConfiguration ?? "Debug"
 
   dotnet build --no-restore --configuration $BuildConfiguration
-  cmake --build build/
+  cmake --build build/ --config $BuildConfiguration
 }
 
 function Command-Test() {
+  $BuildConfiguration = $env:BuildConfiguration ?? "Debug"
   Command-Build
+
   dotnet test --no-build
-  ctest --test-dir build/ --parallel 8 --progress
+  ctest --test-dir build/ --parallel 8 --progress --build-config $BuildConfiguration
 }
 
 function Command-Format() {
@@ -85,6 +87,10 @@ function Command-All() {
   Command-Test
 }
 
+function Command-Env() {
+  echo "`$env:BuildConfiguration = $($env:BuildConfiguration ?? 'Debug')"
+}
+
 function Command-External() {
   ./scripts/external.ps1 $Rest
 }
@@ -103,6 +109,7 @@ if (!$Command) {
       "clean"     { Command-Clean }
       "purge"     { Command-Purge }
       "all"       { Command-All }
+      "env"       { Command-Env }
       "external"  { Command-External }
       "help"      { Command-Help }
   }
