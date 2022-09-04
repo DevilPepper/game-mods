@@ -1,0 +1,72 @@
+name: Build, lint, and test
+
+on:
+  workflow_call:
+    inputs:
+      build_configuration:
+        description: "The build configuration to use (Debug | Release)"
+        default: "Debug"
+        required: false
+        type: string
+
+defaults:
+  run:
+    shell: pwsh
+
+env:
+  BuildConfiguration: ${{ inputs.build_configuration }}
+
+jobs:
+  blt-cpp:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Generate VC++ project and fetch dependencies
+      run: cmake -E env CXXFLAGS="/MP" cmake -S . -B build/ -A x64
+
+    - name: Build everything
+      run: cmake --build build/ --config $env:BuildConfiguration
+
+    - name: Run linter
+      run: echo "Linter not ready yet!"
+
+    - name: Run tests
+      run: echo "Tests not ready yet!"
+      # run: ctest --test-dir build/ --parallel 8 --progress --build-config $env:BuildConfiguration
+
+    - name: Upload build artifacts
+      if: ${{ inputs.build_configuration == 'Release' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: cpp-artifacts
+        path: |
+          build/**/*.dll
+          build/**/*license*
+          build/**/*copyright*
+
+  blt-dotnet:
+    runs-on: windows-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Fetch dependencies
+      run: dotnet restore
+
+    - name: Build everything
+      run: dotnet build --no-restore --configuration $env:BuildConfiguration
+
+    - name: Run linter
+      run: echo "Linter not ready yet!"
+
+    - name: Run tests
+      run: echo "Tests not ready yet!"
+      # run: dotnet test --no-build
