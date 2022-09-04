@@ -34,18 +34,22 @@ param(
 function Command-Help() { Get-Help $PSCommandPath }
 
 function Command-Deps() {
+  $BuildConfiguration = $env:BuildConfiguration ?? "Debug"
+
   dotnet restore
-  cmake -S . -B build/ -G Ninja
+  cmake -DCMAKE_BUILD_TYPE="$($BuildConfiguration)" -S . -B build/ -G Ninja
 }
 
 function Command-Build() {
-  dotnet build --no-restore
+  $BuildConfiguration = $env:BuildConfiguration ?? "Debug"
+
+  dotnet build --no-restore --configuration $BuildConfiguration
   cmake --build build/
 }
 
 function Command-Test() {
   Command-Build
-  dotnet test
+  dotnet test --no-build
   ctest --test-dir build/ --parallel 8 --progress
 }
 
