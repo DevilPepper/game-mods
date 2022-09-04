@@ -18,6 +18,12 @@ FetchContent_Declare(
   GIT_TAG "4a455528f61b5a375b1f9d44e7d296d47f18bb18"
 )
 FetchContent_Declare(
+  ryml
+  GIT_REPOSITORY "https://github.com/biojppm/rapidyaml.git"
+  GIT_TAG "213b201d264139cd1b887790197e08850af628e3"
+  GIT_SHALLOW FALSE
+)
+FetchContent_Declare(
   yaml-cpp
   GIT_REPOSITORY "https://github.com/jbeder/yaml-cpp.git"
   GIT_TAG "c73ee34704c512ebe915b283645aefa9f424a22f"
@@ -25,4 +31,5 @@ FetchContent_Declare(
 
 MakeAvailable(memorymodule)
 MakeAvailable(minhook)
+MakeAvailable(ryml)
 MakeAvailable(yaml-cpp)

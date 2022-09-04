@@ -6,4 +6,5 @@ target_link_libraries(UpdateAddresses
   PRIVATE
     stuff
     yaml-cpp
+    ryml::ryml
 )
