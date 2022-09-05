@@ -1,0 +1,33 @@
+name: Code smells
+
+on: push
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  clang-tidy:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Enable Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1.11.0
+
+    - name: Generate Ninja project and fetch dependencies
+      run: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -S . -B build/ -G Ninja
+
+    - name: Build everything
+      run: cmake --build build/
+
+    - name: Run linter
+      run: |
+        $cppFiles = $(Get-ChildItem mods,lib -Recurse | Where-Object { $_.Name -match '\.(c|cc|cpp|h|hpp)$' } | foreach { Resolve-Path -Relative $_ })
+        clang-tidy -p build/ $cppFiles
