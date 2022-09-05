@@ -1,16 +1,16 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include "AOB.h"
 
 namespace model {
-  using std::map;
+  using std::unordered_map;
   using std::string;
 
   struct Metadata {
-    map<string, AOB> basePointers;
-    map<string, AOB> functions;
+    unordered_map<string, AOB> basePointers;
+    unordered_map<string, AOB> functions;
   };
 }  // namespace model

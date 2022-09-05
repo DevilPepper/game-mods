@@ -12,7 +12,7 @@
 
 namespace YAML {
   using model::Addresses;
-  using std::map;
+  using std::unordered_map;
   using std::string;
 
   template <>
@@ -25,8 +25,8 @@ namespace YAML {
     }
 
     static bool decode(const Node& node, Addresses& rhs) {
-      rhs.basePointers = node["basePointers"].as<map<string, model::BasePointer>>();
-      rhs.functions = node["functions"].as<map<string, stuff::types::Pointer>>();
+      rhs.basePointers = node["basePointers"].as<unordered_map<string, model::BasePointer>>();
+      rhs.functions = node["functions"].as<unordered_map<string, stuff::types::Pointer>>();
       return true;
     }
   };

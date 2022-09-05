@@ -2,7 +2,7 @@
 
 #include <yaml-cpp/yaml.h>
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include "../model/AOB.h"
@@ -12,14 +12,14 @@
 namespace YAML {
   using model::AOB;
   using model::Metadata;
-  using std::map;
+  using std::unordered_map;
   using std::string;
 
   template <>
   struct convert<Metadata> {
     static bool decode(const Node& node, Metadata& rhs) {
-      rhs.basePointers = node["basePointers"].as<map<string, AOB>>();
-      rhs.functions = node["functions"].as<map<string, AOB>>();
+      rhs.basePointers = node["basePointers"].as<unordered_map<string, AOB>>();
+      rhs.functions = node["functions"].as<unordered_map<string, AOB>>();
       return true;
     }
   };
