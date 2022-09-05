@@ -31,13 +31,17 @@ param(
   $Rest
 )
 
+function List-Cpp-Files () {
+  Get-ChildItem mods,lib -Recurse | Where-Object { $_.Name -match '\.(c|cc|cpp|h|hpp)$' } | foreach { Resolve-Path -Relative $_ }
+}
+
 function Command-Help() { Get-Help $PSCommandPath }
 
 function Command-Deps() {
   $BuildConfiguration = $env:BuildConfiguration ?? "Debug"
 
   dotnet restore
-  cmake -DCMAKE_BUILD_TYPE="$($BuildConfiguration)" -S . -B build/ -G Ninja
+  cmake -DCMAKE_BUILD_TYPE="$($BuildConfiguration)" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -S . -B build/ -G Ninja
 }
 
 function Command-Build() {
@@ -56,12 +60,14 @@ function Command-Test() {
 }
 
 function Command-Format() {
-  # clang-format -i --style=file $$(find . \( -type f -name "*.cc" -o -name "*.cpp" -o -name "*.h" \) -not -path "./build/*")
-  # cmake-format -i $$(find . -name "CMakeLists.txt" -not -path "./build/*")
+  $cppFiles = $(List-Cpp-Files)
+  clang-format -i --style=file $cppFiles
+  # cmake-format -i $(Get-ChildItem mods,lib -Recurse | Where-Object { $_.Name -match '(CMakeLists.txt|\.cmake)$' } | foreach { Resolve-Path -Relative $_ })
 }
 
 function Command-Lint() {
-  # clang-tidy?
+  $cppFiles = $(List-Cpp-Files)
+  clang-tidy -p build/ $cppFiles $Rest
 }
 
 function Command-Setup() {
