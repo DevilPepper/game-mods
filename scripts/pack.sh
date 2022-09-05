@@ -18,15 +18,15 @@ function copy_licenses() {
 }
 
 function copy_yaml_ccp() {
-  cp ../../build/_deps/yaml-cpp-build/yaml-cpp.dll .
+  find ../../build/_deps -name "yaml-cpp*.dll" | xargs -I {} cp {} .
 }
 
 function copy_gamepad_lib() {
-  cp ../../build/libs/gamepad/GamepadLib.dll .
+  find ../../build/libs -name "GamepadLib.dll" | xargs -I {} cp {} .
 }
 
 function copy_aob_scan() {
-  cp ../../build/libs/updateAddresses/UpdateAddresses.dll ${1:-.}
+  find ../../build/libs -name "UpdateAddresses.dll" | xargs -I {} cp {} ${1:-.}
 }
 # endregion helpers
 
