@@ -1,9 +1,10 @@
 #pragma once
 
 #include "GamepadInput.h"
+#include <array>
 
 namespace gamepad {
-  static GamepadInput Buttons[32] = {
+  static constexpr std::array<GamepadInput, 32> Buttons {
     0x00000001,
     0x00000002,
     0x00000004,
@@ -37,4 +38,4 @@ namespace gamepad {
     0x40000000,
     0x80000000
   };
-}
+} // namespace gamepad
