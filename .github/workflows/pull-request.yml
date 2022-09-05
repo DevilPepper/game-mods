@@ -9,33 +9,8 @@ concurrency:
   group: pr-${{ github.ref }}
   cancel-in-progress: true
 
-defaults:
-  run:
-    shell: pwsh
-
-env:
-  BuildConfiguration: Debug
-
 jobs:
   check:
-    runs-on: windows-latest
-    env:
-      DOTNET_NOLOGO: true
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        submodules: true
-
-    - name: Generate Ninja project and fetch dependencies
-      run: ./make.ps1 deps
-
-    - name: Run linters
-      run: ./make.ps1 lint
-
-    - name: Build everything
-      run: ./make.ps1 build
-
-    # - name: Run tests
-    #   run: ./make.ps1 test
+    uses: ./.github/workflows/build-lint-test.yml
+    with:
+      build_configuration: Debug

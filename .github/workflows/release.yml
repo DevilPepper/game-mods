@@ -6,51 +6,18 @@ on:
       - main
 
 concurrency:
-  group: pr-${{ github.ref }}
+  group: release
   cancel-in-progress: true
 
 defaults:
   run:
     shell: bash
 
-env:
-  BuildConfiguration: Release
-
 jobs:
   build:
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: pwsh
-    env:
-      DOTNET_NOLOGO: true
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        submodules: true
-
-    - name: Generate Ninja project and fetch dependencies
-      run: ./make.ps1 deps
-
-    - name: Run linters
-      run: ./make.ps1 lint
-
-    - name: Build everything
-      run: ./make.ps1 build
-
-    # - name: Run tests
-    #   run: ./make.ps1 test
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifacts
-        path: |
-          build/**/*.dll
-          build/**/*license*
-          build/**/*copyright*
+    uses: ./.github/workflows/build-lint-test.yml
+    with:
+      build_configuration: Release
 
   publish:
     needs: build
@@ -67,7 +34,7 @@ jobs:
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
-        name: build-artifacts
+        name: cpp-artifacts
         path: build
 
     - name: Collect license
