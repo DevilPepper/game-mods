@@ -1,1 +1,32 @@
-Checks: 'abseil-*,bugprone-*,clang-analyzer-*,cppcoreguidelines-*,google-*,llvm-*,modernize-*,readability-*,'
+---
+# I'm not gonna put header guards on anything,
+# But in case #pragma once bites me later, they're just a clang-tidy --fix away...
+# llvm-header-guard,
+
+Checks: '-*,
+         bugprone-*,
+         clang-analyzer-*,
+         cppcoreguidelines-*,
+         google-*,
+         modernize-*,
+         readability-*,
+
+         -bugprone-implicit-widening-of-multiplication-result,
+         -cppcoreguidelines-avoid-non-const-global-variables,
+         -cppcoreguidelines-init-variables,
+         -cppcoreguidelines-no-malloc,
+         -cppcoreguidelines-non-private-member-variables-in-classes,
+         -cppcoreguidelines-owning-memory,
+         -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+         -cppcoreguidelines-pro-bounds-constant-array-index,
+         -cppcoreguidelines-pro-type-member-init,
+         -cppcoreguidelines-pro-type-vararg,
+         -google-readability-todo,
+         -modernize-avoid-c-arrays,
+         -modernize-use-trailing-return-type,
+         -readability-convert-member-functions-to-static,
+         -readability-identifier-length,
+         -readability-implicit-bool-conversion,
+         -readability-magic-numbers,
+         -readability-uppercase-literal-suffix,
+         *-'
