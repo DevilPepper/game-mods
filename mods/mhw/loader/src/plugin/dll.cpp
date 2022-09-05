@@ -34,7 +34,7 @@ namespace dll {
   using DLL = std::tuple<HMEMORYMODULE, FilePath, FileTime>;
 
   std::vector<DLL> dlls;
-  Chat chat(0, 0);
+  Chat chat(0, nullptr);
   std::string successIcon;
   std::string successText;
   std::string failureIcon;
@@ -66,7 +66,7 @@ namespace dll {
     if (target == currentModule) {
       return MemoryGetProcAddress(target, path);
     }
-    return GetProcAddress((HMODULE)target, path);
+    return GetProcAddress(static_cast<HMODULE>(target), path);
   }
 
   auto LoadDll(const char* path) {
@@ -74,8 +74,8 @@ namespace dll {
     std::vector<char> dllRead(std::istreambuf_iterator<char>(dll), {});
 
     size_t size = dllRead.size();
-    char* allocatedMem = (char*)malloc(size);
-    memcpy(allocatedMem, &dllRead[0], size);
+    char* allocatedMem = static_cast<char*>(malloc(size));
+    memcpy(allocatedMem, dllRead.data(), size);
 
     return MemoryLoadLibraryEx(allocatedMem,
                                size,
@@ -96,7 +96,7 @@ namespace dll {
         // TODO: consider comparing file hash
         LOG(INFO) << "Reloading " << filePath;
         MemoryFreeLibrary(std::get<HMEMORYMODULE>(dll));
-        auto memModule = LoadDll(filePath.string().c_str());
+        auto* memModule = LoadDll(filePath.string().c_str());
 
         auto pluginName = filePath.stem().string();
 
@@ -118,16 +118,17 @@ namespace dll {
 
   void LoadAllPluginDlls(void* memModule) {
     currentModule = memModule;
-    for (auto& entry : std::filesystem::directory_iterator("nativePC\\plugins")) {
+    for (const auto& entry : std::filesystem::directory_iterator("nativePC\\plugins")) {
       std::string name = entry.path().filename().string();
-      if (entry.path().filename().extension().string() != ".dll")
+      if (entry.path().filename().extension().string() != ".dll") {
         continue;
+      }
       LOG(INFO) << "Loading plugin " << entry.path();
-      auto dll = LoadDll(entry.path().string().c_str());
+      auto* dll = LoadDll(entry.path().string().c_str());
       if (!dll) {
         LOG(ERR) << "Failed to load " << entry.path();
       } else {
-        dlls.push_back({ dll, entry.path(), entry.last_write_time() });
+        dlls.emplace_back(dll, entry.path(), entry.last_write_time());
       }
     }
   }

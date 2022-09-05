@@ -17,6 +17,5 @@ namespace plugin {
     if (justPressed(input, Buttons[SubtitlesToggle])) {
       toggleSubtitles();
     }
-    return;
   }
 }  // namespace plugin

@@ -56,7 +56,7 @@ namespace plugin {
 
         lockOnAddr -= 0x19F8;
         auto realIdx = getRealIndex(lockOnAddr, idx);
-        auto realIdxArr = getRealIndexArray(lockOnAddr);
+        auto *realIdxArr = getRealIndexArray(lockOnAddr);
 
         pinMap(p0, monstersOnTheLoose[realIdxArr[realIdx]], 1);
       }

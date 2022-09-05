@@ -3,8 +3,9 @@
 #include <MHW/memory.h>
 #include <MHW/strings.h>
 #include <gamepad.h>
-#include <math.h>
 #include <yaml-cpp/yaml.h>
+
+#include <cmath>
 
 #include "../model/AddressesConverter.h"
 

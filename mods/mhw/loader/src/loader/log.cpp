@@ -30,17 +30,17 @@ namespace loader {
     HANDLE hStdout = CreateFile("CONOUT$",
                                 GENERIC_READ | GENERIC_WRITE,
                                 FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                NULL,
+                                nullptr,
                                 OPEN_EXISTING,
                                 FILE_ATTRIBUTE_NORMAL,
-                                NULL);
+                                nullptr);
     HANDLE hStdin = CreateFile("CONIN$",
                                GENERIC_READ | GENERIC_WRITE,
                                FILE_SHARE_READ | FILE_SHARE_WRITE,
-                               NULL,
+                               nullptr,
                                OPEN_EXISTING,
                                FILE_ATTRIBUTE_NORMAL,
-                               NULL);
+                               nullptr);
 
     SetStdHandle(STD_OUTPUT_HANDLE, hStdout);
     SetStdHandle(STD_ERROR_HANDLE, hStdout);
@@ -68,7 +68,7 @@ namespace loader {
 
   void logToConsole(int l, const char* stamp, const char* msg) {
     // TODO: static inside a function?
-    static HANDLE console = 0;
+    static HANDLE console = nullptr;
     if (logcmd) {
       if (!console) {
         AllocConsole();
@@ -77,28 +77,32 @@ namespace loader {
         console = GetStdHandle(STD_OUTPUT_HANDLE);
       }
       SetConsoleTextAttribute(console, FOREGROUND_GREEN);
-      WriteConsole(console, "[ ", 2, nullptr, 0);
-      WriteConsole(console, stamp, (DWORD)strlen(stamp), nullptr, 0);
-      WriteConsole(console, " ] ", 3, nullptr, 0);
+      WriteConsole(console, "[ ", 2, nullptr, nullptr);
+      WriteConsole(console, stamp, static_cast<DWORD>(strlen(stamp)), nullptr, nullptr);
+      WriteConsole(console, " ] ", 3, nullptr, nullptr);
 
-      if (l == INFO || l == DEBUG)
+      if (l == INFO || l == DEBUG) {
         SetConsoleTextAttribute(console, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
-      if (l == WARN)
+      }
+      if (l == WARN) {
         SetConsoleTextAttribute(
             console,
             FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
-      if (l == ERR)
+      }
+      if (l == ERR) {
         SetConsoleTextAttribute(console, FOREGROUND_RED | FOREGROUND_INTENSITY);
-      WriteConsole(console, msg, (DWORD)strlen(msg), nullptr, 0);
+      }
+      WriteConsole(console, msg, static_cast<DWORD>(strlen(msg)), nullptr, nullptr);
       SetConsoleTextAttribute(console, FOREGROUND_BLUE | FOREGROUND_INTENSITY);
     }
   }
 
   void _log(LogLevel l, const char* s) {
-    if (l < MinLogLevel)
+    if (l < MinLogLevel) {
       return;
+    }
 
-    time_t mytime = time(NULL);
+    time_t mytime = time(nullptr);
     tm mytm;
     localtime_s(&mytm, &mytime);
     char stamp[128] = { 0 };

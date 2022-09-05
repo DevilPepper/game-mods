@@ -7,6 +7,6 @@ namespace MHW {
   class Addy {
    public:
     Pointer zone;
-    int getZoneID();
+    int getZoneID() const;
   };
 }  // namespace MHW

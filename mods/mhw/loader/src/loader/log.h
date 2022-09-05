@@ -28,7 +28,7 @@ namespace loader {
     LOG& operator=(const LOG& o) = delete;
 
    public:
-    LOG(LogLevel level);
+    explicit LOG(LogLevel level);
     ~LOG();
 
     template <class T>
