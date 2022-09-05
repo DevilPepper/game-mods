@@ -1,6 +1,6 @@
 #include "fsm.h"
 
-#include <ctype.h>
+#include <cctype>
 
 #include <queue>
 
@@ -9,18 +9,20 @@ namespace stuff {
     // Straight up copied this:
     // https://www.geeksforgeeks.org/aho-corasick-algorithm-pattern-searching/
 
+    constexpr auto WILDCARD_IDX = 256;
+
     state_t fsm::next(state_t state, byte b) const {
-      while (moveTo[state][b] == -1 && moveTo[state][256] == -1) {
+      while (moveTo[state][b] == -1 && moveTo[state][WILDCARD_IDX] == -1) {
         state = failureLink[state];
       }
-      return moveTo[state][b] != -1 ? moveTo[state][b] : moveTo[state][256];
+      return moveTo[state][b] != -1 ? moveTo[state][b] : moveTo[state][WILDCARD_IDX];
     }
 
     void fsm::build(const vector<string_view>& patterns, char trailingBytes) {
       // Initialize first state (empty array)
       moveTo.push_back({});
       moveTo[0].fill(-1);
-      output.push_back({});
+      output.emplace_back();
 
       for (const auto& pattern : patterns) {
         insert(pattern, trailingBytes);
@@ -47,10 +49,11 @@ namespace stuff {
         }
         if (pattern[i] == trailingBytes) {
           break;
-        } else if (isxdigit(pattern[i])) {
+        }
+        if (isxdigit(pattern[i])) {
           sscanf(&pattern[i], "%2hx", &b);
         } else {
-          b = 256;
+          b = WILDCARD_IDX;
         }
 
         pathSize++;
@@ -59,7 +62,7 @@ namespace stuff {
 
           moveTo.push_back({});
           moveTo[newState].fill(-1);
-          output.push_back({});
+          output.emplace_back();
 
           moveTo[state][b] = newState;
         }

@@ -503,3 +503,9 @@ FodyWeavers.xsd
 
 # Don't include POCs in repo
 poc/
+
+# Remove Mac specific files
+.DS_Store
+
+# Ignore Clion generated directory
+cmake-build-debug
