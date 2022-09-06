@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "GamepadInput.h"
 
 namespace gamepad {
@@ -17,6 +19,6 @@ namespace gamepad {
     float leftStickMagnitude;
     float leftTriggerMagnitude;
     float rightTriggerMagnitude;
-    float pressDuration[32];
+    std::array<float, 32> pressDuration;
   };
 }  // namespace gamepad
