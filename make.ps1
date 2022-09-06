@@ -35,6 +35,10 @@ function List-Cpp-Files () {
   Get-ChildItem mods,lib -Recurse | Where-Object { $_.Name -match '\.(c|cc|cpp|h|hpp)$' } | foreach { Resolve-Path -Relative $_ }
 }
 
+function List-Staged-Cpp-Files () {
+  git diff --name-only --staged | Where-Object { $_ -match '\.(c|cc|cpp|h|hpp)$' }
+}
+
 function Command-Help() { Get-Help $PSCommandPath }
 
 function Command-Deps() {
@@ -66,7 +70,7 @@ function Command-Format() {
 }
 
 function Command-Lint() {
-  $cppFiles = $(List-Cpp-Files)
+  $cppFiles = $(List-Staged-Cpp-Files)
   clang-tidy -p build/ $cppFiles $Rest
 }
 
