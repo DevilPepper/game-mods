@@ -15,7 +15,7 @@ namespace MHW {
   class Chat {
    public:
     Chat(Pointer instance, SendSystemMessage systemMessage);
-    void sendSystemMessage(const std::string msg, bool isPurple);
+    void sendSystemMessage(std::string msg, bool isPurple);
     std::string wrapIcon(Icon icon);
     std::string wrapColor(std::string msg, Color color);
 

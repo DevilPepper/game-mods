@@ -11,8 +11,8 @@ namespace plugin {
   void ToggleSubtitles::toggleSubtitles() {
     bool subs_setting;
     bool subs_show;
-    auto subsSettingsAddr = readMem(addresses.save_data, subtitle_setting, subs_setting);
-    auto subsShowAddr = readMem(addresses.display_options, subtitle_show, subs_show);
+    readMem(addresses.save_data, subtitle_setting, subs_setting);
+    readMem(addresses.display_options, subtitle_show, subs_show);
 
     subs_setting ^= true;
     subs_show ^= true;

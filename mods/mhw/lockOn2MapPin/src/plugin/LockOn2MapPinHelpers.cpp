@@ -14,7 +14,7 @@ namespace plugin {
 
   // Fourth param is always 0, so we're omitting it with this helper
   // targetType is always 1 for monster
-  void LockOn2MapPin::pinMap(int64_t unknown, int64_t target, int64_t targetType) {
+  void LockOn2MapPin::pinMap(uint64_t unknown, uint64_t target, int64_t targetType) const {
     addresses.fnPinMap(unknown, target, targetType, 0);
   }
 
@@ -28,21 +28,20 @@ namespace plugin {
     auto monsterActionBase = monsterAddr + (2 * 8) + 0x68;
 
     // clang-format off
-  Offsets monsterAction{
-    actionId * 8,
-    0,
-    0x20
-  };
+    Offsets monsterAction{
+      actionId * 8,
+      0,
+      0x20
+    };
     // clang-format on
 
     Pointer actionPtr = NULL;
-    auto actionAddr = readMem(monsterActionBase, monsterAction, actionPtr);
-    // cout << std::format("monster action @ {:#010x}: {:#010x}", actionAddr, actionPtr);
+    readMem(monsterActionBase, monsterAction, actionPtr);
 
     auto offset = *(unsigned int*)(actionPtr + 3);
     // cout << std::format("action offset @ {:#010x}: {:#010x}", (actionPtr + 3), offset);
 
-    auto strAddr = (char**)(actionPtr + offset + 7 + 8);
+    auto* strAddr = (char**)(actionPtr + offset + 7 + 8);
     string_view action(*strAddr);
 
     // cout << std::format("action string @ {:#010x}: {}", (Pointer)strAddr, action);

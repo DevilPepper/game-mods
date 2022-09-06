@@ -24,17 +24,14 @@ namespace plugin {
   void LockOn2MapPin::updatePin() {
     int idx = -1;
     auto lockOnAddr = readMem(addresses.quest_manager, lockOnOffsets, idx);
-    // cout << std::format("lockOn @ {:#010x}: {}", lockOnAddr, idx);
 
     uintptr_t p0 = 0;
-    auto unknownAddr = readMem(addresses.display_options, unknown, p0);
-    // cout << std::format("p0 @ {:#010x}: {:#010x}", unknownAddr, p0);
+    readMem(addresses.display_options, unknown, p0);
 
     uintptr_t monster = 0;
     if (idx != -1) {
       int nMonsters = -1;
-      auto numMonstersAddr = readMem(addresses.quest_manager, numMonsters, nMonsters);
-      // cout << std::format("numMonsters @ {:#010x}: {}", numMonstersAddr, nMonsters);
+      readMem(addresses.quest_manager, numMonsters, nMonsters);
 
       if (nMonsters > 0) {
         vector<uintptr_t> monsters;
@@ -42,8 +39,7 @@ namespace plugin {
         for (int i = 0; i <= nMonsters; i++) {
           auto offset = (nMonsters - i) * 8;
           monster_i[1] = offset;
-          auto monsterAddr = readMem(addresses.monsters, monster_i, monster);
-          // cout << std::format("monster found @ {:#010x}: {:#010x}", monsterAddr, monster);
+          readMem(addresses.monsters, monster_i, monster);
           monsters.push_back(monster);
         }
 
@@ -56,17 +52,16 @@ namespace plugin {
 
         lockOnAddr -= 0x19F8;
         auto realIdx = getRealIndex(lockOnAddr, idx);
-        auto realIdxArr = getRealIndexArray(lockOnAddr);
+        auto *realIdxArr = getRealIndexArray(lockOnAddr);
 
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         pinMap(p0, monstersOnTheLoose[realIdxArr[realIdx]], 1);
       }
     } else {
-      auto nonZeroAddr = readMem(addresses.pin_params, nonZero, monster);
-      // cout << std::format("non-zero @ {:#010x}: {:#010x}", nonZeroAddr, monster);
+      readMem(addresses.pin_params, nonZero, monster);
 
       if (monster != 0) {
-        auto pinnedMonsterAddr = readMem(addresses.pin_params, pinnedMonster, monster);
-        // cout << std::format("pinned monster @ {:#010x}: {:#010x}", pinnedMonsterAddr, monster);
+        readMem(addresses.pin_params, pinnedMonster, monster);
         pinMap(p0, monster, 1);
       }
     }

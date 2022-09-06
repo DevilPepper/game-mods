@@ -1,6 +1,10 @@
 # Game Mods
 
-This is a monorepo with my game mods.
+This is a monorepo with my game mods. It has submodules, so clone it like:
+
+```pwsh
+git clone --recurse-submodules -j8 git@github.com:SupaStuff/game-mods.git
+```
 
 ## Building from source
 
@@ -9,10 +13,12 @@ This is a monorepo with my game mods.
 - [Build Tools for Visual Studio 2022](https://visualstudio.microsoft.com/downloads/?q=build+tools#build-tools-for-visual-studio-2022) (or later): `winget install Microsoft.VisualStudio.2022.BuildTools`
   - MSBuild Tools
   - Desktop development with C++
+    - C++ Clang tools for Windows (optional if you `winget` it)
   - MSVC (latest)
   - .Net SDK
   - .Net 6.0 Runtime
 - [CMake >= 3.24](https://cmake.org/download/): This is probably included with **VS Desktop Dev w/ C++**, but you can also get it from winget: `winget install Kitware.CMake`
+- [Clang](https://clang.llvm.org/docs/ClangFormat.html) [Tools](https://clang.llvm.org/extra/clang-tidy/): Probably just use the one from **VS Desktop Dev w/ C++**... or: `winget install LLVM.LLVM` (you need to update PATH)
 - [Ninja](https://ninja-build.org/): You can pip install it, but I couldn't build without using the VS dev shell, so might as well use the one that comes with **VS Desktop Dev w/ C++**...
 - [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2): `winget install --id Microsoft.Powershell`
 
@@ -59,3 +65,30 @@ You probably don't want to set these. They are really just for the CI.
 The best DX is provided by defaults. You're on your own if you set these:
 
 - Set `$env:BuildConfiguration = "Release"` if you want to build release binaries.
+
+## Contributing
+
+Thanks! Feel free to fork the repo and open a PR. Just follow these guidelines:
+
+### Formatters and Linters
+
+Before each commit, make sure to run formatters and linters.
+For your convenience, there are `make format` and `make lint` that will do the right thing.
+
+Because `clang-tidy` is slow AND dangerous, `make lint` only gives it staged files.
+This means commiting C++ changes looks something like this:
+
+```pwsh
+git stage ...
+make lint
+make format
+git stage ... # or not
+git commit ...
+```
+
+### Commits
+
+Please:
+
+- Write [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+- [Sign your commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits)

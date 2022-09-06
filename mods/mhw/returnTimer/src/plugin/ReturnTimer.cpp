@@ -38,28 +38,28 @@ namespace plugin {
     }
   }
 
-  void ReturnTimer::addSeconds(float secs, float* timerAddr) {
+  void ReturnTimer::addSeconds(float secs, float* timerAddr) const {
     *timerAddr -= 60 * secs;
     printf("Adding %.4fs: %.4f\n", secs, timerCurrent);
   }
 
-  void ReturnTimer::freezeTimer(float* timerAddr) {
+  void ReturnTimer::freezeTimer(float* timerAddr) const {
     *timerAddr = frozenTime;
   }
 
-  void ReturnTimer::toggleFreezeTimer(float* timerAddr) {
+  void ReturnTimer::toggleFreezeTimer(const float* timerAddr) {
     frozenTime = *timerAddr;
     freezeTime ^= true;
     printf("Freeze timer %s at %.4fs\n", (freezeTime ? "on" : "off"), frozenTime);
   }
-  void ReturnTimer::endTimer(float* timerAddr) {
+  void ReturnTimer::endTimer(float* timerAddr) const {
     *timerAddr = timerMax;
     printf("Ending time: %f\n", timerCurrent);
   }
 
   tuple<float*, bool> ReturnTimer::readTimer() {
     readMem(addresses.session_quest, timerMaxOffset, timerMax);
-    auto timerAddr = (float*)readMem(addresses.session_quest, timerCurrentOffset, timerCurrent);
+    auto* timerAddr = (float*)readMem(addresses.session_quest, timerCurrentOffset, timerCurrent);
     return { timerAddr, ((timerMax > 0.0f) && (timerCurrent > 0.0f)) };
   }
 }  // namespace plugin

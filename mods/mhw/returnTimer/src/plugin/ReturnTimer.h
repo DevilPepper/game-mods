@@ -22,10 +22,10 @@ namespace plugin {
     float frozenTime = 0;
     bool freezeTime = false;
 
-    void addSeconds(float secs, float* timerAddr);
-    void freezeTimer(float* timerAddr);
-    void toggleFreezeTimer(float* timerAddr);
-    void endTimer(float* timerAddr);
+    void addSeconds(float secs, float* timerAddr) const;
+    void freezeTimer(float* timerAddr) const;
+    void toggleFreezeTimer(const float* timerAddr);
+    void endTimer(float* timerAddr) const;
     tuple<float*, bool> readTimer();
 
    public:

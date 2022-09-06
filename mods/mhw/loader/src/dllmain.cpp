@@ -17,7 +17,7 @@ const char* loader::GameVersion = "???";
 static std::string GameVersionString;
 
 void FindVersion() {
-  auto window = GetForegroundWindow();
+  auto* window = GetForegroundWindow();
   auto titleLength = GetWindowTextLength(window) + 1;
   TCHAR title[35];
   GetWindowText(window, title, titleLength);
@@ -43,7 +43,7 @@ __declspec(dllexport) extern void Initialize(void* memModule) {
     }
     return;
   } catch (std::exception e) {
-    MessageBox(0, "STRACKER'S LOADER ERROR", e.what(), MB_OK);
+    MessageBox(nullptr, "STRACKER'S LOADER ERROR", e.what(), MB_OK);
   }
 }
 }

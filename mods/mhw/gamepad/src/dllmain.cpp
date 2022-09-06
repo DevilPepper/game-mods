@@ -18,13 +18,12 @@ HookedConsumer original = nullptr;
 void PollCtrlHook(int64_t p1, int64_t p2, int64_t p3, int64_t p4) {
   original(p1, p2, p3, p4);
   gamepad::GetDispatcher().update(*(Gamepad*)p1);
-  return;
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH: {
-      auto exeBase = (Pointer)GetModuleHandle(NULL);
+      auto exeBase = (Pointer)GetModuleHandle(nullptr);
       auto yaml = YAML::LoadFile(MHW::getFilePath(addressFile));
       auto PollCtrl = yaml["functions"]["fnPollController"].as<Pointer>();
 

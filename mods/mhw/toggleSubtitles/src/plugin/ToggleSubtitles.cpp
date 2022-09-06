@@ -1,8 +1,9 @@
+#include "ToggleSubtitles.h"
+
 #include <MHW/strings.h>
 #include <yaml-cpp/yaml.h>
 
 #include "../model/AddressesConverter.h"
-#include "ToggleSubtitles.h"
 
 namespace plugin {
   using MHW::addressFile;
@@ -16,6 +17,5 @@ namespace plugin {
     if (justPressed(input, Buttons[SubtitlesToggle])) {
       toggleSubtitles();
     }
-    return;
   }
 }  // namespace plugin
