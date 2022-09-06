@@ -24,12 +24,14 @@ namespace loader {
    private:
     std::stringstream stream;
     LogLevel logLevel;
-    LOG(const LOG& o) = delete;
-    LOG& operator=(const LOG& o) = delete;
 
    public:
     explicit LOG(LogLevel level);
     ~LOG();
+    LOG(const LOG&) = delete;
+    LOG(const LOG&&) = delete;
+    LOG& operator=(const LOG&) = delete;
+    LOG& operator=(const LOG&&) = delete;
 
     template <class T>
     LOG& operator<<(const T& x) {

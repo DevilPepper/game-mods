@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <types/address.h>
 
+#include <array>
+
 #include "../model/Addresses.h"
 
 namespace plugin {
@@ -13,7 +15,7 @@ namespace plugin {
    private:
     Addresses addresses;
     Offsets hud_settings{ 0xa8, 0x151F8C };
-    bool toggles[8];
+    std::array<bool, 8> toggles;
 
    public:
     bool wasActive;

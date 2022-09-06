@@ -115,8 +115,10 @@ namespace loader {
   LOG::LOG(LogLevel level) : logLevel(level) {}
 
   LOG::~LOG() {
-    stream << std::endl;
-    stream.flush();
-    _log(logLevel, stream.str().c_str());
+    try {
+      stream << std::endl;
+      stream.flush();
+      _log(logLevel, stream.str().c_str());
+    } catch (...) {}
   }
 }  // namespace loader

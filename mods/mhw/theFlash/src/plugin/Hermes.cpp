@@ -27,7 +27,9 @@ namespace plugin {
         // std::cout << ((Producer)0x140f30030)() << std::endl;
       }
 
-      auto multiplier = pow(expBase, input.leftTriggerMagnitude) * direction;
+      // idk what to do about it
+      // NOLINTNEXTLINE(bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions)
+      float multiplier = pow(expBase, input.leftTriggerMagnitude) * direction;
       // std::cout << multiplier << std::endl;
 
       float walkSpeed = walk * multiplier;
@@ -36,10 +38,10 @@ namespace plugin {
       float sprintSpeed = sprint * multiplier;
       // float gravitySpeed = gravity * multiplier;
 
-      auto walkAddr = writeMem(addresses.pl_params, walkSpeedOffset, walkSpeed);
-      auto runAddr = writeMem(addresses.pl_params, runSpeedOffset, runSpeed);
-      auto dashAddr = writeMem(addresses.pl_params, dashSpeedOffset, dashSpeed);
-      auto sprintAddr = writeMem(addresses.pl_params, sprintSpeedOffset, sprintSpeed);
+      writeMem(addresses.pl_params, walkSpeedOffset, walkSpeed);
+      writeMem(addresses.pl_params, runSpeedOffset, runSpeed);
+      writeMem(addresses.pl_params, dashSpeedOffset, dashSpeed);
+      writeMem(addresses.pl_params, sprintSpeedOffset, sprintSpeed);
       // auto gravityAddr = writeMem(addresses.pl_params, gravitySpeedOffset, gravitySpeed);
     }
   }

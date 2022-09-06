@@ -21,7 +21,7 @@ namespace plugin {
     Offsets lockOnOffsets{ 0x50, 0x80, 0x80, -0x7C };
     Offsets numMonsters{ 0x50, 0x80, 0x80, 0x120, 0x958 };
 
-    void pinMap(int64_t unknown, int64_t target, int64_t targetType) const;
+    void pinMap(uint64_t unknown, uint64_t target, int64_t targetType) const;
     bool isOnTheLoose(Pointer monsterAddr);
     bool isOnTheLoose(std::string_view action);
     int getRealIndex(Pointer address, int idx);

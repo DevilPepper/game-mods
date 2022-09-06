@@ -1,12 +1,13 @@
 #pragma once
 
+#include <array>
 #include <string_view>
 
 namespace plugin {
   constexpr std::string_view settings = "HUD_toggles.json";
 
   // clang-format off
-  const char* toggleSettings[] = {
+  constexpr std::array<std::string_view, 9> toggleSettings {
     "Player Info",
     "Partner Info",
     "Scoutfly Notifications",
@@ -15,7 +16,8 @@ namespace plugin {
     "Button Guide",
     "Objectives",
     "Slinger Display",
-    "Item Bar"
+    // TODO: This isn't a bug??
+    "Item Bar",
   };
   // clang-format on
 }  // namespace plugin

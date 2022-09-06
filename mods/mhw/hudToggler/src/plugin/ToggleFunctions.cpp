@@ -24,9 +24,9 @@ namespace plugin {
     if (wasActive ^ isActive) {
       wasActive = isActive;
       long long hud;
-      auto hudAddr = readMem(addresses.save_data, hud_settings, hud);
+      readMem(addresses.save_data, hud_settings, hud);
       // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-      auto mask = *reinterpret_cast<long long*>(toggles);
+      auto mask = *reinterpret_cast<long long*>(toggles.data());
 
       hud &= ~mask;
       if (!isActive) {

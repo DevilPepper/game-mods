@@ -13,7 +13,7 @@ namespace plugin {
     addresses = YAML::LoadFile(MHW::getFilePath(addressFile)).as<Addresses>();
     auto json = YAML::LoadFile(MHW::getFilePath(settings));
     for (int i = 0; i < 8; i++) {
-      toggles[i] = json[toggleSettings[i]].as<bool>();
+      toggles[i] = json[toggleSettings[i].data()].as<bool>();
     }
   }
 }  // namespace plugin
