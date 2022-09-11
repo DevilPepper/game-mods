@@ -10,9 +10,12 @@
 #include "../model/AddressesConverter.h"
 
 namespace plugin {
+  using gamepad::Button;
+  using gamepad::Buttons;
+  using gamepad::Gamepad;
+  using gamepad::justPressed;
   using MHW::addressFile;
   using MHW::writeMem;
-  using namespace gamepad;
 
   Hermes::Hermes() {
     expBase = YAML::LoadFile(MHW::getFilePath(settings))["maxSpeedMultiplier"].as<int>();

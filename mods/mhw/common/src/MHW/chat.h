@@ -8,8 +8,10 @@
 #include "chatMarkup.h"
 
 namespace MHW {
+  using ghidra::types::uint;
+  using ghidra::types::undefined;
+  using ghidra::types::undefined1;
   using stuff::types::Pointer;
-  using namespace ghidra::types;
   using SendSystemMessage = void (*)(undefined *, undefined *, float, uint, undefined1);
 
   class Chat {

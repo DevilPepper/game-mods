@@ -7,7 +7,6 @@
 
 #include "plugin/HUDHookHelper.h"
 
-using namespace stuff;
 using plugin::HUDHookHelper;
 
 HUDHookHelper CaptainHook;

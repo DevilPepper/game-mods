@@ -9,12 +9,14 @@
 #include "../model/AddressesConverter.h"
 
 namespace plugin {
-
+  using gamepad::Button;
+  using gamepad::Buttons;
+  using gamepad::Gamepad;
+  using gamepad::justPressed;
+  using gamepad::pressing;
   using MHW::addressFile;
   using MHW::readMem;
   using stuff::types::Offsets;
-
-  using namespace gamepad;
 
   ReturnTimer::ReturnTimer() {
     addresses = YAML::LoadFile(MHW::getFilePath(addressFile)).as<Addresses>();

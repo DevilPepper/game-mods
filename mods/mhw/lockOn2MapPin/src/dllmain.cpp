@@ -3,7 +3,6 @@
 
 #include "plugin/LockOn2MapPin.h"
 
-using namespace stuff;
 using plugin::LockOn2MapPin;
 
 LockOn2MapPin CaptainHook;

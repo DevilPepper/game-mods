@@ -21,7 +21,8 @@
 #include "../model/AddressesConverter.h"
 
 namespace dll {
-  using namespace loader;
+  using loader::LOG;
+  using loader::LogLevel;
   using MHW::addressFile;
   using MHW::Chat;
   using MHW::Color;
@@ -94,14 +95,14 @@ namespace dll {
 
       if (writeTime != std::get<FileTime>(dll)) {
         // TODO: consider comparing file hash
-        LOG(INFO) << "Reloading " << filePath;
+        LOG(LogLevel::INFO) << "Reloading " << filePath;
         MemoryFreeLibrary(std::get<HMEMORYMODULE>(dll));
         auto* memModule = LoadDll(filePath.string().c_str());
 
         auto pluginName = filePath.stem().string();
 
         if (!memModule) {
-          LOG(ERR) << "Failed to load " << filePath;
+          LOG(LogLevel::ERR) << "Failed to load " << filePath;
           chat.sendSystemMessage(
               std::format("{} {} reloading {}", failureIcon, failureText, pluginName),
               true);
@@ -123,10 +124,10 @@ namespace dll {
       if (entry.path().filename().extension().string() != ".dll") {
         continue;
       }
-      LOG(INFO) << "Loading plugin " << entry.path();
+      LOG(LogLevel::INFO) << "Loading plugin " << entry.path();
       auto* dll = LoadDll(entry.path().string().c_str());
       if (!dll) {
-        LOG(ERR) << "Failed to load " << entry.path();
+        LOG(LogLevel::ERR) << "Failed to load " << entry.path();
       } else {
         dlls.emplace_back(dll, entry.path(), entry.last_write_time());
       }
