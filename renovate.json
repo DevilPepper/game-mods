@@ -1,0 +1,61 @@
+{
+  "extends": [
+    "config:base",
+    ":preserveSemverRanges"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "semanticCommits": "enabled",
+  "schedule": [
+    "before 9am on Saturday"
+  ],
+  "packageRules": [
+    {
+      "extends": [
+        "schedule:daily"
+      ],
+      "groupName": "Non-major dependencies",
+      "groupSlug": "non-major-dependencies",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "matchCurrentVersion": "!/^0\\./",
+      "automerge": true,
+      "automergeType": "branch"
+    }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": [
+        "(^|/)dependencies\\.cmake$"
+      ],
+      "matchStrings": [
+        "FetchContent_Declare\\(\\n\\s*\\w+\\n\\s*GIT_REPOSITORY\\s+\"(?<remoteHost>.*\\.(?:com|org))\\/(?<depName>.*)\"\\n\\s*GIT_TAG\\s+\"(?<currentDigest>[0-9a-f]{5,40})\"\\n"
+      ],
+      "datasourceTemplate": "git-refs",
+      "depNameTemplate": "{{{remoteHost}}}/{{{depName}}}.git",
+      "currentValueTemplate": "^(main|master)$",
+      "versioningTemplate": "git"
+    },
+    {
+      "fileMatch": [
+        "(^|/)dependencies\\.cmake$"
+      ],
+      "matchStrings": [
+        "FetchContent_Declare\\(\\n\\s*\\w+\\n\\s*GIT_REPOSITORY\\s+\"(?<remoteHost>.*\\.(?:com|org))\\/(?<depName>.*)\"\\n\\s*GIT_TAG\\s+\".*(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)\"\\n"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "{{{remoteHost}}}/{{{depName}}}",
+      "extractVersionTemplate": "^.*(?<version>[0-9]+\\.[0-9]+\\.[0-9]+)$",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "git-submodules": {
+    "enabled": true
+  },
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0
+}
