@@ -4,11 +4,9 @@
 
 #include "gamepad/GamepadDispatcher.h"
 
-using namespace gamepad;
+static gamepad::GamepadDispatcher instance;
 
-static GamepadDispatcher instance;
-
-IGamepadDispatcher& gamepad::GetDispatcher() {
+gamepad::IGamepadDispatcher& gamepad::GetDispatcher() {
   return instance;
 }
 

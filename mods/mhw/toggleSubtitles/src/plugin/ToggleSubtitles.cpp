@@ -6,8 +6,10 @@
 #include "../model/AddressesConverter.h"
 
 namespace plugin {
+  using gamepad::Buttons;
+  using gamepad::Gamepad;
+  using gamepad::justPressed;
   using MHW::addressFile;
-  using namespace gamepad;
 
   ToggleSubtitles::ToggleSubtitles() {
     addresses = YAML::LoadFile(MHW::getFilePath(addressFile)).as<Addresses>();
