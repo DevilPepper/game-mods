@@ -1,10 +1,7 @@
 #include "memory.h"
 
-#include <iostream>
-
 namespace stuff {
   namespace memory {
-    using namespace std;
     intptr_t followPointers(intptr_t base, const vector<intptr_t>& offsets, intptr_t exeBase) {
       auto addy = *(intptr_t*)(base + exeBase);
       int i = 0;
