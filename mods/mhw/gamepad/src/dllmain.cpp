@@ -8,7 +8,6 @@
 #include <types/address.h>
 #include <yaml-cpp/yaml.h>
 
-using namespace stuff;
 using gamepad::Gamepad;
 using MHW::addressFile;
 using stuff::types::Pointer;

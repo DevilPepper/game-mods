@@ -4,7 +4,6 @@
 
 #include "plugin/ToggleSubtitles.h"
 
-using namespace stuff;
 using gamepad::Gamepad;
 using gamepad::GamepadToken;
 using plugin::ToggleSubtitles;
