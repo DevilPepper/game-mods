@@ -9,12 +9,12 @@
 #include "config.h"
 
 namespace YAML {
-  using namespace loader;
-
-  std::map<std::string, LogLevel> logLevels = { { "DEBUG", DEBUG },
-                                                { "INFO", INFO },
-                                                { "WARNING", WARN },
-                                                { "ERROR", ERR } };
+  using loader::Config;
+  using loader::LogLevel;
+  std::map<std::string, LogLevel> logLevels = { { "DEBUG", LogLevel::DEBUG },
+                                                { "INFO", LogLevel::INFO },
+                                                { "WARNING", LogLevel::WARN },
+                                                { "ERROR", LogLevel::ERR } };
 
   template <>
   struct convert<Config> {
