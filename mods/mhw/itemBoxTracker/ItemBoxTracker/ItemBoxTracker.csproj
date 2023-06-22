@@ -77,7 +77,7 @@
         Version="1.1.31" />
     <PackageReference
         Include="gong-wpf-dragdrop"
-        Version="2.3.2" />
+        Version="3.2.1" />
   </ItemGroup>
 
   <!-- Build tools -->
