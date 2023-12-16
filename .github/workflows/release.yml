@@ -32,7 +32,7 @@ jobs:
         fetch-depth: 0
 
     - name: Download build artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: cpp-artifacts
         path: build
@@ -81,7 +81,7 @@ jobs:
         repository: ${{github.repository}}.wiki
 
     - name: Download Changelog
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: Changelog
 
