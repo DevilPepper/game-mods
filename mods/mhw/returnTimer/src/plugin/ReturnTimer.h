@@ -14,8 +14,8 @@ namespace plugin {
   class ReturnTimer {
    private:
     Addresses addresses;
-    intptr_t timerCurrentOffset = 0x13350;
-    intptr_t timerMaxOffset = 0x13354;
+    intptr_t timerCurrentOffset = 0x131a0;
+    intptr_t timerMaxOffset = 0x131a4;
 
     float timerCurrent = 0;
     float timerMax = 0;

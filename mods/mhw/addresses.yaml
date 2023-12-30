@@ -1,39 +1,39 @@
 basePointers:
   afk_patch_quest:
-    address: 0x2f6f440
-    source: 0x16dca27
-  afk_patch_village:
-    address: 0x3124140
-    source: 0x1b1b7cd
+    address: 0x2f153e0
+    source: 0x16cbac7
+# afk_patch_village:
+#   address: 0x3124140
+#   source: 0x1b1b7cd
   chat_instance:
-    address: 0x506d340
-    source: 0x1da0ff0
+    address: 0x500ac30
+    source: 0x1d84770
   display_options:
-    address: 0x5224b80
-    source: 0x1da251a
+    address: 0x51c2400
+    source: 0x1d85c9a
   monsters:
-    address: 0x5183e00
-    source: 0x1fcc870
+    address: 0x5121688
+    source: 0x1faec20
   pin_params:
-    address: 0x5073db0
-    source: 0x1dbe396
+    address: 0x5011640
+    source: 0x1da1b86
   pl_params:
-    address: 0x5072488
-    source: 0x1b2a232
+    address: 0x500fd18
+    source: 0x1b14592
   quest_manager:
-    address: 0x5073ed0
-    source: 0x1b34641
+    address: 0x5011760
+    source: 0x1b1e9a1
   save_data:
-    address: 0x5073e80
-    source: 0x489c26
+    address: 0x5011710
+    source: 0x488d86
   session_quest:
-    address: 0x506f240
-    source: 0x1f80294
+    address: 0x500caf0
+    source: 0x1f62644
   zone:
-    address: 0x506f1b0
-    source: 0x1b51e29
+    address: 0x500ca60
+    source: 0x1b3c0e9
 functions:
-  fnLockOnIncrement: 0x12a54a0
-  fnPinMap: 0x1dd3060
-  fnPollController: 0x18e8ea0
-  fnSendSystemMessage: 0x1a671f0
+  fnLockOnIncrement: 0x1296720
+  fnPinMap: 0x1db68e0
+  fnPollController: 0x18d6a50
+  fnSendSystemMessage: 0x1a53400

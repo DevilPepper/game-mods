@@ -18,10 +18,10 @@ namespace plugin {
   class Hermes {
    private:
     Addresses addresses;
-    intptr_t walkSpeedOffset = 0x940;
-    intptr_t runSpeedOffset = 0x980;
-    intptr_t dashSpeedOffset = 0x9b0;
-    intptr_t sprintSpeedOffset = 0xa10;
+    intptr_t walkSpeedOffset = 0x934;
+    intptr_t runSpeedOffset = 0x954;
+    intptr_t dashSpeedOffset = 0x964;
+    intptr_t sprintSpeedOffset = 0x9ac;
     // intptr_t gravitySpeedOffset = 0xbc;
 
     int expBase;

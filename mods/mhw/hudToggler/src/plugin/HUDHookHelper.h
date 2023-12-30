@@ -14,7 +14,7 @@ namespace plugin {
   class HUDHookHelper {
    private:
     Addresses addresses;
-    Offsets hud_settings{ 0xa8, 0x151F8C };
+    Offsets hud_settings{ 0xa8, 0x14041C };
     std::array<bool, 8> toggles;
 
    public:
