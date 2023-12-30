@@ -117,8 +117,9 @@ namespace dll {
     }
   }
 
-  void LoadAllPluginDlls(void* memModule) {
+  bool LoadAllPluginDlls(void* memModule) {
     currentModule = memModule;
+    bool failed = false;
     for (const auto& entry : std::filesystem::directory_iterator("nativePC\\plugins")) {
       std::string name = entry.path().filename().string();
       if (entry.path().filename().extension().string() != ".dll") {
@@ -128,10 +129,12 @@ namespace dll {
       auto* dll = LoadDll(entry.path().string().c_str());
       if (!dll) {
         LOG(LogLevel::ERR) << "Failed to load " << entry.path();
+        failed = true;
       } else {
         dlls.emplace_back(dll, entry.path(), entry.last_write_time());
       }
     }
+    return failed;
   }
 
   void watch(std::stop_token token) {

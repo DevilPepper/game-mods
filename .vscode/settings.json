@@ -22,8 +22,8 @@
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
   "C_Cpp.autoAddFileAssociations": false,
   "omnisharp.disableMSBuildDiagnosticWarning": true,
-  "omnisharp.enableImportCompletion": true,
   "omnisharp.organizeImportsOnFormat": true,
   "omnisharp.enableRoslynAnalyzers": true,
   "xml.format.splitAttributes": true,
+  "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
 }

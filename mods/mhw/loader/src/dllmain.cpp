@@ -1,6 +1,7 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 
 #include <filesystem>
+#include <iostream>
 #include <string>
 #include <thread>
 #include <tuple>
@@ -11,6 +12,8 @@
 #include "plugin/dll.h"
 #include "windows.h"
 
+using std::cin;
+using std::cout;
 std::vector<std::jthread> threads;
 
 const char* loader::GameVersion = "???";
@@ -37,9 +40,15 @@ __declspec(dllexport) extern void Initialize(void* memModule) {
       FindVersion();
       loader::setLogParams(config.logLevel, config.logcmd, config.logfile);
 
-      dll::LoadAllPluginDlls(memModule);
+      auto failed = dll::LoadAllPluginDlls(memModule);
       dll::initSystemMessages();
       threads.emplace_back(dll::watch);
+      if (failed) {
+        cout << "Something went wrong! Press Enter to continue anyway...";
+        cin.get();
+        cin.clear();
+        cin.ignore(9001, '\n');
+      }
     }
     return;
   } catch (std::exception e) {
